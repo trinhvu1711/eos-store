@@ -1,4 +1,6 @@
+import LogoSquare from "@/components/logo-square";
 import Link from "next/link";
+import Search from "./search";
 
 const { SITE_NAME } = process.env;
 export default function Navbar() {
@@ -11,10 +13,9 @@ export default function Navbar() {
   return (
     <nav className="relative flex items-center justify-between p-4 lg:px-6">
       {/* Mobile menu */}
-      <div className="relative flex items-center justify-between p-4">
-        <div className="block flex-none md:hidden">
-          <div>Mobile Menu</div>
-        </div>
+
+      <div className="block flex-none md:hidden">
+        <div>Mobile Menu</div>
       </div>
 
       <div className="flex w-full items-center">
@@ -24,7 +25,7 @@ export default function Navbar() {
             href="/"
             className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
           >
-            <div>Logo</div>
+            <LogoSquare />
             <div className="ml-2 flex-none text-sm font-medium uppercase md:hidden lg:block">
               {SITE_NAME}
             </div>
@@ -48,7 +49,9 @@ export default function Navbar() {
         </div>
 
         {/* Search bar */}
-        <div className="hidden justify-center md:flex md:w-1/3">search</div>
+        <div className="hidden justify-center md:flex md:w-1/3">
+          <Search />
+        </div>
 
         {/* Cart */}
         <div className="flex justify-end md:w-1/3">cart</div>
