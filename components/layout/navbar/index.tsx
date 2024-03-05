@@ -1,6 +1,7 @@
 import LogoSquare from "@/components/logo-square";
 import Link from "next/link";
 import Search from "./search";
+import MobileMenu from "./mobile-menu";
 
 const { SITE_NAME } = process.env;
 export default function Navbar() {
@@ -15,7 +16,7 @@ export default function Navbar() {
       {/* Mobile menu */}
 
       <div className="block flex-none md:hidden">
-        <div>Mobile Menu</div>
+        <MobileMenu menu={menu} />
       </div>
 
       <div className="flex w-full items-center">
