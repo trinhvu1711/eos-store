@@ -2,6 +2,7 @@ import LogoSquare from "@/components/logo-square";
 import Link from "next/link";
 import Search from "./search";
 import MobileMenu from "./mobile-menu";
+import Cart from "@/components/cart";
 
 const { SITE_NAME } = process.env;
 export default function Navbar() {
@@ -55,7 +56,9 @@ export default function Navbar() {
         </div>
 
         {/* Cart */}
-        <div className="flex justify-end md:w-1/3">cart</div>
+        <div className="flex justify-end md:w-1/3">
+          <Cart />
+        </div>
       </div>
     </nav>
   );

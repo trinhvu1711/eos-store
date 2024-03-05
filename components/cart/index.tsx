@@ -1,5 +1,7 @@
 import CartModal from "./modal";
 
 export default function Cart() {
-  return <CartModal />;
+  let cart;
+
+  return <CartModal cart={cart} />;
 }
