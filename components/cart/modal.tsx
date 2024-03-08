@@ -8,10 +8,13 @@ import CloseCart from "./close-cart";
 import Link from "next/link";
 import DeleteItemButton from "./delete-item-button";
 import Image from "next/image";
-import { DEFAULT_OPTION } from "@/lib/constants";
+
 import Price from "../price";
 import EditQuantityButton from "./edit-quantity-button";
 import { Cart } from "@/lib/type";
+import { DEFAULT_OPTION } from "@/lib/constants";
+
+
 
 export default function CartModal({ cart }: { cart: Cart | undefined }) {
   // { cart }: { cart: Cart | undefined }

@@ -1,8 +1,11 @@
-import LogoSquare from "@/components/logo-square";
+
 import Link from "next/link";
 import Search from "./search";
 import MobileMenu from "./mobile-menu";
+import LogoSquare from "@/components/logo-square";
 import Cart from "@/components/cart";
+
+
 
 const { SITE_NAME } = process.env;
 export default function Navbar() {
