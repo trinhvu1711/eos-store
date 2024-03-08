@@ -1,6 +1,6 @@
-import { Product, products } from "@/lib/type";
 import Link from "next/link";
 import GridTileImage from "./tile";
+import { Product, products } from "@/lib/type";
 
 function ThreeItemGridItem({
   item,
@@ -51,7 +51,7 @@ export default function ThreeItemGrid() {
   const [firstProduct, secondProduct, thirdProduct] = homePageItem;
 
   return (
-    <section className="mx-auto grid max-w-screen-2xl gap-4 px-4 md:grid-cols-6 md:grid-rows-2">
+    <section className="mx-auto grid max-w-screen-2xl gap-4 px-4 pb-4 md:grid-cols-6 md:grid-rows-2">
       <ThreeItemGridItem size="full" item={firstProduct} priority={true} />
       <ThreeItemGridItem size="half" item={secondProduct} priority={true} />
       <ThreeItemGridItem size="half" item={thirdProduct} />

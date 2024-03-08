@@ -434,16 +434,5 @@ export const product3: Product = {
   updatedAt: "2024-03-07T00:00:00Z",
 };
 
-cart.lines.push({
-  id: "item2",
-  quantity: 1,
-  cost: { totalAmount: { amount: "80.00", currencyCode: "USD" } },
-  merchandise: {
-    id: "merch2",
-    title: "Ergonomic Keyboard",
-    selectedOptions: [{ name: "Layout", value: "US" }],
-    product: product2,
-  },
-});
 
 export const products = [product1, product2, product3];
