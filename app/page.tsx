@@ -1,9 +1,8 @@
-import Image from "next/image";
-
+import ThreeItemGrid from "@/components/grid/three-item-grid";
 export default function Home() {
   return (
     <>
-      <div>Home page</div>
+      <ThreeItemGrid />
     </>
   );
 }

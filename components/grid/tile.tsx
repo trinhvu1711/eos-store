@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import Image from "next/image";
-import { relative } from "path";
 import Label from "../label";
 
 export default function GridTileImage({

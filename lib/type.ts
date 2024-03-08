@@ -278,6 +278,49 @@ export const cart: Cart = {
   totalQuantity: 3,
 };
 
+export const product1: Product = {
+  id: "prod1",
+  handle: "wireless-headphones",
+  availableForSale: true,
+  title: "Wireless Headphones",
+  description: "High-quality sound and noise cancellation.",
+  descriptionHtml: "<p>High-quality sound and noise cancellation.</p>",
+  options: [{ id: "opt1", name: "Color", values: ["Black", "White"] }],
+  priceRange: {
+    maxVariantPrice: { amount: "100.00", currencyCode: "USD" },
+    minVariantPrice: { amount: "100.00", currencyCode: "USD" },
+  },
+  variants: [
+    {
+      id: "var1",
+      title: "Wireless Headphones Black",
+      availableForSale: true,
+      selectedOptions: [{ name: "Color", value: "Black" }],
+      price: { amount: "100.00", currencyCode: "USD" },
+    },
+  ],
+  featuredImage: {
+    url: "https://i.ibb.co/6ZfzMwb/BGOnmyoji7.jpg",
+    altText: "Wireless Headphones Black",
+    width: 1000,
+    height: 1000,
+  },
+  images: [
+    {
+      url: "https://example.com/images/wireless-headphones.jpg",
+      altText: "Wireless Headphones Black",
+      width: 1000,
+      height: 1000,
+    },
+  ],
+  seo: {
+    title: "Wireless Headphones",
+    description: "High-quality sound and noise cancellation.",
+  },
+  tags: ["electronics", "audio", "wireless", "noise-cancellation"],
+  updatedAt: "2024-03-07T00:00:00Z",
+};
+
 // Example CartItem to include in the `lines` array
 cart.lines.push({
   id: "item1",
@@ -287,50 +330,53 @@ cart.lines.push({
     id: "merch1",
     title: "Wireless Headphones",
     selectedOptions: [{ name: "Color", value: "Black" }],
-    product: {
-      id: "prod1",
-      handle: "wireless-headphones",
-      availableForSale: true,
-      title: "Wireless Headphones",
-      description: "High-quality sound and noise cancellation.",
-      descriptionHtml: "<p>High-quality sound and noise cancellation.</p>",
-      options: [{ id: "opt1", name: "Color", values: ["Black", "White"] }],
-      priceRange: {
-        maxVariantPrice: { amount: "100.00", currencyCode: "USD" },
-        minVariantPrice: { amount: "100.00", currencyCode: "USD" },
-      },
-      variants: [
-        {
-          id: "var1",
-          title: "Wireless Headphones Black",
-          availableForSale: true,
-          selectedOptions: [{ name: "Color", value: "Black" }],
-          price: { amount: "100.00", currencyCode: "USD" },
-        },
-      ],
-      featuredImage: {
-        url: "https://i.ibb.co/6ZfzMwb/BGOnmyoji7.jpg",
-        altText: "Wireless Headphones Black",
-        width: 1000,
-        height: 1000,
-      },
-      images: [
-        {
-          url: "https://example.com/images/wireless-headphones.jpg",
-          altText: "Wireless Headphones Black",
-          width: 1000,
-          height: 1000,
-        },
-      ],
-      seo: {
-        title: "Wireless Headphones",
-        description: "High-quality sound and noise cancellation.",
-      },
-      tags: ["electronics", "audio", "wireless", "noise-cancellation"],
-      updatedAt: "2024-03-07T00:00:00Z",
-    },
+    product: product1,
   },
 });
+
+export const product2: Product = {
+  id: "prod2",
+  handle: "ergonomic-keyboard",
+  availableForSale: true,
+  title: "Ergonomic Keyboard",
+  description: "Comfortable typing for long work sessions.",
+  descriptionHtml: "<p>Comfortable typing for long work sessions.</p>",
+  options: [{ id: "opt2", name: "Layout", values: ["US", "UK"] }],
+  priceRange: {
+    maxVariantPrice: { amount: "80.00", currencyCode: "USD" },
+    minVariantPrice: { amount: "80.00", currencyCode: "USD" },
+  },
+  variants: [
+    {
+      id: "var3",
+      title: "Ergonomic Keyboard US",
+      availableForSale: true,
+      selectedOptions: [{ name: "Layout", value: "US" }],
+      price: { amount: "80.00", currencyCode: "USD" },
+    },
+    // You could add other variants here if needed
+  ],
+  featuredImage: {
+    url: "https://i.ibb.co/bP0bCjW/305060433-823322692023361-9202875701243276683-n.jpg",
+    altText: "Wireless Headphones Black",
+    width: 1000,
+    height: 1000,
+  },
+  images: [
+    {
+      url: "https://example.com/images/ergonomic-keyboard.jpg",
+      altText: "Ergonomic Keyboard",
+      width: 1000,
+      height: 1000,
+    },
+  ],
+  seo: {
+    title: "Ergonomic Keyboard",
+    description: "Comfortable typing for long work sessions.",
+  },
+  tags: ["computer", "peripherals", "keyboard", "ergonomic"],
+  updatedAt: "2024-03-07T00:00:00Z",
+};
 
 cart.lines.push({
   id: "item2",
@@ -340,48 +386,64 @@ cart.lines.push({
     id: "merch2",
     title: "Ergonomic Keyboard",
     selectedOptions: [{ name: "Layout", value: "US" }],
-    product: {
-      id: "prod2",
-      handle: "ergonomic-keyboard",
-      availableForSale: true,
-      title: "Ergonomic Keyboard",
-      description: "Comfortable typing for long work sessions.",
-      descriptionHtml: "<p>Comfortable typing for long work sessions.</p>",
-      options: [{ id: "opt2", name: "Layout", values: ["US", "UK"] }],
-      priceRange: {
-        maxVariantPrice: { amount: "80.00", currencyCode: "USD" },
-        minVariantPrice: { amount: "80.00", currencyCode: "USD" },
-      },
-      variants: [
-        {
-          id: "var3",
-          title: "Ergonomic Keyboard US",
-          availableForSale: true,
-          selectedOptions: [{ name: "Layout", value: "US" }],
-          price: { amount: "80.00", currencyCode: "USD" },
-        },
-        // You could add other variants here if needed
-      ],
-      featuredImage: {
-        url: "https://i.ibb.co/bP0bCjW/305060433-823322692023361-9202875701243276683-n.jpg",
-        altText: "Wireless Headphones Black",
-        width: 1000,
-        height: 1000,
-      },
-      images: [
-        {
-          url: "https://example.com/images/ergonomic-keyboard.jpg",
-          altText: "Ergonomic Keyboard",
-          width: 1000,
-          height: 1000,
-        },
-      ],
-      seo: {
-        title: "Ergonomic Keyboard",
-        description: "Comfortable typing for long work sessions.",
-      },
-      tags: ["computer", "peripherals", "keyboard", "ergonomic"],
-      updatedAt: "2024-03-07T00:00:00Z",
-    },
+    product: product2,
   },
 });
+
+export const product3: Product = {
+  id: "prod3",
+  handle: "ergonomic-keyboard",
+  availableForSale: true,
+  title: "Ergonomic Keyboard",
+  description: "Comfortable typing for long work sessions.",
+  descriptionHtml: "<p>Comfortable typing for long work sessions.</p>",
+  options: [{ id: "opt2", name: "Layout", values: ["US", "UK"] }],
+  priceRange: {
+    maxVariantPrice: { amount: "80.00", currencyCode: "USD" },
+    minVariantPrice: { amount: "80.00", currencyCode: "USD" },
+  },
+  variants: [
+    {
+      id: "var3",
+      title: "Ergonomic Keyboard US",
+      availableForSale: true,
+      selectedOptions: [{ name: "Layout", value: "US" }],
+      price: { amount: "80.00", currencyCode: "USD" },
+    },
+    // You could add other variants here if needed
+  ],
+  featuredImage: {
+    url: "https://i.ibb.co/bP0bCjW/305060433-823322692023361-9202875701243276683-n.jpg",
+    altText: "Wireless Headphones Black",
+    width: 1000,
+    height: 1000,
+  },
+  images: [
+    {
+      url: "https://example.com/images/ergonomic-keyboard.jpg",
+      altText: "Ergonomic Keyboard",
+      width: 1000,
+      height: 1000,
+    },
+  ],
+  seo: {
+    title: "Ergonomic Keyboard",
+    description: "Comfortable typing for long work sessions.",
+  },
+  tags: ["computer", "peripherals", "keyboard", "ergonomic"],
+  updatedAt: "2024-03-07T00:00:00Z",
+};
+
+cart.lines.push({
+  id: "item2",
+  quantity: 1,
+  cost: { totalAmount: { amount: "80.00", currencyCode: "USD" } },
+  merchandise: {
+    id: "merch2",
+    title: "Ergonomic Keyboard",
+    selectedOptions: [{ name: "Layout", value: "US" }],
+    product: product2,
+  },
+});
+
+export const products = [product1, product2, product3];
