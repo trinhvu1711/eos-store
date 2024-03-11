@@ -369,7 +369,31 @@ export const sampleProduct: Product = {
   },
   images: [
     {
-      url: "https://example.com/image.jpg",
+      url: "https://i.ibb.co/mHwksvG/53ef8320-6e21-4f38-9b9f-009dd5a8b277-1151266-blob.webp",
+      altText: "Sample Product Image",
+      width: 1000,
+      height: 1000,
+    },
+    {
+      url: "https://i.ibb.co/SvGPPZS/0f335cf4-5d47-4876-ae5c-2fbfe5ea5e95-849867-blob.webp",
+      altText: "Sample Product Image",
+      width: 1000,
+      height: 1000,
+    },
+    {
+      url: "https://i.ibb.co/g7Xrt2L/8d40c420-0cd1-4f7d-a76a-091414332582-831512-blob.webpp",
+      altText: "Sample Product Image",
+      width: 1000,
+      height: 1000,
+    },
+    {
+      url: "https://i.ibb.co/fCP9f9v/4bb40fda-686c-4e95-9a1c-23ce9085acc9-470916-blob.webpp",
+      altText: "Sample Product Image",
+      width: 1000,
+      height: 1000,
+    },
+    {
+      url: "https://i.ibb.co/tbc19B3/007c3dca-b66d-4956-b36e-22cac543e744-1170805-blob.webp",
       altText: "Sample Product Image",
       width: 1000,
       height: 1000,
