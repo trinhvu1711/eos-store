@@ -278,6 +278,136 @@ export const cart: Cart = {
   totalQuantity: 3,
 };
 
+export const sampleProduct: Product = {
+  id: "product-123",
+  handle: "sample-product",
+  availableForSale: true,
+  title: "Sample Product",
+  description: "This is a sample product.",
+  descriptionHtml: "<p>This is a <strong>sample</strong> product.</p>",
+  options: [
+    {
+      id: "color",
+      name: "Color",
+      values: ["Red", "Blue", "Green"],
+    },
+    {
+      id: "size",
+      name: "Size",
+      values: ["S", "M", "L"],
+    },
+  ],
+  priceRange: {
+    maxVariantPrice: {
+      amount: "29.99",
+      currencyCode: "USD",
+    },
+    minVariantPrice: {
+      amount: "19.99",
+      currencyCode: "USD",
+    },
+  },
+  variants: [
+    {
+      id: "variant-123",
+      title: "Red / S",
+      availableForSale: true,
+      selectedOptions: [
+        { name: "Color", value: "Red" },
+        { name: "Size", value: "S" },
+      ],
+      price: {
+        amount: "15.99",
+        currencyCode: "USD",
+      },
+    },
+    {
+      id: "variant-124",
+      title: "Red / M",
+      availableForSale: true,
+      selectedOptions: [
+        { name: "Color", value: "Red" },
+        { name: "Size", value: "M" },
+      ],
+      price: {
+        amount: "21.99",
+        currencyCode: "USD",
+      },
+    },
+    {
+      id: "variant-125",
+      title: "Blue / L",
+      availableForSale: false, // Giả sử biến thể này hiện không có sẵn
+      selectedOptions: [
+        { name: "Color", value: "Blue" },
+        { name: "Size", value: "L" },
+      ],
+      price: {
+        amount: "22.99",
+        currencyCode: "USD",
+      },
+    },
+    {
+      id: "variant-126",
+      title: "Green / S",
+      availableForSale: true,
+      selectedOptions: [
+        { name: "Color", value: "Green" },
+        { name: "Size", value: "S" },
+      ],
+      price: {
+        amount: "20.99",
+        currencyCode: "USD",
+      },
+    },
+  ],
+  featuredImage: {
+    url: "https://i.ibb.co/6ZfzMwb/BGOnmyoji7.jpg",
+    altText: "Wireless Headphones Black",
+    width: 1000,
+    height: 1000,
+  },
+  images: [
+    {
+      url: "https://i.ibb.co/mHwksvG/53ef8320-6e21-4f38-9b9f-009dd5a8b277-1151266-blob.webp",
+      altText: "Sample Product Image",
+      width: 1000,
+      height: 1000,
+    },
+    {
+      url: "https://i.ibb.co/SvGPPZS/0f335cf4-5d47-4876-ae5c-2fbfe5ea5e95-849867-blob.webp",
+      altText: "Sample Product Image",
+      width: 1000,
+      height: 1000,
+    },
+    {
+      url: "https://i.ibb.co/g7Xrt2L/8d40c420-0cd1-4f7d-a76a-091414332582-831512-blob.webpp",
+      altText: "Sample Product Image",
+      width: 1000,
+      height: 1000,
+    },
+    {
+      url: "https://i.ibb.co/fCP9f9v/4bb40fda-686c-4e95-9a1c-23ce9085acc9-470916-blob.webpp",
+      altText: "Sample Product Image",
+      width: 1000,
+      height: 1000,
+    },
+    {
+      url: "https://i.ibb.co/tbc19B3/007c3dca-b66d-4956-b36e-22cac543e744-1170805-blob.webp",
+      altText: "Sample Product Image",
+      width: 1000,
+      height: 1000,
+    },
+    // Thêm các hình ảnh khác tương tự
+  ],
+  seo: {
+    title: "Sample Product",
+    description: "This is a sample product for demonstration purposes.",
+  },
+  tags: ["sample", "product", "demo"],
+  updatedAt: "2024-03-10T00:00:00Z",
+};
+
 export const product1: Product = {
   id: "prod1",
   handle: "wireless-headphones",
@@ -433,6 +563,5 @@ export const product3: Product = {
   tags: ["computer", "peripherals", "keyboard", "ergonomic"],
   updatedAt: "2024-03-07T00:00:00Z",
 };
-
 
 export const products = [product1, product2, product3];
