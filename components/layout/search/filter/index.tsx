@@ -33,7 +33,7 @@ export default function FilterList({
         <ul className="hidden md:block">
           <FilterItemList list={list} />
         </ul>
-        <ul className="hidden">
+        <ul className="md:hidden">
           <FilterItemDropdown list={list} />
         </ul>
       </nav>
