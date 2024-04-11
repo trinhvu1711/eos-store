@@ -20,7 +20,7 @@ export default function Search() {
         name="Search"
         placeholder="Search for products..."
         autoComplete="off"
-        className="w-full rounded-lg border bg-white px-4 py-2 text-sm text-black placeholder:text-neutral-500 dark:border-neutral-800 dark:bg-transparent dark:text-white dark:placeholder:text-neutral-400"
+        className="w-full rounded-lg border bg-white px-4 py-2 text-sm text-black placeholder:text-neutral-500 focus-within:outline-none dark:border-2 dark:border-neutral-800 dark:bg-transparent dark:text-white dark:placeholder:text-neutral-400"
       />
     </form>
   );

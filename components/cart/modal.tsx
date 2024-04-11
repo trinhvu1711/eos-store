@@ -14,8 +14,6 @@ import EditQuantityButton from "./edit-quantity-button";
 import { Cart } from "@/lib/type";
 import { DEFAULT_OPTION } from "@/lib/constants";
 
-
-
 export default function CartModal({ cart }: { cart: Cart | undefined }) {
   // { cart }: { cart: Cart | undefined }
   const [isOpen, setIsOpen] = useState(false);
@@ -60,7 +58,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
             leaveTo="translate-x-full"
           >
             {/* Start cart panel */}
-            <Dialog.Panel className="fixed bottom-0 right-0 top-0 flex h-full w-full flex-col border-l border-neutral-200 bg-white/80 p-6 text-black backdrop-blur-xl dark:border-neutral-700 dark:bg-black/80 dark:text-white md:w-[390px]">
+            <Dialog.Panel className="fixed bottom-0 right-0 top-0 flex h-full w-full flex-col border-l border-neutral-200 bg-white/80 p-6 text-black backdrop-blur-xl md:w-[390px] dark:border-neutral-700 dark:bg-black/80 dark:text-white">
               {/* Start close button */}
               <div className="flex items-center justify-between">
                 <p className="text-lg font-semibold">My Cart</p>
@@ -185,10 +183,19 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                   </div>
                   {/* End Checkout info */}
 
+                  {/* Start Cart button */}
+                  <a
+                    href="#"
+                    className="mb-2 block w-full rounded-md border p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100"
+                  >
+                    Proceed to Cart
+                  </a>
+                  {/* End Cart button */}
+
                   {/* Start Checkout button */}
                   <a
                     href="#"
-                    className="block w-full rounded-full bg-blue-600 p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100"
+                    className="block w-full rounded-md bg-blue-500 p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100"
                   >
                     Proceed to Checkout
                   </a>

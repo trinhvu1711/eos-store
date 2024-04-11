@@ -12,8 +12,8 @@ export default function GridTileImage({
   active?: boolean;
   label?: {
     title: string;
-    amount: string;
-    currencyCode: string;
+    // amount: string;
+    // currencyCode: string;
     position?: "bottom" | "center";
   };
 } & React.ComponentProps<typeof Image>) {
@@ -25,13 +25,13 @@ export default function GridTileImage({
           relative: label,
           "border-2 border-blue-600": active,
           "border-neutral-200 dark:border-neutral-800": !active,
-        }
+        },
       )}
     >
       {props.src ? (
         // eslint-disable-next-line jsx-a11y/alt-text
         <Image
-          className={clsx("relative h-full w-full object-contain", {
+          className={clsx("relative h-full w-full object-cover", {
             "transition duration-300 ease-in-out group-hover:scale-105":
               isInteractive,
           })}
@@ -41,8 +41,8 @@ export default function GridTileImage({
       {label ? (
         <Label
           title={label.title}
-          amount={label.amount}
-          currencyCode={label.currencyCode}
+          // amount={label.amount}
+          // currencyCode={label.currencyCode}
           position={label.position}
         />
       ) : null}

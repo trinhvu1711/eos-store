@@ -1,11 +1,10 @@
-
 import Link from "next/link";
 import Search from "./search";
 import MobileMenu from "./mobile-menu";
 import LogoSquare from "@/components/logo-square";
 import Cart from "@/components/cart";
-
-
+import UserDashBoardButton from "@/components/user-dashboard/user-dashboard-button";
+import WishlistButton from "@/components/wishlist/wishlist-button";
 
 const { SITE_NAME } = process.env;
 export default function Navbar() {
@@ -59,7 +58,9 @@ export default function Navbar() {
         </div>
 
         {/* Cart */}
-        <div className="flex justify-end md:w-1/3">
+        <div className="flex justify-end gap-2 md:w-1/3">
+          <UserDashBoardButton />
+          <WishlistButton />
           <Cart />
         </div>
       </div>
