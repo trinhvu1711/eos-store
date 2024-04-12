@@ -1,8 +1,12 @@
-// "use client";
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import ButtonToolTip from "./button-tooltip";
 import ProductAddButton from "./product-add-button";
+import Discount from "./discount";
+import { useState } from "react";
+import { Transition } from "@headlessui/react";
+import { Product } from "@/lib/models/product";
 
 const addWistListSVG = (
   <svg
@@ -52,17 +56,30 @@ const productDetailsSVG = (
   </svg>
 );
 
-const ProductItem = () => {
+const ProductItem = ({ product }: { product: Product }) => {
+  const [isShowing, setIsShowing] = useState(false);
+
+  function handleMouseEnter() {
+    setIsShowing(true);
+  }
+  function handleMouseLeave() {
+    setIsShowing(false);
+  }
+
   return (
     <div className="transition-3 relative mb-12 ease-in-out">
-      <div className="w-img relative overflow-hidden">
+      <div
+        className="w-img relative overflow-hidden"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <Link
-          href="/product-details/64b78b80cf982ba18a26b12c"
+          href="#"
           // previewlistener="true"s
         >
           <Image
             alt="product image"
-            src="/_next/image?url=https%3A%2F%2Fi.ibb.co%2FF3hPQMP%2Fproduct-2.jpg&amp;w=1920&amp;q=75"
+            src={`http://localhost:8088/api/v1/products/images/${product.thumbnail}`}
             width="960"
             height="1125"
             decoding="async"
@@ -71,12 +88,24 @@ const ProductItem = () => {
             style={{ color: "transparent", width: "100%", height: "100%" }}
           />
         </Link>
-        <div className="flex-column absolute right-[10px] top-10 flex flex-col flex-wrap dark:text-black">
-          <ButtonToolTip text="Add to Wishlist" svg={addWistListSVG} />
-          <ButtonToolTip text="Quick view" svg={quickViewSVG} />
-          <ButtonToolTip text="Product Details" svg={productDetailsSVG} />
-        </div>
-        <ProductAddButton />
+        <Discount />
+        <Transition show={isShowing} enterFrom="">
+          <Transition.Child
+            enter="transition-opacity ease-linear duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity ease-linear duration-300"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="flex-column absolute right-[10px] top-10 flex flex-col flex-wrap dark:text-black">
+              <ButtonToolTip text="Add to Wishlist" svg={addWistListSVG} />
+              <ButtonToolTip text="Quick view" svg={quickViewSVG} />
+              <ButtonToolTip text="Product Details" svg={productDetailsSVG} />
+            </div>
+            <ProductAddButton />
+          </Transition.Child>
+        </Transition>
       </div>
       <div className="pt-3">
         <h3 className="hover:text-[#f50693]">
@@ -84,7 +113,7 @@ const ProductItem = () => {
             href="/product-details/64b78b80cf982ba18a26b12c"
             // previewlistener="true"
           >
-            Apple Watch Series 8
+            {product.name}
           </Link>
         </h3>
         <span className="text-base font-medium">$188.00</span>

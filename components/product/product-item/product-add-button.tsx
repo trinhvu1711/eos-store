@@ -4,7 +4,7 @@ const ProductAddButton = () => {
     <div className="absolute bottom-0 left-0 right-0 z-10 hover:opacity-100">
       <button
         type="button"
-        className="w-full bg-black p-2 px-6 py-2 text-center text-base font-semibold text-white hover:bg-red-500 focus:outline-none"
+        className="w-full bg-black p-2 px-6 py-2 text-center text-base font-semibold text-white hover:bg-[#f50963] focus:outline-none"
       >
         <div className="flex items-center justify-center gap-2">
           <svg

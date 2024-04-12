@@ -1,4 +1,4 @@
-import { Category } from "./models/product";
+import { Category, Product } from "./models/product";
 
 // Product
 export async function getCategory(page = 0, limit = 3) {
@@ -19,7 +19,7 @@ export async function getCategory(page = 0, limit = 3) {
 }
 
 // Product
-export async function getProducts(page = 0, limit = 5) {
+export async function getProducts(page = 0, limit = 12) {
   try {
     const response = await fetch(
       `http://localhost:8088/api/v1/products?page=${page}&limit=${limit}`,
@@ -83,3 +83,16 @@ export async function getCategories(): Promise<Category[]> {
     throw new Error("Failed to get categories + error.message");
   }
 }
+
+// export function useProducts(page = 0, limit = 12) {
+//   const { data, error, isLoading } = useSWR(
+//     `http://localhost:8088/api/v1/categories?page=${page}&limit=${limit}`,
+//     fetcher,
+//   );
+
+//   return {
+//     products: data,
+//     isLoading,
+//     isError: error,
+//   };
+// }

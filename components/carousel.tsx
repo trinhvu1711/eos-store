@@ -7,8 +7,8 @@ export default async function Carousel() {
   const categories = await getCategories();
   return (
     <div className="container m-auto">
-      <div className="scrollbar scrollbar-thin scrollbar-thumb-rose-500 scrollbar-track-slate-700 w-full overflow-x-auto pb-6 pt-1">
-        <ul className=" flex gap-4">
+      <div className="w-full overflow-x-auto pb-6 pt-1 scrollbar scrollbar-thin scrollbar-track-slate-700 scrollbar-thumb-rose-500">
+        <ul className="flex gap-4 ">
           {Array.isArray(categories) &&
             categories.map((category: Category, i) => (
               <li
