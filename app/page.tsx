@@ -6,6 +6,7 @@ import FeaturesArea from "@/components/layout/features-area";
 import Footer from "@/components/layout/footer";
 import ProductPopularArea from "@/components/layout/product-popular-area";
 import { Suspense } from "react";
+// import Test from "./test/page";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
         <Carousel />
         <Suspense>
           <ProductPopularArea />
+          {/* <Test /> */}
           <Banner />
           <FeaturesArea />
           <CTA />

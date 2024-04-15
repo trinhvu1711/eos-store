@@ -1,3 +1,5 @@
+import { product } from "./models/product";
+// import { getProducts } from "@/lib/data";
 import { Category, Product } from "./models/product";
 
 // Product
@@ -10,7 +12,7 @@ export async function getCategory(page = 0, limit = 3) {
       throw new Error("Failed to fetch categories");
     }
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
 
     return data;
   } catch (error: any) {
@@ -18,8 +20,16 @@ export async function getCategory(page = 0, limit = 3) {
   }
 }
 
+export type GetProductsType = {
+  products: Product[];
+  totalPage: number;
+};
+
 // Product
-export async function getProducts(page = 0, limit = 12) {
+export async function getProducts(
+  page = 0,
+  limit = 12,
+): Promise<GetProductsType> {
   try {
     const response = await fetch(
       `http://localhost:8088/api/v1/products?page=${page}&limit=${limit}`,
@@ -28,6 +38,8 @@ export async function getProducts(page = 0, limit = 12) {
       throw new Error("Failed to fetch products");
     }
     const data = await response.json();
+    // console.log(data);
+
     return data;
   } catch (error: any) {
     throw new Error("Failed to get products: " + error.message);
@@ -76,8 +88,6 @@ export async function getCategories(): Promise<Category[]> {
       throw new Error("Failed to fetch categories");
     }
     const data: Category[] = await response.json();
-    console.log(data);
-
     return data;
   } catch (error: any) {
     throw new Error("Failed to get categories + error.message");
