@@ -1,6 +1,6 @@
 "use client";
 
-import { ProductOption, ProductVariant } from "@/lib/type";
+import { Option, Variant } from "@/lib/models/product";
 import { createUrl } from "@/lib/utils";
 import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -15,8 +15,8 @@ export default function VariantSelector({
   options,
   variants,
 }: {
-  options: ProductOption[];
-  variants: ProductVariant[];
+  options: Option[];
+  variants: Variant[];
 }) {
   const router = useRouter();
   const pathName = usePathname();

@@ -2,26 +2,37 @@ import GridTileImage from "@/components/grid/tile";
 import Footer from "@/components/layout/footer";
 import Gallery from "@/components/product/gallery";
 import ProductDescription from "@/components/product/product-description";
+import { getProduct } from "@/lib/data";
+import { ProductImage } from "@/lib/models/product";
 import { Image, products, sampleProduct } from "@/lib/type";
 import Link from "next/link";
 import React, { Suspense } from "react";
 
-export default function ProductPage({
+export default async function ProductPage({
   params,
 }: {
   params: { handle: string };
 }) {
-  const product = sampleProduct;
+  const product = await getProduct(1);
+  if (!product) {
+    // handle the case when product is undefined
+    console.error("Product not found");
+    return <div>Product not found</div>;
+  }
+
   return (
     <>
       <div className="mx-auto max-w-screen-2xl px-4">
         <div className="flex flex-col rounded-lg border border-neutral-200 bg-white p-8 md:p-12 lg:flex-row lg:gap-8 dark:border-neutral-800 dark:bg-black">
           <div className="h-full w-full basis-full lg:basis-4/6">
             <Gallery
-              images={product.images.map((image: Image) => ({
-                src: image.url,
-                altText: image.altText,
-              }))}
+              images={product.productImage.map(
+                (image: ProductImage, index: number) => ({
+                  key: image.id || index,
+                  src: `http://localhost:8088/api/v1/products/images/${image.image_url}`,
+                  altText: image.image_url,
+                }),
+              )}
             />
           </div>
           <div className="basis-full lg:basis-2/6">
@@ -59,8 +70,8 @@ function RelatedProducts({ id }: { id: string }) {
                 alt={product.title}
                 label={{
                   title: product.title,
-                  amount: product.priceRange.maxVariantPrice.amount,
-                  currencyCode: product.priceRange.maxVariantPrice.currencyCode,
+                  // amount: product.priceRange.maxVariantPrice.amount,
+                  // currencyCode: product.priceRange.maxVariantPrice.currencyCode,
                 }}
                 src={product.featuredImage?.url}
                 fill

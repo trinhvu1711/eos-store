@@ -3,23 +3,21 @@ export type Category = {
   imageUrl: string;
 };
 
-export const category: Category = {
-  name: "tablet",
-  imageUrl: "this is image url",
-};
-
-export type Option = {
+export type selectedOptions = {
+  id: string;
   name: string;
   value: string;
 };
 
-export const option: Option = {
-  name: "Option Name",
-  value: "Option Value",
+export type Option = {
+  id: string;
+  name: string;
+  values: string[];
 };
 
 export type Variant = {
-  option: Option;
+  id: string;
+  selectedOptions: selectedOptions[];
   name: string;
   availableForSale: boolean;
   price: number;
@@ -27,41 +25,93 @@ export type Variant = {
 };
 
 export type Product = {
+  id: string;
   name: string;
   thumbnail: string;
   description: string | null;
   updatedAt: string;
   createdAt: string;
-  category: Category;
-  desccriptionHtml: string;
+  category: string;
+  descriptionHtml: string;
+  availableForSale: boolean | true;
   variant: Variant[];
   productImage: ProductImage[];
 };
 
-export const variant: Variant = {
-  option: option,
-  name: "Variant Name",
-  availableForSale: true,
-  price: 0.0,
-  currency: "USD",
-};
-
 export type ProductImage = {
+  id: string;
   image_url: string;
 };
 
-export const productImage: ProductImage = {
-  image_url: "this is image url",
-};
+export function getMaxVariantPriceAndCurrency(product: Product): {
+  maxPrice: string;
+  currencyCode: string;
+} {
+  let maxPrice = 0;
+  let currencyCode = "";
 
-export const product: Product = {
-  name: "ipad pro 2013",
-  thumbnail: "this is thumbnail",
-  description: null,
-  updatedAt: "2024-04-04T09:51:46",
-  createdAt: "2024-04-04T09:51:46",
-  category: category,
-  desccriptionHtml: "this is description html",
-  variant: [variant, variant],
-  productImage: [productImage, productImage],
-};
+  // Iterate over variants to find maximum price
+  product.variant.forEach((variant) => {
+    if (variant.price > maxPrice) {
+      maxPrice = variant.price;
+      currencyCode = variant.currency;
+    }
+  });
+
+  return { maxPrice: maxPrice.toString(), currencyCode };
+}
+
+export function getOptionsFromVariants(variants: Variant[]): Option[] {
+  const optionsMap: { [key: string]: Option } = {};
+  let idCounter = 1;
+
+  variants.forEach((variant) => {
+    if (variant.selectedOptions) {
+      variant.selectedOptions.forEach((option: any) => {
+        const { name, value } = option;
+        const optionId = name.toLowerCase();
+
+        if (!optionsMap[optionId]) {
+          optionsMap[optionId] = {
+            id: idCounter.toString(),
+            name: name,
+            values: [],
+          };
+          idCounter++;
+        }
+
+        if (!optionsMap[optionId].values.includes(value)) {
+          optionsMap[optionId].values.push(value);
+        }
+      });
+    }
+  });
+
+  return Object.values(optionsMap);
+}
+
+export function mapApiResponseToProductModel(apiResponse: any): Product {
+  return {
+    id: apiResponse.id,
+    name: apiResponse.name,
+    thumbnail: apiResponse.thumbnail,
+    description: apiResponse.description,
+    updatedAt: apiResponse.updated_at,
+    createdAt: apiResponse.created_at,
+    category: apiResponse.category_id,
+    descriptionHtml: apiResponse.descriptionHtml,
+    availableForSale: true,
+    variant: apiResponse.product_variants.map((variant: Variant) => ({
+      id: variant.id,
+      selectedOptions: variant.selectedOptions,
+      name: variant.name,
+      availableForSale: variant.availableForSale,
+      price: variant.price,
+      currency: variant.currency,
+    })),
+    productImage: apiResponse.product_images.map((image: any) => ({
+      id: image.id,
+      image_url: image.imageUrl,
+    })),
+  };
+}

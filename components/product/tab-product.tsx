@@ -48,8 +48,8 @@ export default function TabProduct({ products }: { products: Product[] }) {
       <Tab.Panels>
         <Tab.Panel className="grid grid-cols-4 gap-4">
           {products &&
-            products.map((product) => (
-              <ProductItem key={product.name} product={product} />
+            products.map((product, index: number) => (
+              <ProductItem key={product.id || index} product={product} />
             ))}
         </Tab.Panel>
         <Tab.Panel className="grid-cols-4 gap-2">Content 2</Tab.Panel>

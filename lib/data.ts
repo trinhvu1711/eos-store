@@ -1,6 +1,9 @@
-import { product } from "./models/product";
 // import { getProducts } from "@/lib/data";
-import { Category, Product } from "./models/product";
+import {
+  Category,
+  mapApiResponseToProductModel,
+  Product,
+} from "./models/product";
 
 // Product
 export async function getCategory(page = 0, limit = 3) {
@@ -41,6 +44,22 @@ export async function getProducts(
     // console.log(data);
 
     return data;
+  } catch (error: any) {
+    throw new Error("Failed to get products: " + error.message);
+  }
+}
+
+// get product
+export async function getProduct(id = 1): Promise<Product> {
+  try {
+    const response = await fetch(`http://localhost:8088/api/v1/products/${id}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch products");
+    }
+    const data = await response.json();
+    console.log(data);
+
+    return mapApiResponseToProductModel(data);
   } catch (error: any) {
     throw new Error("Failed to get products: " + error.message);
   }

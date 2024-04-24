@@ -564,4 +564,4 @@ export const product3: Product = {
   updatedAt: "2024-03-07T00:00:00Z",
 };
 
-export const products = [product1, product2, product3];
+export const products = [product1, product2];

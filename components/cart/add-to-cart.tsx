@@ -6,6 +6,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import LoadingDots from "../loading-dots";
 import { ProductVariant } from "@/lib/type";
 import { useSearchParams } from "next/navigation";
+import { Variant } from "@/lib/models/product";
 
 function SubmitButton({
   availableForSale,
@@ -70,16 +71,19 @@ export default function AddToCart({
   variants,
   availableForSale,
 }: {
-  variants: ProductVariant[];
+  variants: Variant[];
   availableForSale: boolean;
 }) {
   // const [message, formAction] = useFormState(addItem, null);
   const searchParams = useSearchParams();
   const defaultVariantId = variants.length === 1 ? variants[0]?.id : undefined;
-  const variant = variants.find((variant: ProductVariant) =>
-    variant.selectedOptions.every(
-      (option) => option.value === searchParams.get(option.name.toLowerCase()),
-    ),
+  const variant = variants.find((variant: Variant) =>
+    variant.selectedOptions
+      ? variant.selectedOptions.every(
+          (option) =>
+            option.value === searchParams.get(option.name.toLowerCase()),
+        )
+      : false,
   );
   const selectVariantId = variant?.id || defaultVariantId;
   // const actionWithVariant =
