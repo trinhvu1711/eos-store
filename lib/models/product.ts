@@ -17,11 +17,11 @@ export type Option = {
 
 export type Variant = {
   id: string;
-  selectedOptions: selectedOptions[];
   name: string;
   availableForSale: boolean;
   price: number;
   currency: string;
+  selectedOptions: selectedOptions[];
 };
 
 export type Product = {
@@ -34,13 +34,13 @@ export type Product = {
   category: string;
   descriptionHtml: string;
   availableForSale: boolean | true;
-  variant: Variant[];
-  productImage: ProductImage[];
+  variants: Variant[];
+  productImages: ProductImage[];
 };
 
 export type ProductImage = {
   id: string;
-  image_url: string;
+  imageUrl: string;
 };
 
 export function getMaxVariantPriceAndCurrency(product: Product): {
@@ -51,7 +51,7 @@ export function getMaxVariantPriceAndCurrency(product: Product): {
   let currencyCode = "";
 
   // Iterate over variants to find maximum price
-  product.variant.forEach((variant) => {
+  product.variants.forEach((variant) => {
     if (variant.price > maxPrice) {
       maxPrice = variant.price;
       currencyCode = variant.currency;
@@ -64,16 +64,15 @@ export function getMaxVariantPriceAndCurrency(product: Product): {
 export function getOptionsFromVariants(variants: Variant[]): Option[] {
   const optionsMap: { [key: string]: Option } = {};
   let idCounter = 1;
-
-  variants.forEach((variant) => {
-    if (variant.selectedOptions) {
+  if (variants) {
+    variants.forEach((variant) => {
       variant.selectedOptions.forEach((option: any) => {
         const { name, value } = option;
         const optionId = name.toLowerCase();
 
         if (!optionsMap[optionId]) {
           optionsMap[optionId] = {
-            id: idCounter.toString(),
+            id: name,
             name: name,
             values: [],
           };
@@ -84,8 +83,8 @@ export function getOptionsFromVariants(variants: Variant[]): Option[] {
           optionsMap[optionId].values.push(value);
         }
       });
-    }
-  });
+    });
+  }
 
   return Object.values(optionsMap);
 }
@@ -101,17 +100,56 @@ export function mapApiResponseToProductModel(apiResponse: any): Product {
     category: apiResponse.category_id,
     descriptionHtml: apiResponse.descriptionHtml,
     availableForSale: true,
-    variant: apiResponse.product_variants.map((variant: Variant) => ({
+    variants: apiResponse.product_variants.map((variant: Variant) => ({
       id: variant.id,
-      selectedOptions: variant.selectedOptions,
+      name: variant.name,
+      availableForSale: variant.availableForSale,
+      price: variant.price,
+      currency: variant.currency,
+      selectedOptions: apiResponse.product_variants.options.map(
+        (option: selectedOptions) => ({
+          id: option.id,
+          name: option.name,
+          value: option.value,
+        }),
+      ),
+    })),
+    productImages: apiResponse.product_images.map((image: any) => ({
+      id: image.id,
+      image_url: image.imageUrl,
+    })),
+  };
+}
+
+// Function to parse product data
+export function parseProductData(data: any): Product {
+  return {
+    id: data.id,
+    name: data.name,
+    thumbnail: data.thumbnail,
+    description: data.description,
+    updatedAt: data.updated_at,
+    createdAt: data.created_at,
+    category: data.category_id.toString(), // Assuming category_id is a string
+    descriptionHtml: data.descriptionHtml,
+    availableForSale: data.product_variants.some(
+      (variant: any) => variant.availableForSale,
+    ),
+    variants: data.product_variants.map((variant: any) => ({
+      id: variant.id.toString(), // Assuming variant.id is a string
+      selectedOptions: variant.options.map((option: any) => ({
+        id: option.id,
+        name: option.name,
+        value: option.value,
+      })),
       name: variant.name,
       availableForSale: variant.availableForSale,
       price: variant.price,
       currency: variant.currency,
     })),
-    productImage: apiResponse.product_images.map((image: any) => ({
-      id: image.id,
-      image_url: image.imageUrl,
+    productImages: data.product_images.map((image: any) => ({
+      id: image.id.toString(), // Assuming image.id is a string
+      imageUrl: image.imageUrl,
     })),
   };
 }

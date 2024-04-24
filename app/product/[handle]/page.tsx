@@ -26,11 +26,11 @@ export default async function ProductPage({
         <div className="flex flex-col rounded-lg border border-neutral-200 bg-white p-8 md:p-12 lg:flex-row lg:gap-8 dark:border-neutral-800 dark:bg-black">
           <div className="h-full w-full basis-full lg:basis-4/6">
             <Gallery
-              images={product.productImage.map(
+              images={product.productImages.map(
                 (image: ProductImage, index: number) => ({
                   key: image.id || index,
-                  src: `http://localhost:8088/api/v1/products/images/${image.image_url}`,
-                  altText: image.image_url,
+                  src: `http://localhost:8088/api/v1/products/images/${image.imageUrl}`,
+                  altText: image.imageUrl,
                 }),
               )}
             />

@@ -2,6 +2,7 @@
 import {
   Category,
   mapApiResponseToProductModel,
+  parseProductData,
   Product,
 } from "./models/product";
 
@@ -57,9 +58,10 @@ export async function getProduct(id = 1): Promise<Product> {
       throw new Error("Failed to fetch products");
     }
     const data = await response.json();
-    console.log(data);
+    const parseData = parseProductData(data);
+    console.log("🚀 ~ getProduct ~ parseData:", parseData);
 
-    return mapApiResponseToProductModel(data);
+    return parseData;
   } catch (error: any) {
     throw new Error("Failed to get products: " + error.message);
   }

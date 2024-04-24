@@ -18,6 +18,8 @@ export default function VariantSelector({
   options: Option[];
   variants: Variant[];
 }) {
+  console.log("🚀 ~ variants:", variants);
+  console.log("🚀 ~ options:", options);
   const router = useRouter();
   const pathName = usePathname();
   const searchParams = useSearchParams();
@@ -38,6 +40,10 @@ export default function VariantSelector({
       {},
     ),
   }));
+  console.log(
+    "🚀 ~ constcombinations:Combination[]=variants.map ~ combinations:",
+    combinations,
+  );
 
   return options.map((option) => (
     <dl className="mb-8" key={option.id}>

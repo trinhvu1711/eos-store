@@ -11,7 +11,7 @@ import {
 } from "@/lib/models/product";
 
 export default function ProductDescription({ product }: { product: Product }) {
-  const variants: Variant[] = product.variant;
+  const variants: Variant[] = product.variants;
   const options: Option[] = getOptionsFromVariants(variants);
 
   const { maxPrice, currencyCode } = getMaxVariantPriceAndCurrency(product);
@@ -32,7 +32,7 @@ export default function ProductDescription({ product }: { product: Product }) {
         />
       ) : null}
       <AddToCart
-        variants={product.variant}
+        variants={product.variants}
         availableForSale={product.availableForSale}
       />
     </>

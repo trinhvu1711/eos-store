@@ -76,14 +76,12 @@ export default function AddToCart({
 }) {
   // const [message, formAction] = useFormState(addItem, null);
   const searchParams = useSearchParams();
+  if (!variants) return null;
   const defaultVariantId = variants.length === 1 ? variants[0]?.id : undefined;
   const variant = variants.find((variant: Variant) =>
-    variant.selectedOptions
-      ? variant.selectedOptions.every(
-          (option) =>
-            option.value === searchParams.get(option.name.toLowerCase()),
-        )
-      : false,
+    variant.selectedOptions.every(
+      (option) => option.value === searchParams.get(option.name.toLowerCase()),
+    ),
   );
   const selectVariantId = variant?.id || defaultVariantId;
   // const actionWithVariant =
