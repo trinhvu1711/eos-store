@@ -1,7 +1,7 @@
 import Link from "next/link";
 import GridTileImage from "./tile";
-import { Product } from "@/lib/models/product";
-import { getProducts } from "@/lib/data";
+import { getProduct, getProducts } from "@/lib/data";
+import { Product } from "@/lib/type";
 
 function ThreeItemGridItem({
   item,
@@ -12,6 +12,10 @@ function ThreeItemGridItem({
   size: "full" | "half";
   priority?: boolean;
 }) {
+  const productUrl = `/product/${item.name
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "")}`;
   return (
     <div
       className={
@@ -22,7 +26,7 @@ function ThreeItemGridItem({
     >
       <Link
         className="relative block aspect-square h-full w-full"
-        href={`/product/${item.name.toLowerCase().replace(/\s+/g, "-")}`}
+        href={productUrl}
       >
         <GridTileImage
           src={`http://localhost:8088/api/v1/products/images/${item.thumbnail}`}
@@ -47,10 +51,14 @@ function ThreeItemGridItem({
 }
 
 export default async function ThreeItemGrid() {
-  const { products } = await getProducts(0, 3);
+  // const { products } = await getProducts(0, 3);
+  // console.log("🚀 ~ ThreeItemGrid ~ products:", products);
 
-  if (!products || products.length < 3) return null;
-  const [firstProduct, secondProduct, thirdProduct] = products;
+  // if (!products || products.length < 3) return null;
+  // const [firstProduct, secondProduct, thirdProduct] = products;
+  const firstProduct = await getProduct(1);
+  const secondProduct = await getProduct(2);
+  const thirdProduct = await getProduct(3);
 
   return (
     <section className="mx-auto grid max-w-screen-2xl gap-4 px-4 pb-4 md:grid-cols-6 md:grid-rows-2">

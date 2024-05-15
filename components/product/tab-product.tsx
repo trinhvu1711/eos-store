@@ -1,7 +1,7 @@
 "use client";
 import { Tab } from "@headlessui/react";
 import ProductItem from "./product-item";
-import { Product } from "@/lib/models/product";
+import { Product } from "@/lib/type";
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
@@ -16,8 +16,8 @@ export default function TabProduct({ products }: { products: Product[] }) {
               classNames(
                 "text-lg font-medium capitalize ",
                 selected
-                  ? " text-[#f50963] "
-                  : " hover:text-[#f50963] hover:underline",
+                  ? " text-[#f50963] focus:outline-none"
+                  : " hover:text-[#f50963] ",
               )
             }
           >
@@ -27,7 +27,9 @@ export default function TabProduct({ products }: { products: Product[] }) {
             className={({ selected }) =>
               classNames(
                 "text-lg font-medium capitalize ",
-                selected ? " text-[#f50963] " : " hover:text-[#f50963]",
+                selected
+                  ? " text-[#f50963] focus:outline-none"
+                  : " hover:text-[#f50963]",
               )
             }
           >
@@ -37,7 +39,9 @@ export default function TabProduct({ products }: { products: Product[] }) {
             className={({ selected }) =>
               classNames(
                 "selected text-lg font-medium capitalize",
-                selected ? " text-[#f50963] " : " hover:text-[#f50963]",
+                selected
+                  ? " text-[#f50963] focus:outline-none"
+                  : " hover:text-[#f50963]",
               )
             }
           >

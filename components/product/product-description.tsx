@@ -5,10 +5,11 @@ import AddToCart from "../cart/add-to-cart";
 import {
   getMaxVariantPriceAndCurrency,
   getOptionsFromVariants,
-  Option,
   Product,
   Variant,
-} from "@/lib/models/product";
+  Option,
+} from "@/lib/type";
+import { Suspense } from "react";
 
 export default function ProductDescription({ product }: { product: Product }) {
   const variants: Variant[] = product.variants;
@@ -23,18 +24,23 @@ export default function ProductDescription({ product }: { product: Product }) {
           <Price amount={maxPrice} currencyCode={currencyCode} />
         </div>
       </div>
+      <Suspense fallback={null}>
+        <VariantSelector
+          options={options}
+          variants={variants}
+          productId={product.id}
+        />
+      </Suspense>
 
-      <VariantSelector options={options} variants={variants} />
       {product.description ? (
         <Prose
           className="mb-6 text-sm leading-tight dark:text-white/[60%]"
           html={product.description}
         />
       ) : null}
-      <AddToCart
-        variants={product.variants}
-        availableForSale={product.availableForSale}
-      />
+      <Suspense fallback={null}>
+        <AddToCart variants={product.variants} availableForSale={true} />
+      </Suspense>
     </>
   );
 }

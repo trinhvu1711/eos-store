@@ -11,30 +11,51 @@ import Image from "next/image";
 
 import Price from "../price";
 import EditQuantityButton from "./edit-quantity-button";
-import { Cart } from "@/lib/type";
 import { DEFAULT_OPTION } from "@/lib/constants";
+import { CartItem, getSelectedVariant, ListCart } from "@/lib/type";
+import { get } from "https";
+export const dynamic = "force-dynamic";
 
-export default function CartModal({ cart }: { cart: Cart | undefined }) {
+function getTotalQuantityOfCartList(cartList: ListCart): number {
+  return cartList.carts.reduce(
+    (total, cartItem) => total + cartItem.numberOfProducts,
+    0,
+  );
+}
+export default function CartModal({
+  listCart,
+}: {
+  listCart: ListCart | undefined;
+}) {
+  console.log("🚀 ~ listCart:", listCart?.carts);
   // { cart }: { cart: Cart | undefined }
+  let totalQuantity = getTotalQuantityOfCartList(listCart!);
   const [isOpen, setIsOpen] = useState(false);
-  const quantityRef = useRef(cart?.totalQuantity);
+  const quantityRef = useRef(totalQuantity);
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
-
+  const subtotals = listCart?.carts.map(
+    (cart) => cart.price * cart.numberOfProducts,
+  );
+  const totalPrice = subtotals?.reduce(
+    (accumulator, currentValue) => accumulator + currentValue,
+    0,
+  );
+  const { maxPrice, currencyCode } = { maxPrice: 111, currencyCode: "USD" };
   useEffect(() => {
-    if (cart?.totalQuantity !== quantityRef.current) {
+    if (getTotalQuantityOfCartList(listCart!) !== quantityRef.current) {
       if (!isOpen) {
         setIsOpen(true);
       }
 
-      quantityRef.current = cart?.totalQuantity;
+      quantityRef.current = getTotalQuantityOfCartList(listCart!);
     }
-  }, [isOpen, cart?.totalQuantity, quantityRef]);
+  }, [isOpen, listCart]);
 
   return (
     <>
       <button aria-label="Open cart" onClick={openCart}>
-        <OpenCart quantity={cart?.totalQuantity} />
+        <OpenCart quantity={getTotalQuantityOfCartList(listCart!)} />
       </button>
       <Transition show={isOpen}>
         <Dialog onClose={closeCart} className="relative z-50">
@@ -68,8 +89,8 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
               </div>
               {/* End close button */}
 
-              {/* Start Display Carts  */}
-              {!cart || cart.lines.length === 0 ? (
+              {/* Start Display listCart?.carts  */}
+              {!listCart?.carts || listCart?.carts.length === 0 ? (
                 // Cart is Empty
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
                   <ShoppingCartIcon className="h-16" />
@@ -81,7 +102,12 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                 // Display all cart item
                 <div className="flex h-full flex-col justify-between overflow-hidden p-1">
                   <ul className="flex-grow overflow-auto py-4">
-                    {cart.lines.map((item, i) => {
+                    {listCart?.carts.map((item: CartItem, i: number) => {
+                      const selectedVariant = getSelectedVariant(item);
+                      console.log(
+                        "🚀 ~ {listCart?.carts.map ~ selectedVariant:",
+                        selectedVariant,
+                      );
                       return (
                         // Start cart item
                         <li
@@ -109,20 +135,18 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                                   width={64}
                                   height={64}
                                   alt="image"
-                                  src={
-                                    item.merchandise.product.featuredImage.url
-                                  }
+                                  src={`http://localhost:8088/api/v1/products/images/${item.product.thumbnail}`}
                                 />
                               </div>
 
                               {/* Cart item info */}
                               <div className="flex flex-1 flex-col text-base">
                                 <span className="leading-tight">
-                                  {item.merchandise.product.title}
+                                  {item.product.name}
                                 </span>
-                                {item.merchandise.title !== DEFAULT_OPTION ? (
+                                {selectedVariant?.name !== DEFAULT_OPTION ? (
                                   <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                                    {item.merchandise.title}
+                                    {selectedVariant?.name}
                                   </p>
                                 ) : null}
                               </div>
@@ -132,17 +156,15 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                             <div className="flex h-16 flex-col justify-between">
                               <Price
                                 className="flex justify-end space-y-2 text-right text-sm"
-                                amount={item.cost.totalAmount.amount}
-                                currencyCode={
-                                  item.cost.totalAmount.currencyCode
-                                }
+                                amount={item.price.toString()}
+                                currencyCode={currencyCode}
                               />
                               {/* Edit cart item quantity */}
                               <div className="ml-auto flex h-9 flex-row items-center rounded-full border border-neutral-200 dark:border-neutral-700">
                                 <EditQuantityButton item={item} type="minus" />
                                 <p className="w-6 text-center">
                                   <span className="w-full text-sm">
-                                    {item.quantity}
+                                    {item.numberOfProducts}
                                   </span>
                                 </p>
                                 <EditQuantityButton item={item} type="plus" />
@@ -161,8 +183,8 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                       <p>Taxes</p>
                       <Price
                         className="text-right text-base text-black dark:text-white"
-                        amount={cart.cost.totalTaxAmount.amount}
-                        currencyCode={cart.cost.totalTaxAmount.currencyCode}
+                        amount="0"
+                        currencyCode={currencyCode}
                       />
                     </div>
 
@@ -176,8 +198,8 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                       <p>Total</p>
                       <Price
                         className="text-right text-base text-black dark:text-white"
-                        amount={cart.cost.totalAmount.amount}
-                        currencyCode={cart.cost.totalAmount.currencyCode}
+                        amount={totalPrice!.toString()}
+                        currencyCode={currencyCode}
                       />
                     </div>
                   </div>
