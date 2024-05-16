@@ -4,6 +4,8 @@ import clsx from "clsx";
 import { useFormState, useFormStatus } from "react-dom";
 import LoadingDots from "../loading-dots";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { CartItem } from "@/lib/type";
+import { removeItem } from "@/lib/services/cart";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -19,7 +21,7 @@ function SubmitButton() {
         "ease flex h-[17px] w-[17px] items-center justify-center rounded-full bg-neutral-500 transition duration-200",
         {
           "cursor-not-allowed px-0": pending,
-        }
+        },
       )}
     >
       {pending ? (
@@ -31,15 +33,17 @@ function SubmitButton() {
   );
 }
 
-export default function DeleteItemButton() {
-  // const [message, formAction] = useFormState(removeItem, null);
-  // const itemId = item.id;
-  // const actionWithVariant = formAction.bind(null, itemId);
+export default function DeleteItemButton({ item }: { item: CartItem }) {
+  const [message, formAction] = useFormState(removeItem, null);
+  const itemId = item.id;
+  const actionWithVariant = formAction.bind(null, itemId);
 
   return (
-    <form>
+    <form action={actionWithVariant}>
       <SubmitButton />
-      <p aria-live="polite" className="sr-only" role="status"></p>
+      <p aria-live="polite" className="sr-only" role="status">
+        {message}
+      </p>
     </form>
   );
 }

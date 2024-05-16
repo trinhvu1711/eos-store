@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { ListCart } from "../type";
+import { CartItem, ListCart } from "../type";
 import { revalidatePath } from "next/cache";
 
 export async function getCart(cartId: string): Promise<ListCart> {
@@ -71,7 +71,6 @@ export async function addItem(item: {
   let listCartId = cookies().get("listCartId")?.value;
   let newId;
   let cart: ListCart | undefined;
-  let currentQuantity = 1;
   if (listCartId) {
     cart = await getCart(listCartId.toString());
   }
@@ -96,5 +95,60 @@ export async function addItem(item: {
     return "Item added to cart";
   } catch (e) {
     return "Error adding item to cart";
+  }
+}
+
+export async function removeItem(prevState: any, itemId: number) {
+  if (itemId === null) {
+    return "Invalid item ID";
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:8088/api/v1/carts/${itemId}`,
+      {
+        method: "DELETE",
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to remove item from cart");
+    }
+    revalidatePath("/", "layout");
+    return "Item removed from cart successfully!";
+  } catch (error: any) {
+    return "Failed to remove item from cart: " + error.message;
+  }
+}
+
+export async function updateItemQuantity(prevState: any, payload: any) {
+  if (payload.id === null) {
+    return "Invalid item ID";
+  }
+
+  if (payload.quantity === null || payload.quantity < 0) {
+    return "Invalid quantity";
+  }
+  console.log("🚀 ~ updateItemQuantity ~ payload:", payload);
+  try {
+    const response = await fetch(
+      `http://localhost:8088/api/v1/carts/update_quantity/${payload.id}?quantity=${payload.quantity}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      throw new Error(errorMessage);
+    }
+
+    revalidatePath("/", "layout");
+    return "Item quantity updated successfully!";
+  } catch (error: any) {
+    return "Failed to update item quantity: " + error.message;
   }
 }

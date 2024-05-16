@@ -3,8 +3,9 @@
 import clsx from "clsx";
 import LoadingDots from "../loading-dots";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
-import { useFormStatus } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 import type { CartItem } from "@/lib/type";
+import { updateItemQuantity } from "@/lib/services/cart";
 function SubmitButton({ type }: { type: "plus" | "minus" }) {
   const { pending } = useFormStatus();
   return (
@@ -43,11 +44,20 @@ export default function EditQuantityButton({
   item: CartItem;
   type: "plus" | "minus";
 }) {
+  const [message, formAction] = useFormState(updateItemQuantity, null);
+  const quantity =
+    type === "plus" ? item.numberOfProducts + 1 : item.numberOfProducts - 1;
+
+  const payload = {
+    id: item.id,
+    quantity: quantity,
+  };
+  const actionWithVariant = formAction.bind(null, payload);
   return (
-    <form>
+    <form action={actionWithVariant}>
       <SubmitButton type={type} />
       <p aria-live="polite" className="sr-only" role="status">
-        {/* {message} */}
+        {message}
       </p>
     </form>
   );

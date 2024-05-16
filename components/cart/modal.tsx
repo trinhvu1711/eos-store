@@ -27,7 +27,7 @@ export default function CartModal({
 }: {
   listCart: ListCart | undefined;
 }) {
-  console.log("🚀 ~ listCart:", listCart?.carts);
+  // console.log("🚀 ~ listCart:", listCart?.carts);
   // { cart }: { cart: Cart | undefined }
   let totalQuantity = getTotalQuantityOfCartList(listCart!);
   const [isOpen, setIsOpen] = useState(false);
@@ -117,9 +117,7 @@ export default function CartModal({
                           {/* Delete cart item button */}
                           <div className="relative flex w-full flex-row justify-between px-1 py-4">
                             <div className="absolute z-40 -mt-2 ml-[55px]">
-                              <DeleteItemButton
-                              // item={item}
-                              />
+                              <DeleteItemButton item={item} />
                             </div>
 
                             {/* Start each cart item*/}

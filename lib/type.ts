@@ -1,3 +1,8 @@
+export type PageProps = {
+  params?: any;
+  children?: React.ReactNode;
+};
+
 export interface User {
   createdAt: string | null;
   updatedAt: string | null;
@@ -72,7 +77,6 @@ export interface ListCart {
   carts: CartItem[];
 }
 
-// Function to extract unique options from variants
 export function getOptionsFromVariants(variants: Variant[]): Option[] {
   const optionsMap: { [key: string]: Option } = {};
 
@@ -98,7 +102,6 @@ export function getOptionsFromVariants(variants: Variant[]): Option[] {
   return Object.values(optionsMap);
 }
 
-// Function to find the maximum variant price and its currency
 export function getMaxVariantPriceAndCurrency(product: Product): {
   maxPrice: string;
   currencyCode: string;
@@ -113,7 +116,7 @@ export function getMaxVariantPriceAndCurrency(product: Product): {
     }
   });
 
-  return { maxPrice: maxPrice.toFixed(2), currencyCode }; // Use toFixed to format the price
+  return { maxPrice: maxPrice.toFixed(2), currencyCode };
 }
 export function getTotalQuantityOfCartList(cartList: ListCart): number {
   return cartList.carts.reduce(
@@ -129,9 +132,24 @@ export function getTotalPriceOfCartList(cartList: ListCart): number {
   );
 }
 
-// Lấy ra biến thể tương ứng với idProductVariant
 export function getSelectedVariant(cartItem: CartItem): Variant | undefined {
   return cartItem.product.variants?.find(
     (variant) => variant.id === cartItem.idProductVariant,
   );
+}
+
+export function getSelectedVariantPrice(
+  product: Product,
+  idSelectedVariant: number,
+): number | undefined {
+  return product.variants?.find((variant) => variant.id === idSelectedVariant)
+    ?.price;
+}
+
+export function getSelectedVariantCurrency(
+  product: Product,
+  idSelectedVariant: number,
+): string | undefined {
+  return product.variants?.find((variant) => variant.id === idSelectedVariant)
+    ?.currency;
 }

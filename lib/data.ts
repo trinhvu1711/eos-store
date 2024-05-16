@@ -38,7 +38,7 @@ export async function getProducts(
       throw new Error("Failed to fetch products");
     }
     const data: GetProductsType = await response.json();
-    console.log("🚀 ~ data:", data);
+    // console.log("🚀 ~ data:", data);
 
     // console.log(data);
 
