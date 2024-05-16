@@ -13,7 +13,6 @@ import Price from "../price";
 import EditQuantityButton from "./edit-quantity-button";
 import { DEFAULT_OPTION } from "@/lib/constants";
 import { CartItem, getSelectedVariant, ListCart } from "@/lib/type";
-import { get } from "https";
 export const dynamic = "force-dynamic";
 
 function getTotalQuantityOfCartList(cartList: ListCart): number {
@@ -41,7 +40,7 @@ export default function CartModal({
     (accumulator, currentValue) => accumulator + currentValue,
     0,
   );
-  const { maxPrice, currencyCode } = { maxPrice: 111, currencyCode: "USD" };
+  const { maxPrice, currencyCode } = { maxPrice: 0, currencyCode: "USD" };
   useEffect(() => {
     if (getTotalQuantityOfCartList(listCart!) !== quantityRef.current) {
       if (!isOpen) {
@@ -104,10 +103,10 @@ export default function CartModal({
                   <ul className="flex-grow overflow-auto py-4">
                     {listCart?.carts.map((item: CartItem, i: number) => {
                       const selectedVariant = getSelectedVariant(item);
-                      console.log(
-                        "🚀 ~ {listCart?.carts.map ~ selectedVariant:",
-                        selectedVariant,
-                      );
+                      // console.log(
+                      //   "🚀 ~ {listCart?.carts.map ~ selectedVariant:",
+                      //   selectedVariant,
+                      // );
                       return (
                         // Start cart item
                         <li

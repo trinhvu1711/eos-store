@@ -4,7 +4,7 @@
 
 @media (prefers-color-scheme: dark) {
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
 }
 
@@ -12,6 +12,15 @@
   img[loading="lazy"] {
     clip-path: inset(0.6px);
   }
+}
+.btn {
+  @apply relative rounded-md px-12 py-4 capitalize text-black before:absolute before:inset-0 before:-z-[1]  before:rounded-md before:border-4 before:bg-transparent before:duration-500 hover:before:-translate-y-3 hover:before:translate-x-3;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* a,
