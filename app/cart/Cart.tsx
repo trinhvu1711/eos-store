@@ -6,10 +6,10 @@ import {
 } from "@/lib/type";
 import Link from "next/link";
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import EditQuantityButton from "@/components/cart/edit-quantity-button";
 import ClearCart from "@/components/cart/clear-cart";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 function CartList({ item }: { item: CartItem }) {
   // add discount
@@ -63,7 +63,7 @@ export default function Cart({ listCart }: { listCart: ListCart | undefined }) {
     <>
       <Link href="/" className="inline-block">
         <div className="flex items-center gap-x-2 rounded-md border border-gray-400 px-4 py-2 hover:bg-gray-100">
-          <FontAwesomeIcon icon={"arrow-left-long"} className="h-4 w-4" />
+          <ArrowLeftIcon className="h-5 w-5" />
           <span>Trở Về</span>
         </div>
       </Link>
@@ -93,7 +93,7 @@ export default function Cart({ listCart }: { listCart: ListCart | undefined }) {
                 ))}
               </div>
               <div className="mt-3 flex justify-end">
-                <ClearCart listCartId={listCart?.id!} />
+                <ClearCart listCart={listCart!} />
               </div>
             </>
           )}

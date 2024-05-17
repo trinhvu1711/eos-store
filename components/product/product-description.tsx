@@ -17,7 +17,7 @@ export default function ProductDescription({ product }: { product: Product }) {
   const options: Option[] = getOptionsFromVariants(variants);
 
   let { maxPrice, currencyCode } = getMaxVariantPriceAndCurrency(product);
-  console.log("🚀 ~ ProductDescription ~ maxPrice:", maxPrice);
+  // console.log("🚀 ~ ProductDescription ~ maxPrice:", maxPrice);
 
   return (
     <>

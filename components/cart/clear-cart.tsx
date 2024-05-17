@@ -1,12 +1,12 @@
 "use client";
 
-import { deleteListCart } from "@/lib/services/cart";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { deleteCartsInList, deleteListCart } from "@/lib/services/cart";
+import { ListCart } from "@/lib/type";
 import { useFormState } from "react-dom";
 
-export default function ClearCart({ listCartId }: { listCartId: number }) {
-  const [message, formAction] = useFormState(deleteListCart, null);
-  const actionWithVariant = formAction.bind(null, listCartId);
+export default function ClearCart({ listCart }: { listCart: ListCart }) {
+  const [message, formAction] = useFormState(deleteCartsInList, null);
+  const actionWithVariant = formAction.bind(null, listCart);
   // console.log("🚀 ~ ClearCart ~ listCartId:", listCartId);
   return (
     <form action={actionWithVariant}>

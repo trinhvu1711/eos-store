@@ -182,3 +182,18 @@ export async function deleteListCart(prevState: any, listCartId: number) {
     return "Failed to delete list cart: " + error.message;
   }
 }
+
+export async function deleteCartsInList(prevState: any, listCart: ListCart) {
+  if (!listCart.carts || listCart.carts.length === 0) {
+    return "No carts to delete";
+  }
+
+  const deletePromises = listCart.carts.map((cartItem) =>
+    removeItem(null, cartItem.id),
+  );
+
+  await Promise.all(deletePromises);
+  revalidatePath("/", "layout");
+
+  return "All carts removed successfully!";
+}

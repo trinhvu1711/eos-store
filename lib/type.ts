@@ -77,6 +77,35 @@ export interface ListCart {
   carts: CartItem[];
 }
 
+export interface Order {
+  id: number;
+  user: User;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  address: string;
+  note: string;
+  orderDate: string;
+  status: string;
+  totalMoney: number;
+  shippingMethod: string;
+  shippingAddress: any;
+  shippingDate: string;
+  trackingNumber: any;
+  paymentMethod: string;
+  orderDetails: OrderDetail[];
+  active: boolean;
+}
+
+export interface OrderDetail {
+  id: number;
+  product: Product;
+  price: number;
+  numberOfProducts: number;
+  totalMoney: number;
+  idProductVariant: number;
+}
+
 export function getOptionsFromVariants(variants: Variant[]): Option[] {
   const optionsMap: { [key: string]: Option } = {};
 

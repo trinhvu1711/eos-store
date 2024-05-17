@@ -204,7 +204,7 @@ export default function CartModal({
 
                   {/* Start Cart button */}
                   <a
-                    href="#"
+                    href="/cart"
                     className="mb-2 block w-full rounded-md border p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100"
                   >
                     Proceed to Cart
@@ -213,7 +213,7 @@ export default function CartModal({
 
                   {/* Start Checkout button */}
                   <a
-                    href="#"
+                    href="/cart/payment"
                     className="block w-full rounded-md bg-blue-500 p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100"
                   >
                     Proceed to Checkout
