@@ -17,7 +17,7 @@ function ProductDescriptionPrice({
   amount: string;
   currencyCode?: string;
 }) {
-  console.log("🚀 ~ amount:", amount);
+  // console.log("🚀 ~ amount:", amount);
   const searchParams = useSearchParams();
   const variants: Variant[] = product.variants;
 
@@ -32,7 +32,7 @@ function ProductDescriptionPrice({
     );
     const selectVariantId = variant?.id || defaultVariantId;
     let variantPrice = getSelectedVariantPrice(product, selectVariantId!);
-    console.log("🚀 ~ variantPrice:", variantPrice);
+    // console.log("🚀 ~ variantPrice:", variantPrice);
     amount = variantPrice == undefined ? amount : variantPrice?.toString()!;
     currencyCode = getSelectedVariantCurrency(product, selectVariantId!)!;
   }

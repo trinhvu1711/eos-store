@@ -9,7 +9,8 @@ export async function getCart(cartId: string): Promise<ListCart> {
   if (!res.ok) {
     throw new Error("Cart not found");
   }
-  const cart = await res.json();
+  const cart: ListCart = await res.json();
+  // console.log("🚀 ~ getCart ~ cart:", cart);
   return cart;
 }
 
@@ -49,6 +50,7 @@ export async function addToCart(item: {
         price: item.price,
         number_of_products: item.quantity,
         id_product_variant: item.variantId,
+        total_money: item.price * item.quantity,
       }),
     });
 
@@ -151,4 +153,47 @@ export async function updateItemQuantity(prevState: any, payload: any) {
   } catch (error: any) {
     return "Failed to update item quantity: " + error.message;
   }
+}
+
+export async function deleteListCart(prevState: any, listCartId: number) {
+  if (listCartId === null) {
+    return "Invalid list cart ID";
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:8088/api/v1/list_carts/${listCartId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      throw new Error(errorMessage);
+    }
+
+    revalidatePath("/", "layout");
+    return "List cart deleted successfully!";
+  } catch (error: any) {
+    return "Failed to delete list cart: " + error.message;
+  }
+}
+
+export async function deleteCartsInList(prevState: any, listCart: ListCart) {
+  if (!listCart.carts || listCart.carts.length === 0) {
+    return "No carts to delete";
+  }
+
+  const deletePromises = listCart.carts.map((cartItem) =>
+    removeItem(null, cartItem.id),
+  );
+
+  await Promise.all(deletePromises);
+  revalidatePath("/", "layout");
+
+  return "All carts removed successfully!";
 }

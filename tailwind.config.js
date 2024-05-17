@@ -46,6 +46,7 @@ module.exports = {
     },
   },
   plugins: [
+    require("@tailwindcss/forms"),
     require("tailwind-scrollbar"),
     require("@tailwindcss/container-queries"),
     require("@tailwindcss/typography"),
