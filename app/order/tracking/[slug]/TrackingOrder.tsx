@@ -5,19 +5,21 @@ export default function TrackingOrder({ order }: { order: Order }) {
   return (
     <section className="relative py-24">
       <div className="lg-6 mx-auto w-full max-w-7xl px-4 md:px-5">
-        <h2 className="font-manrope text-center text-4xl font-bold leading-10 text-black">
+        {/* <h2 className="text-4xl font-bold leading-10 text-center text-black font-manrope">
           Payment Successful
         </h2>
-        <p className="mb-11 mt-4 text-center text-lg font-normal leading-8 text-gray-500">
+        <p className="mt-4 text-lg font-normal leading-8 text-center text-gray-500 mb-11">
           Thanks for making a purchase, you can check our order summary from
           below
-        </p>
+        </p> */}
         <div className="main-box max-w-xl rounded-xl border border-gray-200 pt-6 max-lg:mx-auto lg:max-w-full">
           <div className="flex flex-col justify-between border-b border-gray-200 px-6 pb-6 lg:flex-row lg:items-center">
             <div className="data">
               <p className="text-base font-semibold leading-7 text-black">
-                Order Id:{" "}
-                <span className="font-medium text-indigo-600">{order.id}</span>
+                Tracking Number:{" "}
+                <span className="font-medium text-indigo-600">
+                  {order.trackingNumber}
+                </span>
               </p>
               <p className="mt-4 text-base font-semibold leading-7 text-black">
                 Order Payment:{" "}
@@ -26,9 +28,9 @@ export default function TrackingOrder({ order }: { order: Order }) {
                 </span>
               </p>
             </div>
-            <button className="rounded-full bg-indigo-600 px-7 py-3 text-sm font-semibold leading-7 text-white shadow-sm shadow-transparent transition-all duration-500 hover:bg-indigo-700 hover:shadow-indigo-400 max-lg:mt-5">
+            {/* <button className="py-3 text-sm font-semibold leading-7 text-white transition-all duration-500 bg-indigo-600 rounded-full shadow-sm px-7 shadow-transparent hover:bg-indigo-700 hover:shadow-indigo-400 max-lg:mt-5">
               Track Your Order
-            </button>
+            </button> */}
           </div>
           {order.orderDetails.map((detail) => {
             const selectedVariant = getSelectedVariant(detail);
@@ -133,7 +135,7 @@ export default function TrackingOrder({ order }: { order: Order }) {
               </button>
               <p className="py-3 pl-6 text-lg font-medium text-gray-900 max-lg:text-center">
                 Paid using {order.paymentMethod}{" "}
-                <span className="text-gray-500">ending with 8822</span>
+                {/* <span className="text-gray-500">ending with 8822</span> */}
               </p>
             </div>
             <p className="py-6 text-lg font-semibold text-black">

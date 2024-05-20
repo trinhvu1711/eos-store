@@ -12,6 +12,7 @@ export default function Navbar() {
     { name: "All", link: "/" },
     { name: "Shirts", link: "/about" },
     { name: "Stickers", link: "/services" },
+    { name: "Tracking Order", link: "/order/tracking" },
   ];
 
   return (
