@@ -5,9 +5,5 @@ export default function SearchPage({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  return (
-    <div>
-      <ProductItem />
-    </div>
-  );
+  return <div>{/* <ProductItem product={}/> */}</div>;
 }

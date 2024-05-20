@@ -6,7 +6,7 @@ import ProductAddButton from "./product-add-button";
 import Discount from "./discount";
 import { useState } from "react";
 import { Transition } from "@headlessui/react";
-import { Product } from "@/lib/models/product";
+import { Product } from "@/lib/type";
 
 const addWistListSVG = (
   <svg

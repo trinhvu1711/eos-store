@@ -33,6 +33,20 @@ export async function getOrder(orderId: string): Promise<Order> {
   return order;
 }
 
+export async function getOrderByTrackingNumber(
+  trackingNumber: string,
+): Promise<Order> {
+  const res = await fetch(
+    `http://localhost:8088/api/v1/orders/tracking/${trackingNumber}`,
+  );
+  if (!res.ok) {
+    throw new Error("Order not found");
+  }
+  const order: Order = await res.json();
+  // console.log("🚀 ~ getorder ~ cart:", cart);
+  return order;
+}
+
 export async function createOrder(item: NewOrder): Promise<number> {
   const res = await fetch(`http://localhost:8088/api/v1/orders`, {
     method: "POST",

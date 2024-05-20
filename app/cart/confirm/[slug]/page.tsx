@@ -1,4 +1,4 @@
-import Confirm from "./Confirm";
+import Confirm from "./confirm";
 
 export default function Page({ params }: { params: { slug: string } }) {
   return (
