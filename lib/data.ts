@@ -26,13 +26,20 @@ export type GetProductsType = {
 };
 
 // Product
-export async function getProducts(
+export async function getProducts({
   page = 0,
-  limit = 12,
-): Promise<GetProductsType> {
+  limit = 10,
+  keyword = "",
+  categoryId = 0,
+}: {
+  page?: number;
+  limit?: number;
+  keyword?: string;
+  categoryId?: number;
+}): Promise<GetProductsType> {
   try {
     const response = await fetch(
-      `http://localhost:8088/api/v1/products?page=${page}&limit=${limit}`,
+      `http://localhost:8088/api/v1/products?page=${page}&limit=${limit}&keyword=${keyword}&category_id=${categoryId}`,
     );
     if (!response.ok) {
       throw new Error("Failed to fetch products");

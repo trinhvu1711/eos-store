@@ -1,11 +1,10 @@
-import { Collection } from "@/lib/type";
 import clsx from "clsx";
 import { Suspense } from "react";
 import FilterList from "./filter";
 
-async function CollectionList() {
+function CollectionList() {
   // const collections = await getCollection();
-  const collections: Collection[] = [
+  const collections = [
     {
       handle: "all",
       title: "All",
@@ -15,128 +14,87 @@ async function CollectionList() {
         description: "Browse all products in our catalog.",
       },
       updatedAt: "2024-03-10T00:00:00Z",
-      path: "/collections/all",
+      path: "/search/all",
     },
     {
-      handle: "bags",
-      title: "Bags",
-      description: "High-quality bags for every occasion.",
-      seo: {
-        title: "Bags Collection",
-        description: "Explore our range of bags.",
-      },
-      updatedAt: "2024-03-10T00:00:00Z",
-      path: "/collections/bags",
-    },
-    {
-      handle: "drinkware",
-      title: "Drinkware",
-      description: "Stay hydrated with our drinkware collection.",
-      seo: {
-        title: "Drinkware Collection",
-        description: "Find the perfect drinkware for any occasion.",
-      },
-      updatedAt: "2024-03-10T00:00:00Z",
-      path: "/collections/drinkware",
-    },
-    {
+      id: 1,
       handle: "electronics",
-      title: "Electronics",
+      title: "Ipad Phone & Tablets",
       description: "Latest gadgets and electronics for tech enthusiasts.",
       seo: {
         title: "Electronics Collection",
         description: "Discover the latest in technology.",
       },
       updatedAt: "2024-03-10T00:00:00Z",
-      path: "/collections/electronics",
+      path: "/search/electronics",
+      imageUrl: "product-cat-1.webp",
     },
     {
-      handle: "footware",
-      title: "Footwear",
-      description: "Stylish and comfortable footwear for all.",
+      id: 2,
+      handle: "electronics",
+      title: "Planer & Virtual",
+      description: "Latest gadgets and electronics for tech enthusiasts.",
       seo: {
-        title: "Footwear Collection",
-        description: "Shop the latest footwear styles.",
+        title: "Electronics Collection",
+        description: "Discover the latest in technology.",
       },
       updatedAt: "2024-03-10T00:00:00Z",
-      path: "/collections/footwear",
+      path: "/search/electronics",
+      imageUrl: "product-cat-2.webp",
     },
     {
-      handle: "headwear",
-      title: "Headwear",
-      description: "Fashionable headwear for any season.",
+      id: 3,
+      handle: "electronics",
+      title: "Wireless & Watches",
+      description: "Latest gadgets and electronics for tech enthusiasts.",
       seo: {
-        title: "Headwear Collection",
-        description: "Top off your outfit with our selection of headwear.",
+        title: "Electronics Collection",
+        description: "Discover the latest in technology.",
       },
       updatedAt: "2024-03-10T00:00:00Z",
-      path: "/collections/headwear",
+      path: "/search/electronics",
+      imageUrl: "product-cat-3.webp",
     },
     {
-      handle: "hoodies",
-      title: "Hoodies",
-      description: "Comfortable and stylish hoodies for everyone.",
+      id: 4,
+      handle: "electronics",
+      title: "Computers Monitor & Laptop",
+      description: "Latest gadgets and electronics for tech enthusiasts.",
       seo: {
-        title: "Hoodies Collection",
-        description: "Find your next favorite hoodie.",
+        title: "Electronics Collection",
+        description: "Discover the latest in technology.",
       },
       updatedAt: "2024-03-10T00:00:00Z",
-      path: "/collections/hoodies",
+      path: "/search/electronics",
+      imageUrl: "product-cat-4.webp",
     },
     {
-      handle: "jackets",
-      title: "Jackets",
-      description: "Stay warm and stylish with our selection of jackets.",
+      id: 5,
+      handle: "exercise",
+      title: "Exercise Bike & Shaver Clean",
+      description:
+        "Stay fit and groomed with our selection of exercise bikes and shavers.",
       seo: {
-        title: "Jackets Collection",
-        description: "Discover our range of jackets.",
+        title: "Exercise and Grooming Collection",
+        description: "Discover our range of exercise bikes and grooming tools.",
       },
       updatedAt: "2024-03-10T00:00:00Z",
-      path: "/collections/jackets",
+      path: "/search/exercise",
+      imageUrl: "product-cat-5.webp",
     },
     {
-      handle: "kids",
-      title: "Kids",
-      description: "Fun and fashionable choices for kids.",
+      id: 6,
+      handle: "fishing",
+      title: "Spinning Reel & Kettle",
+      description:
+        "Top-quality spinning reels and kettles for outdoor enthusiasts.",
       seo: {
-        title: "Kids Collection",
-        description: "Adorable and stylish clothes for children.",
+        title: "Fishing and Camping Collection",
+        description: "Find the best gear for your next adventure.",
       },
       updatedAt: "2024-03-10T00:00:00Z",
-      path: "/collections/kids",
-    },
-    {
-      handle: "pets",
-      title: "Pets",
-      description: "Everything your pets need to be happy and healthy.",
-      seo: {
-        title: "Pet Collection",
-        description: "Find the best products for your furry friends.",
-      },
-      updatedAt: "2024-03-10T00:00:00Z",
-      path: "/collections/pets",
-    },
-    {
-      handle: "shirts",
-      title: "Shirts",
-      description: "Stylish shirts for every day.",
-      seo: {
-        title: "Shirts Collection",
-        description: "Browse our selection of shirts.",
-      },
-      updatedAt: "2024-03-10T00:00:00Z",
-      path: "/collections/shirts",
-    },
-    {
-      handle: "stickers",
-      title: "Stickers",
-      description: "Express yourself with our unique stickers.",
-      seo: {
-        title: "Stickers Collection",
-        description: "Decorate your space with our stickers.",
-      },
-      updatedAt: "2024-03-10T00:00:00Z",
-      path: "/collections/stickers",
+      path: "/search/fishing",
+      imageUrl: "product-cat-6.webp",
     },
   ];
 
