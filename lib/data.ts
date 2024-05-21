@@ -32,51 +32,58 @@ export async function getProducts({
   keyword = "",
   categoryId = 0,
   sortKey,
-  reverse,
+  reverse = false,
 }: {
   page?: number;
   limit?: number;
   keyword?: string;
   categoryId?: number;
-  sortKey?: string;
+  sortKey?: "BEST_SELLING" | "CREATED_AT" | "PRICE" | "RELEVANCE";
   reverse?: boolean;
 }): Promise<GetProductsType> {
   try {
-    const response = await fetch(
-      `http://localhost:8088/api/v1/products?page=${page}&limit=${limit}&keyword=${keyword}&category_id=${categoryId}`,
-    );
-    if (!response.ok) {
-      throw new Error("Failed to fetch products");
-    }
-    let data: GetProductsType = await response.json();
-    // console.log("🚀 ~ data:", data.products);
+    const url = new URL("http://localhost:8088/api/v1/products");
+    url.searchParams.append("page", String(page));
+    url.searchParams.append("limit", String(limit));
+    url.searchParams.append("keyword", keyword);
+    url.searchParams.append("category_id", String(categoryId));
 
-    // console.log(data);
+    const response = await fetch(url.toString());
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch products: ${response.statusText}`);
+    }
+
+    const data: GetProductsType = await response.json();
     let products = data.products;
 
     if (sortKey) {
       products = products.sort((a, b) => {
-        let itemA = getMaxVariantPriceAndCurrency(a);
-        let itemB = getMaxVariantPriceAndCurrency(b);
+        const itemA = getMaxVariantPriceAndCurrency(a);
+        const itemB = getMaxVariantPriceAndCurrency(b);
 
         let comparison = 0;
 
-        if (sortKey === "PRICE") {
-          comparison = Number(itemA.maxPrice) - Number(itemB.maxPrice);
-        } else if (sortKey === "CREATED_AT") {
-          comparison =
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-        } else if (sortKey === "BEST_SELLING") {
-          // comparison = a.sales - b.sales;
+        switch (sortKey) {
+          case "PRICE":
+            comparison = Number(itemA.maxPrice) - Number(itemB.maxPrice);
+            break;
+          case "CREATED_AT":
+            comparison =
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+            break;
+          case "BEST_SELLING":
+            // Add your logic for BEST_SELLING if applicable
+            break;
         }
 
         return reverse ? -comparison : comparison;
       });
     }
-    data.products = products;
-    return data;
+
+    return { ...data, products };
   } catch (error: any) {
-    throw new Error("Failed to get products: " + error.message);
+    throw new Error(`Failed to get products: ${error.message}`);
   }
 }
 

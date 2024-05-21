@@ -27,7 +27,7 @@ export default async function SearchPage({
     sortKey,
     reverse,
     limit: per_page,
-    page: page - 1 < 0 ? 0 : page - 1,
+    page: page,
   });
   // console.log("🚀 ~ sortKey:", sortKey);
   // console.log("🚀 ~ sortKey, reverse:", sortKey, reverse);
@@ -51,7 +51,7 @@ export default async function SearchPage({
       <div className="mt-4 flex justify-center">
         <PaginationControls
           hasNextPage={page < data.totalPage}
-          hasPrevPage={page > 1}
+          hasPrevPage={page > 0}
           totalPage={data.totalPage}
         />
       </div>

@@ -26,7 +26,7 @@ export default async function CategoryPage({
     sortKey,
     reverse,
     limit: per_page,
-    page: page - 1 < 0 ? 0 : page - 1,
+    page: page,
   });
 
   return (
