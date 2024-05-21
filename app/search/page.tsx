@@ -1,4 +1,5 @@
 import Grid from "@/components/grid";
+import PaginationControls from "@/components/layout/pagination-controls";
 import ProductGridItems from "@/components/layout/product-grid-items";
 import { defaultSort, sorting } from "@/lib/constants";
 import { getProducts } from "@/lib/data";
@@ -13,16 +14,23 @@ export default async function SearchPage({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
+  const page = Number(searchParams?.["page"] ?? "0");
+  const per_page = Number(searchParams?.["per_page"] ?? "12");
+
   const { sort, q: searchValue } = searchParams as { [key: string]: string };
-  console.log("🚀 ~ searchValue:", searchValue);
+  // console.log("🚀 ~ searchValue:", searchValue);
   const { sortKey, reverse } =
     sorting.find((item) => item.slug === sort) || defaultSort;
 
-  // console.log("🚀 ~ reverse:", reverse);
-  // console.log("🚀 ~ sortKey:", sortKey);
   const data = await getProducts({
     keyword: searchValue,
+    sortKey,
+    reverse,
+    limit: per_page,
+    page: page - 1 < 0 ? 0 : page - 1,
   });
+  // console.log("🚀 ~ sortKey:", sortKey);
+  // console.log("🚀 ~ sortKey, reverse:", sortKey, reverse);
   const resultsText = data.products.length > 1 ? "results" : "result";
 
   return (
@@ -40,6 +48,13 @@ export default async function SearchPage({
           <ProductGridItems products={data.products} />
         </Grid>
       ) : null}
+      <div className="mt-4 flex justify-center">
+        <PaginationControls
+          hasNextPage={page < data.totalPage}
+          hasPrevPage={page > 1}
+          totalPage={data.totalPage}
+        />
+      </div>
     </>
   );
 }

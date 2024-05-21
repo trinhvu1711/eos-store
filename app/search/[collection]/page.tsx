@@ -1,7 +1,8 @@
 import Grid from "@/components/grid";
+import PaginationControls from "@/components/layout/pagination-controls";
 import ProductGridItems from "@/components/layout/product-grid-items";
 import { defaultSort, sorting } from "@/lib/constants";
-import { getProducts } from "@/lib/data";
+import { getIdFromHandle, getProducts } from "@/lib/data";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -12,13 +13,20 @@ export default async function CategoryPage({
   params: { collection: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
+  const page = Number(searchParams?.["page"] ?? "0");
+  const per_page = Number(searchParams?.["per_page"] ?? "12");
   const { sort } = searchParams as { [key: string]: string };
   const { sortKey, reverse } =
     sorting.find((item) => item.slug === sort) || defaultSort;
-  console.log("🚀 ~  params.collection:", params.collection);
+  // console.log("🚀 ~  params.collection:", params.collection);
+  const categoryId = getIdFromHandle(params.collection);
   const data = await getProducts({
     keyword: "",
-    categoryId: 0,
+    categoryId: categoryId!,
+    sortKey,
+    reverse,
+    limit: per_page,
+    page: page - 1 < 0 ? 0 : page - 1,
   });
 
   return (
@@ -30,6 +38,13 @@ export default async function CategoryPage({
           <ProductGridItems products={data.products} />
         </Grid>
       )}
+      <div className="mt-4 flex justify-center">
+        <PaginationControls
+          hasNextPage={page < data.totalPage}
+          hasPrevPage={page > 1}
+          totalPage={data.totalPage}
+        />
+      </div>
     </section>
   );
 }

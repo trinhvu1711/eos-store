@@ -1,6 +1,6 @@
 // import { getProducts } from "@/lib/data";
 
-import { Category, Product } from "./type";
+import { Category, getMaxVariantPriceAndCurrency, Product } from "./type";
 
 // Product
 export async function getCategory(page = 0, limit = 3) {
@@ -31,11 +31,15 @@ export async function getProducts({
   limit = 10,
   keyword = "",
   categoryId = 0,
+  sortKey,
+  reverse,
 }: {
   page?: number;
   limit?: number;
   keyword?: string;
   categoryId?: number;
+  sortKey?: string;
+  reverse?: boolean;
 }): Promise<GetProductsType> {
   try {
     const response = await fetch(
@@ -44,11 +48,32 @@ export async function getProducts({
     if (!response.ok) {
       throw new Error("Failed to fetch products");
     }
-    const data: GetProductsType = await response.json();
+    let data: GetProductsType = await response.json();
     // console.log("🚀 ~ data:", data.products);
 
     // console.log(data);
+    let products = data.products;
 
+    if (sortKey) {
+      products = products.sort((a, b) => {
+        let itemA = getMaxVariantPriceAndCurrency(a);
+        let itemB = getMaxVariantPriceAndCurrency(b);
+
+        let comparison = 0;
+
+        if (sortKey === "PRICE") {
+          comparison = Number(itemA.maxPrice) - Number(itemB.maxPrice);
+        } else if (sortKey === "CREATED_AT") {
+          comparison =
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+        } else if (sortKey === "BEST_SELLING") {
+          // comparison = a.sales - b.sales;
+        }
+
+        return reverse ? -comparison : comparison;
+      });
+    }
+    data.products = products;
     return data;
   } catch (error: any) {
     throw new Error("Failed to get products: " + error.message);
@@ -131,3 +156,100 @@ export async function getCategories(): Promise<Category[]> {
 //     isError: error,
 //   };
 // }
+export const collections = [
+  {
+    handle: "all",
+    title: "All",
+    description: "All products available in our store.",
+    seo: {
+      title: "All Products",
+      description: "Browse all products in our catalog.",
+    },
+    updatedAt: "2024-03-10T00:00:00Z",
+    path: "/search/all",
+  },
+  {
+    id: 1,
+    handle: "phone",
+    title: "Ipad Phone & Tablets",
+    description: "Latest gadgets and electronics for tech enthusiasts.",
+    seo: {
+      title: "Electronics Collection",
+      description: "Discover the latest in technology.",
+    },
+    updatedAt: "2024-03-10T00:00:00Z",
+    path: "/search/phone",
+    imageUrl: "product-cat-1.webp",
+  },
+  {
+    id: 2,
+    handle: "electronics",
+    title: "Planer & Virtual",
+    description: "Latest gadgets and electronics for tech enthusiasts.",
+    seo: {
+      title: "Electronics Collection",
+      description: "Discover the latest in technology.",
+    },
+    updatedAt: "2024-03-10T00:00:00Z",
+    path: "/search/electronics",
+    imageUrl: "product-cat-2.webp",
+  },
+  {
+    id: 3,
+    handle: "watches",
+    title: "Wireless & Watches",
+    description: "Latest gadgets and electronics for tech enthusiasts.",
+    seo: {
+      title: "Electronics Collection",
+      description: "Discover the latest in technology.",
+    },
+    updatedAt: "2024-03-10T00:00:00Z",
+    path: "/search/watches",
+    imageUrl: "product-cat-3.webp",
+  },
+  {
+    id: 4,
+    handle: "computers",
+    title: "Computers Monitor & Laptop",
+    description: "Latest gadgets and electronics for tech enthusiasts.",
+    seo: {
+      title: "Electronics Collection",
+      description: "Discover the latest in technology.",
+    },
+    updatedAt: "2024-03-10T00:00:00Z",
+    path: "/search/computers",
+    imageUrl: "product-cat-4.webp",
+  },
+  {
+    id: 5,
+    handle: "exercise",
+    title: "Exercise Bike & Shaver Clean",
+    description:
+      "Stay fit and groomed with our selection of exercise bikes and shavers.",
+    seo: {
+      title: "Exercise and Grooming Collection",
+      description: "Discover our range of exercise bikes and grooming tools.",
+    },
+    updatedAt: "2024-03-10T00:00:00Z",
+    path: "/search/exercise",
+    imageUrl: "product-cat-5.webp",
+  },
+  {
+    id: 6,
+    handle: "fishing",
+    title: "Spinning Reel & Kettle",
+    description:
+      "Top-quality spinning reels and kettles for outdoor enthusiasts.",
+    seo: {
+      title: "Fishing and Camping Collection",
+      description: "Find the best gear for your next adventure.",
+    },
+    updatedAt: "2024-03-10T00:00:00Z",
+    path: "/search/fishing",
+    imageUrl: "product-cat-6.webp",
+  },
+];
+export function getIdFromHandle(handle: string) {
+  const collection = collections.find((col) => col.handle === handle);
+  return collection ? collection.id : null;
+}
