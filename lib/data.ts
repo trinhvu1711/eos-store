@@ -11,7 +11,7 @@ export async function getCategory(page = 0, limit = 3) {
     if (!response.ok) {
       throw new Error("Failed to fetch categories");
     }
-    const data = await response.json();
+    const data: Category = await response.json();
     // console.log(data);
 
     return data;

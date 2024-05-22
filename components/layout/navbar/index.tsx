@@ -9,9 +9,9 @@ import ThemeToggle from "../ThemeToggle";
 const { SITE_NAME } = process.env;
 export default function Navbar() {
   const menu = [
-    { name: "All", link: "/" },
-    { name: "Shirts", link: "/about" },
-    { name: "Stickers", link: "/services" },
+    { name: "All", link: "/search" },
+    { name: "Phone & Tablets", link: "/search/phone" },
+    { name: "Virtual", link: "/search/electronics" },
     { name: "Tracking Order", link: "/order/tracking" },
   ];
 

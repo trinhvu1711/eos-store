@@ -6,7 +6,7 @@ import ProductAddButton from "./product-add-button";
 import Discount from "./discount";
 import { useState } from "react";
 import { Transition } from "@headlessui/react";
-import { Product } from "@/lib/type";
+import { getMaxVariantPriceAndCurrency, Product } from "@/lib/type";
 
 const addWistListSVG = (
   <svg
@@ -57,6 +57,7 @@ const productDetailsSVG = (
 );
 
 const ProductItem = ({ product }: { product: Product }) => {
+  // console.log("🚀 ~ ProductItem ~ product:", product);
   const [isShowing, setIsShowing] = useState(false);
 
   function handleMouseEnter() {
@@ -66,6 +67,8 @@ const ProductItem = ({ product }: { product: Product }) => {
     setIsShowing(false);
   }
 
+  const { maxPrice, currencyCode } = getMaxVariantPriceAndCurrency(product);
+
   return (
     <div className="transition-3 relative mb-12 ease-in-out">
       <div
@@ -74,7 +77,7 @@ const ProductItem = ({ product }: { product: Product }) => {
         onMouseLeave={handleMouseLeave}
       >
         <Link
-          href="#"
+          href={`/product/${product.id}`}
           // previewlistener="true"s
         >
           <Image
@@ -110,13 +113,13 @@ const ProductItem = ({ product }: { product: Product }) => {
       <div className="pt-3">
         <h3 className="hover:text-[#f50693]">
           <Link
-            href="/product-details/64b78b80cf982ba18a26b12c"
+            href={`/product/${product.name}?id=${product.id}`}
             // previewlistener="true"
           >
             {product.name}
           </Link>
         </h3>
-        <span className="text-base font-medium">$188.00</span>
+        <span className="text-base font-medium">{maxPrice}</span>
       </div>
     </div>
   );

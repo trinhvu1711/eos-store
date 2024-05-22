@@ -1,7 +1,7 @@
 import Link from "next/link";
 import GridTileImage from "./tile";
 import { getProduct, getProducts } from "@/lib/data";
-import { Product } from "@/lib/type";
+import { getMaxVariantPriceAndCurrency, Product } from "@/lib/type";
 
 function ThreeItemGridItem({
   item,
@@ -12,10 +12,8 @@ function ThreeItemGridItem({
   size: "full" | "half";
   priority?: boolean;
 }) {
-  const productUrl = `/product/${item.name
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "")}`;
+  let { maxPrice, currencyCode } = getMaxVariantPriceAndCurrency(item);
+
   return (
     <div
       className={
@@ -26,7 +24,7 @@ function ThreeItemGridItem({
     >
       <Link
         className="relative block aspect-square h-full w-full"
-        href={productUrl}
+        href={`/product/${item.id}`}
       >
         <GridTileImage
           src={`http://localhost:8088/api/v1/products/images/${item.thumbnail}`}
@@ -41,8 +39,8 @@ function ThreeItemGridItem({
           label={{
             position: size === "full" ? "center" : "bottom",
             title: item.name as string,
-            // amount: item.priceRange.maxVariantPrice.amount,
-            // currencyCode: item.priceRange.maxVariantPrice.currencyCode,
+            amount: maxPrice,
+            currencyCode: currencyCode,
           }}
         />
       </Link>

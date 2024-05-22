@@ -3,8 +3,6 @@ import PaginationControls from "@/components/layout/pagination-controls";
 import ProductGridItems from "@/components/layout/product-grid-items";
 import { defaultSort, sorting } from "@/lib/constants";
 import { getIdFromHandle, getProducts } from "@/lib/data";
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
 
 export default async function CategoryPage({
   params,
