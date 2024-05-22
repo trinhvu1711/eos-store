@@ -61,7 +61,7 @@ export default function VariantSelector({
           const optionSearchParams = new URLSearchParams(
             searchParams.toString(),
           );
-          optionSearchParams.set("id", productId.toString());
+          // optionSearchParams.set("id", productId.toString());
           optionSearchParams.set(optionNameLowerCase, value);
           const optionUrl = createUrl(pathName, optionSearchParams);
 

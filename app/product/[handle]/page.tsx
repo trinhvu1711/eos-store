@@ -12,7 +12,8 @@ export default async function ProductPage({
 }: {
   params: { handle: string };
 }) {
-  const product = await getProduct(1);
+  // console.log("🚀 ~ params:", params);
+  const product = await getProduct(Number(params.handle));
   if (!product) {
     // handle the case when product is undefined
     console.error("Product not found");
@@ -22,7 +23,7 @@ export default async function ProductPage({
   return (
     <>
       <div className="mx-auto max-w-screen-2xl px-4">
-        <div className="flex flex-col rounded-lg border border-neutral-200 bg-white p-8 md:p-12 lg:flex-row lg:gap-8 dark:border-neutral-800 dark:bg-black">
+        <div className="flex flex-col rounded-lg border border-neutral-200 bg-white p-8 dark:border-neutral-800 dark:bg-black md:p-12 lg:flex-row lg:gap-8">
           <div className="h-full w-full basis-full lg:basis-4/6">
             <Gallery
               images={product.productImages?.map(
@@ -50,7 +51,7 @@ export default async function ProductPage({
 }
 
 async function RelatedProducts({ id }: { id: number }) {
-  const relatedProducts = await getProducts(0, 4);
+  const relatedProducts = await getProducts({ limit: 4, page: 0 });
   if (!relatedProducts.products?.length) return null;
   return (
     <div className="py-8">
@@ -67,11 +68,11 @@ async function RelatedProducts({ id }: { id: number }) {
             >
               <GridTileImage
                 alt={product.name}
-                label={{
-                  title: product.name,
-                  // amount: product.priceRange.maxVariantPrice.amount,
-                  // currencyCode: product.priceRange.maxVariantPrice.currencyCode,
-                }}
+                // label={{
+                //   title: product.name,
+                // amount: product.priceRange.maxVariantPrice.amount,
+                // currencyCode: product.priceRange.maxVariantPrice.currencyCode,
+                // }}
                 src={`http://localhost:8088/api/v1/products/images/${product.thumbnail}`}
                 fill
                 sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width:640px) 33vw, (min-width: 475px) 50vw, 100vw"

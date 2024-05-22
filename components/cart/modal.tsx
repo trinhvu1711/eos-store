@@ -16,7 +16,7 @@ import { CartItem, getSelectedVariant, ListCart } from "@/lib/type";
 export const dynamic = "force-dynamic";
 
 function getTotalQuantityOfCartList(cartList: ListCart): number {
-  return cartList.carts.reduce(
+  return cartList?.carts.reduce(
     (total, cartItem) => total + cartItem.numberOfProducts,
     0,
   );
@@ -28,7 +28,7 @@ export default function CartModal({
 }) {
   // console.log("🚀 ~ listCart:", listCart?.carts);
   // { cart }: { cart: Cart | undefined }
-  let totalQuantity = getTotalQuantityOfCartList(listCart!);
+  let totalQuantity = getTotalQuantityOfCartList(listCart!)! || 0;
   const [isOpen, setIsOpen] = useState(false);
   const quantityRef = useRef(totalQuantity);
   const openCart = () => setIsOpen(true);
@@ -78,7 +78,7 @@ export default function CartModal({
             leaveTo="translate-x-full"
           >
             {/* Start cart panel */}
-            <Dialog.Panel className="fixed bottom-0 right-0 top-0 flex h-full w-full flex-col border-l border-neutral-200 bg-white/80 p-6 text-black backdrop-blur-xl md:w-[390px] dark:border-neutral-700 dark:bg-black/80 dark:text-white">
+            <Dialog.Panel className="fixed bottom-0 right-0 top-0 flex h-full w-full flex-col border-l border-neutral-200 bg-white/80 p-6 text-black backdrop-blur-xl dark:border-neutral-700 dark:bg-black/80 dark:text-white md:w-[390px]">
               {/* Start close button */}
               <div className="flex items-center justify-between">
                 <p className="text-lg font-semibold">My Cart</p>
