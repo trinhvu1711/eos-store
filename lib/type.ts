@@ -15,7 +15,7 @@ export interface User {
   dateOfBirth: string | null;
   facebookAccountId: number;
   googleAccountId: number;
-  role: string | null;
+  role: Role;
 }
 
 export interface Category {
@@ -23,6 +23,11 @@ export interface Category {
   name: string;
   imageUrl: string;
   slug: string;
+}
+
+export interface Role {
+  id: number;
+  name: string;
 }
 
 export interface ProductImage {

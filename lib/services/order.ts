@@ -48,6 +48,7 @@ export async function getOrderByTrackingNumber(
 }
 
 export async function createOrder(item: NewOrder): Promise<number> {
+  // console.log("🚀 ~ createOrder ~ item:", item);
   const res = await fetch(`http://localhost:8088/api/v1/orders`, {
     method: "POST",
     headers: {

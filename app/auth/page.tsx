@@ -1,25 +1,28 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-// import { signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 import LoginWithGoogle from "./Google";
 import { LockClosedIcon, UserIcon } from "@heroicons/react/24/outline";
+import { getUserDetails, login } from "@/lib/services/user";
+import { useRouter } from "next/navigation";
 
 function Page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const router = useRouter();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      //   const result = await signIn("credentials", {
-      //     email,
-      //     password,
-      //     redirect: true,
-      //     callbackUrl: "/",
-      //   });
-      //   console.log(result);
+      // const token = await login(email, password);
+      // localStorage.setItem("token", token);
+
+      // const userDetails = await getUserDetails(token);
+      // localStorage.setItem("userDetails", JSON.stringify(userDetails));
+
+      await signIn("credentials", { email, password });
+      router.push("/");
     } catch (error) {
       console.error(error);
     }
@@ -34,7 +37,7 @@ function Page() {
           </label>
           <div className="flex">
             <div className="flex items-center justify-center rounded-l-md border border-gray-600 bg-gray-100 ">
-              <UserIcon className="h-4 w-4 px-4 text-gray-600" />
+              <UserIcon className="mx-3 h-4 w-4 text-gray-600" />
             </div>
             <input
               onChange={(e) => setEmail(e.target.value)}
@@ -53,7 +56,7 @@ function Page() {
           </label>
           <div className="flex">
             <div className="flex items-center justify-center rounded-l-md border border-gray-600 bg-gray-100 ">
-              <LockClosedIcon className="h-4 w-4 px-4 text-gray-600" />
+              <LockClosedIcon className="mx-3 h-4 w-4 text-gray-600" />
             </div>
             <input
               onChange={(e) => setPassword(e.target.value)}
@@ -86,7 +89,6 @@ function Page() {
             href={"/auth/register"}
             className="ml-2 text-gray-900 duration-700 hover:underline"
           >
-            {" "}
             Đăng ký ngay
           </Link>
         </div>

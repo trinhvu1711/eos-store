@@ -11,7 +11,7 @@ function LoginWithGoogle() {
       className="flex w-full items-center justify-center gap-x-2 rounded-md border border-gray-600 px-4 py-2"
     >
       <Image
-        src="/images/svg/google-icon.svg"
+        src="/images/google.png"
         alt="svg-google-icon"
         width={20}
         height={20}

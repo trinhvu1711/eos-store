@@ -72,14 +72,15 @@ function SubmitButton({
 export default function AddToCart({
   variants,
   availableForSale,
+  id,
 }: {
   variants: Variant[];
   availableForSale: boolean;
+  id: number;
 }) {
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState("");
   const searchParams = useSearchParams();
-  const productId = searchParams.get("id");
 
   if (!variants) return null;
   const defaultVariantId = variants.length === 1 ? variants[0]?.id : undefined;
@@ -93,7 +94,7 @@ export default function AddToCart({
   const handleAddToCart = async () => {
     setPending(true);
     const resultMessage = await addItem({
-      productId: Number(productId),
+      productId: Number(id),
       variantId: Number(selectVariantId),
       quantity: 1,
       price: variant?.price ?? 0,

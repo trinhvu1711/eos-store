@@ -6,6 +6,7 @@ import {
   AtSymbolIcon,
   LockClosedIcon,
   MapPinIcon,
+  UserIcon,
 } from "@heroicons/react/24/outline";
 
 const cities = State.getStatesOfCountry("VN");
@@ -47,7 +48,7 @@ function Page() {
           </label>
           <div className="flex">
             <div className="flex items-center justify-center rounded-l-md border border-gray-600 bg-gray-100 ">
-              <AtSymbolIcon className="h-4 w-4 px-4 text-gray-600" />
+              <AtSymbolIcon className="mx-3 h-4 w-4 text-gray-600" />
             </div>
             <input
               onChange={(e) =>
@@ -67,8 +68,8 @@ function Page() {
             Tên
           </label>
           <div className="flex">
-            <div className="flex items-center justify-center rounded-l-md border border-gray-600 bg-gray-100 ">
-              <AtSymbolIcon className="h-4 w-4 px-4 text-gray-600" />
+            <div className="-z-10 flex items-center justify-center rounded-l-md border border-gray-600 bg-gray-100 ">
+              <UserIcon className="mx-3 h-4 w-4 text-gray-600" />
             </div>
             <input
               onChange={(e) =>
@@ -89,7 +90,7 @@ function Page() {
           </label>
           <div className="flex">
             <div className="flex items-center justify-center rounded-l-md border border-gray-600 bg-gray-100 ">
-              <MapPinIcon className="h-4 w-4 px-4 text-gray-600" />
+              <MapPinIcon className="mx-3 h-4 w-4 text-gray-600" />
             </div>
             <select
               name="address"
@@ -115,7 +116,7 @@ function Page() {
           </label>
           <div className="flex">
             <div className="flex items-center justify-center rounded-l-md border border-gray-600 bg-gray-100 ">
-              <LockClosedIcon className="h-4 w-4 px-4 text-gray-600" />
+              <LockClosedIcon className="mx-3 h-4 w-4 text-gray-600" />
             </div>
             <input
               onChange={(e) =>
@@ -139,7 +140,7 @@ function Page() {
           </label>
           <div className="flex">
             <div className="flex items-center justify-center rounded-l-md border border-gray-600 bg-gray-100 ">
-              <LockClosedIcon className="h-4 w-4 px-4 text-gray-600" />
+              <LockClosedIcon className="mx-3 h-4 w-4 text-gray-600" />
             </div>
             <input
               type="password"
@@ -167,7 +168,6 @@ function Page() {
             href={"/auth"}
             className="ml-2 text-gray-900 duration-700 hover:underline"
           >
-            {" "}
             Đăng nhập thôi
           </Link>
         </div>

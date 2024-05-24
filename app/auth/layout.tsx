@@ -8,7 +8,8 @@ function Layout({ children, params }: PageProps) {
 
   return (
     <div className="mx-4 max-w-md py-20 md:mx-auto">
-      {status == "authenticated" ? redirect("/") : children}
+      {/* {status == "authenticated" ? redirect("/") : children} */}
+      {children}
     </div>
   );
 }

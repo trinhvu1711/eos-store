@@ -1,11 +1,23 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["localhost", "cdn.shopify.com", "i.ibb.co"],
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.shopify.com",
+      },
+      {
+        protocol: "https",
+        hostname: "i.ibb.co",
+      },
+    ],
     formats: ["image/avif", "image/webp"],
   },
   compiler: {
-    // Enables the styled-components SWC transform
     styledComponents: {
       displayName: false,
     },

@@ -82,8 +82,8 @@ export async function addItem(item: {
     listCartId = newId.toString();
     cookies().set("listCartId", listCartId);
   }
-  // console.log("🚀 ~ listCartId:", listCartId);
-  // console.log("🚀 ~ item:", item);
+  console.log("🚀 ~ listCartId:", listCartId);
+  console.log("🚀 ~ item:", item);
 
   try {
     await addToCart({
