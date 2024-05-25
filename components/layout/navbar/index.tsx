@@ -5,13 +5,14 @@ import LogoSquare from "@/components/logo-square";
 import Cart from "@/components/cart";
 import UserDashBoardButton from "@/components/user-dashboard/user-dashboard-button";
 import WishlistButton from "@/components/wishlist/wishlist-button";
-
+import ThemeToggle from "../ThemeToggle";
 const { SITE_NAME } = process.env;
 export default function Navbar() {
   const menu = [
-    { name: "All", link: "/" },
-    { name: "Shirts", link: "/about" },
-    { name: "Stickers", link: "/services" },
+    { name: "All", link: "/search" },
+    { name: "Phone & Tablets", link: "/search/phone" },
+    { name: "Virtual", link: "/search/electronics" },
+    { name: "Tracking Order", link: "/order/tracking" },
   ];
 
   return (
@@ -59,6 +60,7 @@ export default function Navbar() {
 
         {/* Cart */}
         <div className="flex justify-end gap-2 md:w-1/3">
+          <ThemeToggle />
           <UserDashBoardButton />
           <WishlistButton />
           <Cart />

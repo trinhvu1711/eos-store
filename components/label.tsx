@@ -15,7 +15,7 @@ export default function Label({
   return (
     <div
       className={clsx(
-        "@container/label absolute bottom-0 left-0 flex w-full px-4 pb-4",
+        "absolute bottom-0 left-0 flex w-full px-4 pb-4 @container/label",
         {
           "lg:px-20 lg:pb-[35%]": position === "center",
         },
@@ -26,7 +26,7 @@ export default function Label({
           {title}
         </h3>
         {/* <Price
-          className="flex-none rounded-full bg-blue-600 p-2 text-white"
+          className="flex-none p-2 text-white bg-blue-600 rounded-full"
           amount={amount}
           currencyCode={currencyCode}
           currencyCodeClassName="hidden @[275px]/label:inline"

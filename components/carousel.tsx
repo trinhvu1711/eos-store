@@ -1,8 +1,10 @@
 import Link from "next/link";
 import GridTileImage from "./grid/tile";
 import { getCategories } from "@/lib/data";
-import { Category } from "@/lib/models/category";
 import noImage from "@/public/images/no-img.png";
+import { Category } from "@/lib/type";
+import { collections } from "@/lib/data";
+
 export default async function Carousel() {
   const categories = await getCategories();
   return (
@@ -16,15 +18,15 @@ export default async function Carousel() {
                 className="relative aspect-square h-[30vh] max-h-[275px] w-2/3 max-w-[475px] flex-none md:w-1/3"
               >
                 <Link
-                  href={`/search/${category.name.toLowerCase().replace(/\s+/g, "-")}}`}
+                  href={`/search/${category.slug}`}
                   className="relative h-full w-full"
                 >
                   <GridTileImage
                     alt={category.name}
                     label={{
                       title: category.name,
-                      // amount: product.priceRange.maxVariantPrice.amount,
-                      // currencyCode: product.priceRange.maxVariantPrice.currencyCode,
+                      amount: "",
+                      currencyCode: "",
                     }}
                     src={
                       `http://localhost:8088/api/v1/products/images/${category.imageUrl}` ||

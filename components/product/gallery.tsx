@@ -9,22 +9,27 @@ import { usePathname, useSearchParams } from "next/navigation";
 import GridTileImage from "../grid/tile";
 
 export default function Gallery({
-  images,
+  images = [],
 }: {
-  images: { src: string; altText: string }[];
+  images?: { src: string; altText: string }[];
 }) {
   const pathName = usePathname();
   const searchParams = useSearchParams();
   const imageSearchParam = searchParams.get("image");
   const imageIndex = imageSearchParam ? parseInt(imageSearchParam) : 0;
 
+  // Add a check to ensure that images is not empty before accessing its elements
+  const currentImage = images.length > 0 ? images[imageIndex] : null;
+
   const nextSearchParams = new URLSearchParams(searchParams.toString());
-  const nextImageIndex = imageIndex + 1 < images.length ? imageIndex + 1 : 0;
+  const nextImageIndex = (imageIndex + 1) % images.length;
   nextSearchParams.set("image", nextImageIndex.toString());
   const nextUrl = createUrl(pathName, nextSearchParams);
 
   const previousSearchParams = new URLSearchParams(searchParams.toString());
-  const previousImageIndex = imageIndex === 0 ? imageIndex - 1 : imageIndex - 1;
+  // Ensure the previousImageIndex is non-negative
+  const previousImageIndex =
+    imageIndex === 0 ? images.length - 1 : imageIndex - 1;
   previousSearchParams.set("image", previousImageIndex.toString());
   const previoutUrl = createUrl(pathName, previousSearchParams);
 
@@ -34,13 +39,14 @@ export default function Gallery({
   return (
     <>
       <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden">
-        {images[imageIndex] && (
+        {/* Use the currentImage variable to conditionally render */}
+        {currentImage && (
           <Image
             className="h-full w-full object-contain"
             fill
             sizes="(min-width: 1024px) 66vw, 100vw"
-            alt={images[imageIndex]?.altText as string}
-            src={images[imageIndex]?.src as string}
+            alt={currentImage.altText}
+            src={currentImage.src}
             priority={true}
           />
         )}
