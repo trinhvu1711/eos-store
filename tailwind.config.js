@@ -6,7 +6,7 @@ module.exports = {
     opacity: ["responsive", "hover", "focus", "group-hover"],
   },
   content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
-  darkMode: "class",
+  darkMode: ["class"],
   theme: {
     extend: {
       transitionDelay: {
@@ -86,6 +86,7 @@ module.exports = {
     require("tailwind-scrollbar"),
     require("@tailwindcss/container-queries"),
     require("@tailwindcss/typography"),
+    require("tailwindcss-animate"),
     plugin(({ matchUtilities, theme }) => {
       matchUtilities(
         {
