@@ -1,5 +1,3 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { User } from "./type";
 
@@ -25,8 +23,3 @@ export const clearUserData = (): void => {
   localStorage.removeItem("token");
   localStorage.removeItem("userDetails");
 };
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
-
