@@ -9,20 +9,22 @@ import { getUserDetails, login } from "@/lib/services/user";
 import { useRouter } from "next/navigation";
 
 function Page() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admin@gmail.com");
+  const [password, setPassword] = useState("11223344");
   const router = useRouter();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      // const token = await login(email, password);
-      // localStorage.setItem("token", token);
-
-      // const userDetails = await getUserDetails(token);
-      // localStorage.setItem("userDetails", JSON.stringify(userDetails));
-
-      await signIn("credentials", { email, password });
-      router.push("/");
+      const result = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+      if (result?.error) {
+        console.error(result.error);
+      } else {
+        router.push("/");
+      }
     } catch (error) {
       console.error(error);
     }

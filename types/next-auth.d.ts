@@ -18,6 +18,7 @@ declare module "next-auth" {
         id: number;
         name: string;
       };
+      image: string;
     };
   }
 
@@ -36,6 +37,7 @@ declare module "next-auth" {
       name: string;
     };
     accessToken?: string;
+    image: string;
   }
 }
 
@@ -56,6 +58,7 @@ declare module "next-auth/jwt" {
         id: number;
         name: string;
       };
+      image: string;
     };
   }
 }

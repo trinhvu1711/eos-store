@@ -16,6 +16,8 @@ export interface User {
   facebookAccountId: number;
   googleAccountId: number;
   role: Role;
+  image: string;
+  email: string;
 }
 
 export interface Category {

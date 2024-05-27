@@ -1,11 +1,13 @@
 const plugin = require("tailwindcss/plugin");
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   variants: {
     opacity: ["responsive", "hover", "focus", "group-hover"],
   },
-  content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
   darkMode: "class",
   theme: {
     extend: {
