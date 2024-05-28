@@ -6,7 +6,7 @@ import Link from "next/link";
 const navbar: Array<any> = [
   {
     title: "Tổng Quan",
-    slug: "",
+    slug: "/account",
     subNav: [],
   },
   {
@@ -32,20 +32,20 @@ const navbar: Array<any> = [
     slug: "order",
     subNav: [
       {
+        title: "Đang xử lý",
+        slug: "?filter=pending",
+      },
+      {
         title: "Đang Vận Chuyển",
-        slug: "?filter=isPending",
+        slug: "?filter=shipping",
       },
       {
-        title: "Đã Thanh Toán",
-        slug: "?filter=done",
-      },
-      {
-        title: "Hoàn Trả",
-        slug: "?filter=back",
+        title: "Vận chuyển thành công",
+        slug: "?filter=delivered",
       },
       {
         title: "Hủy Đơn",
-        slug: "?filter=cancel",
+        slug: "?filter=canceled",
       },
     ],
   },
@@ -62,14 +62,11 @@ function DropDown({ navigation }: { navigation: any }) {
       {({ open }) => (
         <>
           <Disclosure.Button
-            className={`${open ? "bg-gray-100 font-semibold" : ""} group flex w-full items-center justify-between rounded-lg p-2 text-left hover:bg-gray-100`}
+            className={`group flex w-full items-center justify-between rounded-lg p-2 text-left hover:bg-gray-100 ${open ? "bg-gray-100 font-semibold" : ""}`}
           >
-            <Link
-              className=" group-hover:font-semibold"
-              href={`/user/${navigation.slug}`}
-            >
+            <span className="group-hover:font-semibold">
               {navigation.title}
-            </Link>
+            </span>
             {open ? (
               <ChevronUpIcon className="h-4 w-4" />
             ) : (
@@ -77,21 +74,19 @@ function DropDown({ navigation }: { navigation: any }) {
             )}
           </Disclosure.Button>
           <Disclosure.Panel className="pl-4">
-            {navigation?.subNav?.map((subnav: any, index: number) => {
-              return (
-                <div
-                  key={index}
-                  className="group relative rounded-lg p-2 before:absolute before:inset-y-0 before:-left-2 before:border-l hover:bg-gray-100 before:hover:border-black"
+            {navigation.subNav.map((subnav: any, index: number) => (
+              <div
+                key={index}
+                className="group relative rounded-lg p-2 before:absolute before:inset-y-0 before:-left-2 before:border-l hover:bg-gray-100 before:hover:border-black"
+              >
+                <Link
+                  className="group-hover:font-semibold"
+                  href={`/user/${navigation.slug}${subnav.slug}`}
                 >
-                  <Link
-                    className="group-hover:font-semibold"
-                    href={`/user/${navigation.slug + subnav.slug}`}
-                  >
-                    {subnav.title}
-                  </Link>
-                </div>
-              );
-            })}
+                  {subnav.title}
+                </Link>
+              </div>
+            ))}
           </Disclosure.Panel>
         </>
       )}
@@ -103,7 +98,7 @@ export default function MemberNavigator() {
   return (
     <div className="flex flex-col gap-y-2">
       {navbar.map((navItem, index: number) => {
-        return navItem.subNav?.length === 0 ? (
+        return navItem.subNav.length === 0 ? (
           <div key={index} className="group rounded-lg p-2 hover:bg-gray-100">
             <Link
               className="group-hover:font-semibold group-hover:text-gray-600"

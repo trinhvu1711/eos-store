@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const people = [
     {
       name: 'Lindsay Walton',
@@ -24,7 +26,7 @@ function Page() {
         {activityItems.map((activityItem) => (
           <li key={activityItem.id} className="py-4">
             <div className="flex space-x-3">
-              <img className="h-6 w-6 rounded-full" src={activityItem.person.imageUrl} alt="" />
+              <Image className="w-6 h-6 rounded-full" src={activityItem.person.imageUrl} alt="" width={6} height={6} />
               <div className="flex-1 space-y-1">
                 <div className="flex items-center justify-between">
                   <h3 className="text-sm font-medium">{activityItem.person.name}</h3>

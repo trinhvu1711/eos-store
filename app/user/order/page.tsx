@@ -1,11 +1,11 @@
-import Order from "./Order";
+import OrderPage from "./Order";
 export const metadata = {
   title: "Đơn Hàng",
-}
-export default function Page() {
-  return(
-    <>
-      <Order/>
-    </>
-  )
 };
+export default function Page() {
+  return (
+    <>
+      <OrderPage />
+    </>
+  );
+}

@@ -27,6 +27,7 @@ import { clear } from "console";
 import { deleteCartsInList } from "@/lib/services/cart";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
+import { useSession } from "next-auth/react";
 function SubmitButton({
   onClick,
   pending,
@@ -61,6 +62,7 @@ export default function Payment({
 }: {
   listCart: ListCart | undefined;
 }) {
+  const { data: session } = useSession();
   const [message, setMessage] = useState("");
   const [pending, setPending] = useState(false);
   const router = useRouter();
@@ -111,7 +113,7 @@ export default function Payment({
     setPending(true);
     const newTrackingNumber = uuidv4().replace(/-/g, "").slice(0, 24);
     const order: NewOrder = {
-      user_id: listCart?.user.id! || 0,
+      user_id: session?.user.id || 0,
       full_name: form.name,
       email: form.email,
       phone_number: form.phone,
