@@ -7,6 +7,7 @@ import LoadingDots from "../loading-dots";
 import { addItem } from "@/lib/services/cart";
 import { useSearchParams } from "next/navigation";
 import { Variant } from "@/lib/type";
+import { useSession } from "next-auth/react";
 
 function SubmitButton({
   availableForSale,
@@ -72,20 +73,22 @@ function SubmitButton({
 export default function AddToCart({
   variants,
   availableForSale,
+  id,
 }: {
   variants: Variant[];
   availableForSale: boolean;
+  id: number;
 }) {
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState("");
   const searchParams = useSearchParams();
-  const productId = searchParams.get("id");
+  const { data: session } = useSession();
 
   if (!variants) return null;
   const defaultVariantId = variants.length === 1 ? variants[0]?.id : undefined;
   const variant = variants.find((variant: Variant) =>
     variant.options.every(
-      (option) => option.value === searchParams.get(option.name.toLowerCase()),
+      (option) => option.value === searchParams?.get(option.name.toLowerCase()),
     ),
   );
   const selectVariantId = variant?.id || defaultVariantId;
@@ -93,10 +96,11 @@ export default function AddToCart({
   const handleAddToCart = async () => {
     setPending(true);
     const resultMessage = await addItem({
-      productId: Number(productId),
+      productId: Number(id),
       variantId: Number(selectVariantId),
       quantity: 1,
       price: variant?.price ?? 0,
+      userId: session?.user.id,
     });
     setMessage(resultMessage);
     // console.log("🚀 ~ handleAddToCart ~ resultMessage:", resultMessage);

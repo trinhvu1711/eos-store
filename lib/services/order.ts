@@ -1,3 +1,5 @@
+const API_BASE_URL = "http://localhost:8088/api/v1/orders";
+
 import { Order, OrderDetail } from "./../type";
 import { revalidatePath } from "next/cache";
 export interface NewOrder {
@@ -21,6 +23,7 @@ export interface NewOrderDetail {
   number_of_products: number;
   total_money: number;
   id_product_variant: number;
+  user_id?: number;
 }
 
 export async function getOrder(orderId: string): Promise<Order> {
@@ -48,6 +51,7 @@ export async function getOrderByTrackingNumber(
 }
 
 export async function createOrder(item: NewOrder): Promise<number> {
+  // console.log("🚀 ~ createOrder ~ item:", item);
   const res = await fetch(`http://localhost:8088/api/v1/orders`, {
     method: "POST",
     headers: {
@@ -119,4 +123,28 @@ export async function addItemOrder(
   } catch (e) {
     return "Error adding item to cart";
   }
+}
+
+export async function getOrderDetailsFromToken(
+  token: string,
+  status: string,
+): Promise<Order[]> {
+  const url = new URL(`${API_BASE_URL}/details`);
+  url.searchParams.append("status", status);
+  const res = await fetch(url.toString(), {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch order details");
+  }
+
+  const data: Order[] = await res.json();
+  console.log("🚀 ~ getUserDetails ~ data:", data);
+  // revalidatePath("/", "layout");
+  return data;
 }

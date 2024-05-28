@@ -14,13 +14,23 @@ export async function getCart(cartId: string): Promise<ListCart> {
   return cart;
 }
 
-export async function createCart(): Promise<number> {
+export async function getCartUser(): Promise<ListCart> {
+  const res = await fetch(`http://localhost:8088/api/v1/list_carts`);
+  if (!res.ok) {
+    throw new Error("Cart not found");
+  }
+  const cart: ListCart = await res.json();
+  // console.log("🚀 ~ getCart ~ cart:", cart);
+  return cart;
+}
+
+export async function createCart(userId?: number): Promise<number> {
   const res = await fetch(`http://localhost:8088/api/v1/list_carts`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({}),
+    body: JSON.stringify({ user_id: userId }),
   });
 
   if (!res.ok) {
@@ -69,6 +79,7 @@ export async function addItem(item: {
   variantId: number;
   quantity: number;
   price: number;
+  userId?: number;
 }): Promise<string> {
   let listCartId = cookies().get("listCartId")?.value;
   let newId;
@@ -78,7 +89,7 @@ export async function addItem(item: {
   }
 
   if (!listCartId || !cart) {
-    newId = await createCart();
+    newId = await createCart(item.userId);
     listCartId = newId.toString();
     cookies().set("listCartId", listCartId);
   }

@@ -1,10 +1,37 @@
 "use client";
-const ProductAddButton = () => {
+
+import { addItem, addToCart } from "@/lib/services/cart";
+import { getDefaultVariant, Product } from "@/lib/type";
+import { useSession } from "next-auth/react";
+
+export default function ProductAddButton({ product }: { product: Product }) {
+  const { data: session } = useSession();
+  const handleClick = async () => {
+    const token = session?.accessToken;
+    if (!token) {
+      console.error("No token found");
+      return;
+    }
+    const variant = getDefaultVariant(product);
+    try {
+      await await addItem({
+        productId: Number(product.id),
+        variantId: Number(variant?.id),
+        quantity: 1,
+        price: variant?.price ?? 0,
+        userId: session?.user.id,
+      });
+      console.log("Item added to wishlist successfully");
+    } catch (error) {
+      console.error("Error adding item to wishlist:", error);
+    }
+  };
   return (
     <div className="absolute bottom-0 left-0 right-0 z-10 hover:opacity-100">
       <button
         type="button"
         className="w-full bg-black p-2 px-6 py-2 text-center text-base font-semibold text-white hover:bg-[#f50963] focus:outline-none"
+        onClick={handleClick}
       >
         <div className="flex items-center justify-center gap-2">
           <svg
@@ -55,6 +82,4 @@ const ProductAddButton = () => {
       </button>
     </div>
   );
-};
-
-export default ProductAddButton;
+}

@@ -6,7 +6,11 @@ import ProductAddButton from "./product-add-button";
 import Discount from "./discount";
 import { useState } from "react";
 import { Transition } from "@headlessui/react";
-import { getMaxVariantPriceAndCurrency, Product } from "@/lib/type";
+import {
+  getDefaultVariant,
+  getMaxVariantPriceAndCurrency,
+  Product,
+} from "@/lib/type";
 
 const addWistListSVG = (
   <svg
@@ -68,7 +72,7 @@ const ProductItem = ({ product }: { product: Product }) => {
   }
 
   const { maxPrice, currencyCode } = getMaxVariantPriceAndCurrency(product);
-
+  const variant = getDefaultVariant(product);
   return (
     <div className="transition-3 relative mb-12 ease-in-out">
       <div
@@ -102,18 +106,23 @@ const ProductItem = ({ product }: { product: Product }) => {
             leaveTo="opacity-0"
           >
             <div className="flex-column absolute right-[10px] top-10 flex flex-col flex-wrap dark:text-black">
-              <ButtonToolTip text="Add to Wishlist" svg={addWistListSVG} />
+              <ButtonToolTip
+                text="Add to Wishlist"
+                svg={addWistListSVG}
+                productId={product.id}
+                productVariantId={variant?.id}
+              />
               <ButtonToolTip text="Quick view" svg={quickViewSVG} />
               <ButtonToolTip text="Product Details" svg={productDetailsSVG} />
             </div>
-            <ProductAddButton />
+            <ProductAddButton product={product} />
           </Transition.Child>
         </Transition>
       </div>
       <div className="pt-3">
         <h3 className="hover:text-[#f50693]">
           <Link
-            href={`/product/${product.name}?id=${product.id}`}
+            href={`/product/${product.id}`}
             // previewlistener="true"
           >
             {product.name}

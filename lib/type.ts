@@ -15,7 +15,9 @@ export interface User {
   dateOfBirth: string | null;
   facebookAccountId: number;
   googleAccountId: number;
-  role: string | null;
+  role: Role;
+  image: string;
+  email: string;
 }
 
 export interface Category {
@@ -23,6 +25,11 @@ export interface Category {
   name: string;
   imageUrl: string;
   slug: string;
+}
+
+export interface Role {
+  id: number;
+  name: string;
 }
 
 export interface ProductImage {
@@ -107,6 +114,14 @@ export interface OrderDetail {
   idProductVariant: number;
 }
 
+export interface WishList {
+  id: number;
+  product: Product;
+  idProductVariant: number;
+  user: User;
+  active: boolean;
+}
+
 export function getOptionsFromVariants(variants: Variant[]): Option[] {
   const optionsMap: { [key: string]: Option } = {};
 
@@ -182,4 +197,11 @@ export function getSelectedVariantCurrency(
 ): string | undefined {
   return product.variants?.find((variant) => variant.id === idSelectedVariant)
     ?.currency;
+}
+
+export function getDefaultVariant(product: Product): Variant | undefined {
+  if (!product.variants || product.variants.length === 0) {
+    return undefined;
+  }
+  return product.variants[0];
 }

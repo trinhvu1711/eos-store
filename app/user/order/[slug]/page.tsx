@@ -1,0 +1,47 @@
+import Image from "next/image";
+
+const people = [
+    {
+      name: 'Lindsay Walton',
+      imageUrl:
+        'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80',
+    },
+    {
+        name: 'Tran Van A',
+        imageUrl:
+          'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80',
+      },
+    // More people...
+  ]
+  const activityItems = [
+    { id: 1, person: people[0], project: 'Workcation', commit: '2d89f0c8', environment: 'production', time: '1h' },
+    { id: 2, person: people[1], project: 'IT', commit: '2d89f0c8', environment: 'production', time: '1h 30m' },
+    // More items...
+  ]
+
+function Page() {
+    return ( 
+        <div>
+      <ul role="list" className="divide-y divide-gray-200">
+        {activityItems.map((activityItem) => (
+          <li key={activityItem.id} className="py-4">
+            <div className="flex space-x-3">
+              <Image className="w-6 h-6 rounded-full" src={activityItem.person.imageUrl} alt="" width={6} height={6} />
+              <div className="flex-1 space-y-1">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-medium">{activityItem.person.name}</h3>
+                  <p className="text-sm text-gray-500">{activityItem.time}</p>
+                </div>
+                <p className="text-sm text-gray-500">
+                  Deployed {activityItem.project} ({activityItem.commit} in master) to {activityItem.environment}
+                </p>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+     );
+}
+
+export default Page;

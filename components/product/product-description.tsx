@@ -47,7 +47,11 @@ export default function ProductDescription({ product }: { product: Product }) {
         />
       ) : null}
       <Suspense fallback={null}>
-        <AddToCart variants={product.variants} availableForSale={true} />
+        <AddToCart
+          variants={product.variants}
+          availableForSale={true}
+          id={product.id}
+        />
       </Suspense>
     </>
   );

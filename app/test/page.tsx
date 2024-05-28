@@ -1,16 +1,19 @@
-import ProductItem from "@/components/product/product-item";
-import { getProducts } from "@/lib/data";
-import { Product } from "@/lib/models/product";
-import { GetServerSideProps } from "next";
+"use client";
 
-export default async function Test() {
-  const { totalPage, products } = await getProducts(0, 12);
+import { useSession, getSession, GetSessionParams } from "next-auth/react";
+
+export default function ProtectedPage() {
+  const { data: session } = useSession();
+
+  if (!session) {
+    return <p>Access Denied</p>;
+  }
+
   return (
     <div>
-      <h1>test server rendering</h1>
-      {products.map((product) => (
-        <ProductItem key={product.name} product={product} />
-      ))}
+      <h1>Protected Page</h1>
+      <p>Welcome, {session?.user?.email}!</p>
+      {/* <p>Your token: {session?.}</p> */}
     </div>
   );
 }
