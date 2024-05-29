@@ -37,7 +37,7 @@ export interface ProductImage {
   imageUrl: string;
 }
 export interface Option {
-  id: string;
+  id: number;
   name: string;
   values: string[];
 }
@@ -126,9 +126,9 @@ export function getOptionsFromVariants(variants: Variant[]): Option[] {
   const optionsMap: { [key: string]: Option } = {};
 
   variants?.forEach((variant) => {
-    variant.options.forEach((option) => {
+    variant.options.forEach((option, index) => {
       const { name, value } = option;
-      const optionId = name.toLowerCase();
+      const optionId = index;
 
       if (!optionsMap[optionId]) {
         optionsMap[optionId] = {
@@ -181,6 +181,13 @@ export function getSelectedVariant(cartItem: CartItem): Variant | undefined {
   return cartItem.product.variants?.find(
     (variant) => variant.id === cartItem.idProductVariant,
   );
+}
+
+export function getSelectedVariantProduct(
+  product: Product,
+  id: number,
+): Variant | undefined {
+  return product.variants?.find((variant) => variant.id === id);
 }
 
 export function getSelectedVariantPrice(
