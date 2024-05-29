@@ -1,5 +1,7 @@
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { User } from "./type";
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
 
 export const createUrl = (
   pathName: string,
@@ -23,3 +25,6 @@ export const clearUserData = (): void => {
   localStorage.removeItem("token");
   localStorage.removeItem("userDetails");
 };
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}

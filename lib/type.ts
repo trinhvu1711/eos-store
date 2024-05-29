@@ -31,7 +31,13 @@ export interface Role {
   id: number;
   name: string;
 }
-
+export interface UserAdmin{
+  id: number;
+  fullName: string;
+  phoneNumber: string;
+  role: string;
+  isActive: string;
+}
 export interface ProductImage {
   id: number;
   imageUrl: string;
