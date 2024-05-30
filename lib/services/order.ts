@@ -148,3 +148,25 @@ export async function getOrderDetailsFromToken(
   // revalidatePath("/", "layout");
   return data;
 }
+
+export async function cancelOrder(token: string, trackingNumber: string) {
+  const url = new URL(`${API_BASE_URL}/cancel`);
+  url.searchParams.append("trackingNumber", trackingNumber);
+  url.searchParams.append("status", "cancelled");
+  const res = await fetch(url.toString(), {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to cancel order");
+  }
+
+  const data: Order = await res.json();
+  console.log("🚀 ~ getUserDetails ~ data:", data);
+  // revalidatePath("/", "layout");
+  // return data;
+}
