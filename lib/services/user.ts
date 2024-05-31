@@ -1,4 +1,4 @@
-import { User } from "../type";
+import { UpdateUserDTO, User } from "../type";
 
 const API_BASE_URL = "http://localhost:8088/api/v1/users";
 
@@ -47,6 +47,28 @@ export async function getUserDetails(token: string): Promise<User> {
 
   if (!res.ok) {
     throw new Error("Failed to fetch user details");
+  }
+
+  const data: User = await res.json();
+  return data;
+}
+
+export async function updateUserDetails(
+  token: string,
+  userId: number,
+  userDetails: UpdateUserDTO,
+): Promise<User> {
+  const res = await fetch(`${API_BASE_URL}/details/${userId}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userDetails),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to update user details");
   }
 
   const data: User = await res.json();

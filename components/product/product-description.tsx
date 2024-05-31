@@ -8,6 +8,7 @@ import {
   Product,
   Variant,
   Option,
+  getDefaultVariant,
 } from "@/lib/type";
 import { Suspense } from "react";
 import ProductDescriptionPrice from "./product-description-price";
@@ -16,7 +17,9 @@ export default function ProductDescription({ product }: { product: Product }) {
   const variants: Variant[] = product.variants;
   const options: Option[] = getOptionsFromVariants(variants);
 
-  let { maxPrice, currencyCode } = getMaxVariantPriceAndCurrency(product);
+  const variant = getDefaultVariant(product);
+  const maxPrice = variant?.price;
+  const currencyCode = variant?.currency;
   // console.log("🚀 ~ ProductDescription ~ maxPrice:", maxPrice);
 
   return (
@@ -24,11 +27,7 @@ export default function ProductDescription({ product }: { product: Product }) {
       <div className="mb-6 flex flex-col border-b pb-6 dark:border-neutral-700">
         <h1 className="mb-2 text-5xl font-medium">{product.name}</h1>
         <div className="mr-auto w-auto rounded-full bg-blue-600 p-2 text-sm text-white">
-          <ProductDescriptionPrice
-            amount={maxPrice}
-            currencyCode={currencyCode}
-            product={product}
-          />
+          <ProductDescriptionPrice product={product} />
           {/* <Price  /> */}
         </div>
       </div>

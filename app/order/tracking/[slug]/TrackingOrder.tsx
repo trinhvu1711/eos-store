@@ -1,7 +1,43 @@
+"use client";
+import { cancelOrder } from "@/lib/services/order";
 import { getSelectedVariant, Order } from "@/lib/type";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { format } from "date-fns";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default function TrackingOrder({ order }: { order: Order }) {
+export default function TrackingOrder({
+  initialOrder,
+}: {
+  initialOrder: Order;
+}) {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [order, setOrder] = useState<Order>(initialOrder);
+  // console.log("🚀 ~ order:", order);
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/auth");
+    }
+  }, [status, router]);
+
+  const handleCancelOrder = async () => {
+    try {
+      const token = session?.accessToken;
+      await cancelOrder(token!, order.trackingNumber);
+      setOrder({ ...order, status: "cancelled" });
+      alert("Order canceled successfully");
+    } catch (error) {
+      alert(error);
+    }
+  };
+  const formattedOrderDate = format(new Date(order.orderDate), "dd/MM/yyyy");
+  const formattedShippingDate = format(
+    new Date(order.shippingDate),
+    "dd/MM/yyyy",
+  );
+  const isCanceled = order.status === "cancelled";
   return (
     <section className="relative py-24">
       <div className="lg-6 mx-auto w-full max-w-7xl px-4 md:px-5">
@@ -24,7 +60,7 @@ export default function TrackingOrder({ order }: { order: Order }) {
               <p className="mt-4 text-base font-semibold leading-7 text-black">
                 Order Payment:{" "}
                 <span className="font-medium text-gray-400">
-                  {new Date(order.orderDate).toLocaleDateString()}
+                  {formattedOrderDate}
                 </span>
               </p>
             </div>
@@ -89,7 +125,9 @@ export default function TrackingOrder({ order }: { order: Order }) {
                             <p className="text-sm font-medium leading-7 text-black">
                               Status
                             </p>
-                            <p className="whitespace-nowrap rounded-full bg-emerald-50 px-3 py-0.5 text-sm font-medium leading-6 text-emerald-600 lg:mt-3">
+                            <p
+                              className={`whitespace-nowrap rounded-full px-3 py-0.5 text-sm font-medium leading-6 lg:mt-3 ${isCanceled ? "bg-red-50 text-red-600" : "bg-emerald-50 text-emerald-600"}`}
+                            >
                               {order.status}
                             </p>
                           </div>
@@ -100,9 +138,7 @@ export default function TrackingOrder({ order }: { order: Order }) {
                               Expected Delivery Time
                             </p>
                             <p className="whitespace-nowrap text-base font-medium leading-7 text-emerald-500 lg:mt-3">
-                              {new Date(
-                                order.shippingDate,
-                              ).toLocaleDateString()}
+                              {formattedShippingDate}
                             </p>
                           </div>
                         </div>
@@ -115,7 +151,11 @@ export default function TrackingOrder({ order }: { order: Order }) {
           })}
           <div className="flex w-full flex-col items-center justify-between border-t border-gray-200 px-6 lg:flex-row">
             <div className="flex flex-col items-center border-gray-200 max-lg:border-b sm:flex-row">
-              <button className="group flex items-center justify-center gap-2 whitespace-nowrap border-gray-200 bg-white py-6 text-lg font-semibold text-black outline-0 transition-all duration-500 hover:text-indigo-600 sm:border-r sm:pr-6">
+              <button
+                onClick={handleCancelOrder}
+                className={`group flex items-center justify-center gap-2 whitespace-nowrap border-gray-200 bg-white py-6 text-lg font-semibold text-black outline-0 transition-all duration-500 hover:text-indigo-600 sm:border-r sm:pr-6 ${isCanceled ? "cursor-not-allowed opacity-50" : ""}`}
+                disabled={isCanceled}
+              >
                 <svg
                   className="stroke-black transition-all duration-500 group-hover:stroke-indigo-600"
                   xmlns="http://www.w3.org/2000/svg"
