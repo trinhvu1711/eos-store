@@ -12,6 +12,11 @@ EOS Store is a Next.js project aimed at providing a seamless shopping experience
 - **React**: A JavaScript library for building user interfaces.
 - **Tailwind CSS**: A utility-first CSS framework for rapid UI development.
 
+### Backend [Link to Backend](https://github.com/trinhvu1711/shopapp)
+ - **Spring Boot**: RESTful APIs
+ - **Spring Security**: JWT
+ - **Database**: MySql
+
 ### UI Components
 
 - **@headlessui/react**: Collection of completely unstyled, fully accessible UI components.
