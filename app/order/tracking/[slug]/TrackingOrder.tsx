@@ -15,7 +15,7 @@ export default function TrackingOrder({
   const { data: session, status } = useSession();
   const router = useRouter();
   const [order, setOrder] = useState<Order>(initialOrder);
-  console.log("🚀 ~ order:", order);
+  // console.log("🚀 ~ order:", order);
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/auth");
