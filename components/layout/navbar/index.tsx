@@ -16,7 +16,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="relative flex items-center justify-between p-4 lg:px-6">
+    <nav className="sticky top-0 z-50 first-letter:relative border-b bg-background backdrop-blur flex items-center justify-between p-4 lg:px-6">
       {/* Mobile menu */}
 
       <div className="block flex-none md:hidden">
@@ -43,8 +43,7 @@ export default function Navbar() {
                 <li key={index}>
                   <Link
                     href={item.link}
-                    className="text-neutral-500 underline-offset-4 hover:text-black hover:underline dark:text-neutral-400 dark:hover:text-neutral-300"
-                  >
+className="text-neutral-500 underline-offset-4 hover:text-black hover:underline  dark:text-neutral-400 dark:hover:text-neutral-300"                  >
                     {item.name}
                   </Link>
                 </li>

@@ -1,6 +1,6 @@
 // import { getProducts } from "@/lib/data";
 
-import { Category, getMaxVariantPriceAndCurrency, Product } from "./type";
+import { Category, getMaxVariantPriceAndCurrency, Product, UserAdmin } from "./type";
 
 // Product
 export async function getCategory(page = 0, limit = 3) {
@@ -148,6 +148,21 @@ export async function getCategories(): Promise<Category[]> {
     return data;
   } catch (error: any) {
     throw new Error("Failed to get categories + error.message");
+  }
+}
+
+//get all user
+export async function getAllUser(): Promise<UserAdmin[]> {
+  try {
+    const response = await fetch("http://localhost:8088/api/v1/users/getAll");
+    if (!response.ok) {
+      throw new Error("Failed to fetch getAllUser here");
+    }
+    const data: UserAdmin[] = await response.json();
+    console.log(data);
+    return data;
+  } catch (error: any) {
+    throw new Error("Failed to get users: " + error.message);
   }
 }
 
