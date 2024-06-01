@@ -74,7 +74,7 @@ const ProductItem = ({ product }: { product: Product }) => {
   const { maxPrice, currencyCode } = getMaxVariantPriceAndCurrency(product);
   const variant = getDefaultVariant(product);
   return (
-    <div className="transition-3 relative mb-12 ease-in-out">
+    <div className="transition-3 relative mb-12 flex flex-col justify-between ease-in-out">
       <div
         className="w-img relative overflow-hidden"
         onMouseEnter={handleMouseEnter}

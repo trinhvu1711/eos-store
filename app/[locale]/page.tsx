@@ -6,7 +6,6 @@ import FeaturesArea from "@/components/layout/features-area";
 import Footer from "@/components/layout/footer";
 import ProductPopularArea from "@/components/layout/product-popular-area";
 import { Suspense } from "react";
-
 export default function Home() {
   return (
     <>

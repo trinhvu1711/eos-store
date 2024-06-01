@@ -41,3 +41,10 @@ export const sorting: SortFilterItem[] = [
     reverse: true,
   },
 ];
+
+export const OrderStatus = {
+  PENDING: "pending",
+  SHIPPING: "shipping",
+  DELIVERED: "delivered",
+  CANCELED: "cancelled",
+} as const;
