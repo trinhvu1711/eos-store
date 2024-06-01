@@ -6,7 +6,7 @@ import { mutate } from "swr";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import Loading from "@/app/loading";
+import Loading from "@/app/[locale]/loading";
 import { getSelectedVariant, WishList } from "@/lib/type";
 import {
   getWishlistDetailsFromToken,

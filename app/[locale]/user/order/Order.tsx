@@ -1,6 +1,6 @@
 "use client";
 
-import Loading from "@/app/loading";
+import Loading from "@/app/[locale]/loading";
 import {
   CheckIcon,
   InformationCircleIcon,
@@ -13,6 +13,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Order, OrderDetail } from "@/lib/type";
 import { getOrderDetailsFromToken } from "@/lib/services/order";
+import { OrderStatus } from "@/lib/constants";
 
 export default function OrderPage() {
   const { data: session } = useSession();
@@ -21,28 +22,28 @@ export default function OrderPage() {
   const [error, setError] = useState<string | null>(null);
 
   const searchParams = useSearchParams();
-  const filter = searchParams?.get("filter") || "pending";
+  const filter = searchParams?.get("filter") || OrderStatus.PENDING;
 
   useEffect(() => {
-    const fetchUserDetails = async () => {
+    const fetchorderDetails = async () => {
       if (session && session.accessToken && filter !== null) {
         setIsLoading(true);
         setError(null);
         try {
-          const userDetails = await getOrderDetailsFromToken(
+          const orderDetails = await getOrderDetailsFromToken(
             session.accessToken,
             filter!,
           );
-          setOrders(userDetails);
+          setOrders(orderDetails);
         } catch (err) {
-          setError("Failed to fetch user details");
+          setError("Failed to fetch order details");
         } finally {
           setIsLoading(false);
         }
       }
     };
 
-    fetchUserDetails();
+    fetchorderDetails();
   }, [filter, session]);
 
   if (isLoading) {
@@ -66,7 +67,7 @@ export default function OrderPage() {
             {order.orderDetails.map((item: OrderDetail) => (
               <div key={item.id} className="relative pb-8">
                 <div className="relative flex gap-x-3">
-                  {order.status === "pending" && (
+                  {order.status === OrderStatus.PENDING && (
                     <div className="flex items-center gap-x-3">
                       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-red-100 ring-8 ring-white">
                         <InformationCircleIcon
@@ -77,7 +78,7 @@ export default function OrderPage() {
                       <p className="text-gray-600">Đang xử lý</p>
                     </div>
                   )}
-                  {order.status === "shipping" && (
+                  {order.status === OrderStatus.SHIPPING && (
                     <div className="flex items-center gap-x-3">
                       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 ring-8 ring-white">
                         <TruckIcon
@@ -88,7 +89,7 @@ export default function OrderPage() {
                       <p className="text-gray-600">Đang Vận Chuyển</p>
                     </div>
                   )}
-                  {order.status === "delivered" && (
+                  {order.status === OrderStatus.DELIVERED && (
                     <div className="flex items-center gap-x-3">
                       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-100 ring-8 ring-white">
                         <CheckIcon
@@ -99,7 +100,7 @@ export default function OrderPage() {
                       <p className="text-gray-600">Vận chuyển thành công</p>
                     </div>
                   )}
-                  {order.status === "canceled" && (
+                  {order.status === OrderStatus.CANCELED && (
                     <div className="flex items-center gap-x-3">
                       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-lime-100 ring-8 ring-white">
                         <XMarkIcon

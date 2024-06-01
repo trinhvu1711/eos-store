@@ -1,0 +1,18 @@
+{
+  "menu": {
+    "all": "All",
+    "phoneTablets": "Phone & Tablets",
+    "virtual": "Virtual",
+    "trackingOrder": "Tracking Order"
+  },
+  "cart": {
+    "myCart": "My Cart",
+    "emptyCart": "Your cart is empty",
+    "taxes": "Taxes",
+    "shipping": "Shipping",
+    "calculatedAtCheckout": "Calculated at checkout",
+    "total": "Total",
+    "proceedToCart": "Proceed to Cart",
+    "proceedToCheckout": "Proceed to Checkout"
+  }
+}

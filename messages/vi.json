@@ -1,0 +1,18 @@
+{
+  "menu": {
+    "all": "Tất cả",
+    "phoneTablets": "Điện thoại & Máy tính bảng",
+    "virtual": "Điện tử",
+    "trackingOrder": "Theo dõi đơn hàng"
+  },
+  "cart": {
+    "myCart": "Giỏ hàng của tôi",
+    "emptyCart": "Giỏ hàng của bạn trống",
+    "taxes": "Thuế",
+    "shipping": "Vận chuyển",
+    "calculatedAtCheckout": "Tính tại thanh toán",
+    "total": "Tổng cộng",
+    "proceedToCart": "Tiến hành đến giỏ hàng",
+    "proceedToCheckout": "Tiến hành thanh toán"
+  }
+}

@@ -1,4 +1,5 @@
 "use client";
+import { OrderStatus } from "@/lib/constants";
 import { Disclosure } from "@headlessui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -33,19 +34,19 @@ const navbar: Array<any> = [
     subNav: [
       {
         title: "Đang xử lý",
-        slug: "?filter=pending",
+        slug: `?filter=${OrderStatus.PENDING}`,
       },
       {
         title: "Đang Vận Chuyển",
-        slug: "?filter=shipping",
+        slug: `?filter=${OrderStatus.SHIPPING}`,
       },
       {
         title: "Vận chuyển thành công",
-        slug: "?filter=delivered",
+        slug: `?filter=${OrderStatus.DELIVERED}`,
       },
       {
         title: "Hủy Đơn",
-        slug: "?filter=canceled",
+        slug: `?filter=${OrderStatus.CANCELED}`,
       },
     ],
   },

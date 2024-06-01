@@ -8,11 +8,11 @@ import CloseCart from "./close-cart";
 import Link from "next/link";
 import DeleteItemButton from "./delete-item-button";
 import Image from "next/image";
-
 import Price from "../price";
 import EditQuantityButton from "./edit-quantity-button";
 import { DEFAULT_OPTION } from "@/lib/constants";
 import { CartItem, getSelectedVariant, ListCart } from "@/lib/type";
+import { useTranslations } from "next-intl";
 export const dynamic = "force-dynamic";
 
 function getTotalQuantityOfCartList(cartList: ListCart): number {
@@ -21,13 +21,14 @@ function getTotalQuantityOfCartList(cartList: ListCart): number {
     0,
   );
 }
+
 export default function CartModal({
   listCart,
 }: {
   listCart: ListCart | undefined;
 }) {
-  // console.log("🚀 ~ listCart:", listCart?.carts);
-  // { cart }: { cart: Cart | undefined }
+  const t = useTranslations("cart");
+
   let totalQuantity = getTotalQuantityOfCartList(listCart!)! || 0;
   const [isOpen, setIsOpen] = useState(false);
   const quantityRef = useRef(totalQuantity);
@@ -41,6 +42,7 @@ export default function CartModal({
     0,
   );
   const { maxPrice, currencyCode } = { maxPrice: 0, currencyCode: "USD" };
+
   useEffect(() => {
     if (getTotalQuantityOfCartList(listCart!) !== quantityRef.current) {
       if (!isOpen) {
@@ -81,7 +83,7 @@ export default function CartModal({
             <Dialog.Panel className="fixed bottom-0 right-0 top-0 flex h-full w-full flex-col border-l border-neutral-200 bg-white/80 p-6 text-black backdrop-blur-xl dark:border-neutral-700 dark:bg-black/80 dark:text-white md:w-[390px]">
               {/* Start close button */}
               <div className="flex items-center justify-between">
-                <p className="text-lg font-semibold">My Cart</p>
+                <p className="text-lg font-semibold">{t("myCart")}</p>
                 <button aria-label="Close cart" onClick={closeCart}>
                   <CloseCart />
                 </button>
@@ -94,7 +96,7 @@ export default function CartModal({
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
                   <ShoppingCartIcon className="h-16" />
                   <p className="mt-6 text-center text-2xl font-bold">
-                    Your cart is empty
+                    {t("emptyCart")}
                   </p>
                 </div>
               ) : (
@@ -103,10 +105,6 @@ export default function CartModal({
                   <ul className="flex-grow overflow-auto py-4">
                     {listCart?.carts.map((item: CartItem, i: number) => {
                       const selectedVariant = getSelectedVariant(item);
-                      // console.log(
-                      //   "🚀 ~ {listCart?.carts.map ~ selectedVariant:",
-                      //   selectedVariant,
-                      // );
                       return (
                         // Start cart item
                         <li
@@ -177,7 +175,7 @@ export default function CartModal({
                   <div className="py-4 text-sm text-neutral-500 dark:text-neutral-400">
                     {/* Tax */}
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 dark:border-neutral-700">
-                      <p>Taxes</p>
+                      <p>{t("taxes")}</p>
                       <Price
                         className="text-right text-base text-black dark:text-white"
                         amount="0"
@@ -186,13 +184,13 @@ export default function CartModal({
                     </div>
 
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1 dark:border-neutral-700">
-                      <p>Shipping</p>
-                      <p className="text-right">Calculated at checkout</p>
+                      <p>{t("shipping")}</p>
+                      <p className="text-right">{t("calculatedAtCheckout")}</p>
                     </div>
 
                     {/* Total */}
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 dark:border-neutral-700">
-                      <p>Total</p>
+                      <p>{t("total")}</p>
                       <Price
                         className="text-right text-base text-black dark:text-white"
                         amount={totalPrice!.toString()}
@@ -205,9 +203,9 @@ export default function CartModal({
                   {/* Start Cart button */}
                   <a
                     href="/cart"
-                    className="mb-2 block w-full rounded-md border p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100"
+                    className="mb-2 block w-full rounded-md border border-black p-3 text-center text-sm font-medium text-black opacity-90 hover:opacity-100 dark:text-white "
                   >
-                    Proceed to Cart
+                    {t("proceedToCart")}
                   </a>
                   {/* End Cart button */}
 
@@ -216,7 +214,7 @@ export default function CartModal({
                     href="/cart/payment"
                     className="block w-full rounded-md bg-blue-500 p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100"
                   >
-                    Proceed to Checkout
+                    {t("proceedToCheckout")}
                   </a>
                   {/* End Checkout button */}
                 </div>

@@ -144,7 +144,7 @@ export async function getOrderDetailsFromToken(
   }
 
   const data: Order[] = await res.json();
-  console.log("🚀 ~ getUserDetails ~ data:", data);
+  console.log("🚀 ~ data:", data);
   // revalidatePath("/", "layout");
   return data;
 }
