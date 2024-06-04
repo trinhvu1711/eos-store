@@ -6,6 +6,8 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { OrderStatus } from "@/lib/constants";
 
 export default function TrackingOrder({
   initialOrder,
@@ -27,7 +29,13 @@ export default function TrackingOrder({
       const token = session?.accessToken;
       await cancelOrder(token!, order.trackingNumber);
       setOrder({ ...order, status: "cancelled" });
-      alert("Order canceled successfully");
+      toast("Order canceled successfully", {
+        description: "You can undo this action",
+        action: {
+          label: "Undo",
+          onClick: () => setOrder({ ...order, status: OrderStatus.PENDING }),
+        },
+      });
     } catch (error) {
       alert(error);
     }

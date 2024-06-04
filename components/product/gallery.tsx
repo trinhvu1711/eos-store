@@ -13,9 +13,9 @@ export default function Gallery({
 }: {
   images?: { src: string; altText: string }[];
 }) {
-  const pathName = usePathname();
-  const searchParams = useSearchParams();
-  const imageSearchParam = searchParams.get("image");
+  const pathName = usePathname()!;
+  const searchParams = useSearchParams()!;
+  const imageSearchParam = searchParams?.get("image")!;
   const imageIndex = imageSearchParam ? parseInt(imageSearchParam) : 0;
 
   // Add a check to ensure that images is not empty before accessing its elements

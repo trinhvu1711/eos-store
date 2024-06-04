@@ -1,5 +1,6 @@
 import {
   CartItem,
+  Coupon,
   getSelectedVariant,
   getTotalPriceOfCartList,
   ListCart,
@@ -10,9 +11,27 @@ import Image from "next/image";
 import EditQuantityButton from "@/components/cart/edit-quantity-button";
 import ClearCart from "@/components/cart/clear-cart";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import Coupons from "@/components/cart/coupons";
+import { GetServerSideProps } from "next";
+import { getCoupons } from "@/lib/data";
+export const getServerSideProps: GetServerSideProps = async () => {
+  try {
+    const coupons: Coupon[] = await getCoupons();
+    return {
+      props: {
+        coupons,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        coupons: [],
+      },
+    };
+  }
+};
 
 function CartList({ item }: { item: CartItem }) {
-  // add discount
   const total = item.totalMoney;
   const imageLink = `http://localhost:8088/api/v1/products/images/${item.product.thumbnail}`;
   const selectedVariant = getSelectedVariant(item);
@@ -35,10 +54,6 @@ function CartList({ item }: { item: CartItem }) {
         </div>
       </div>
       <div className="min-w-[140px] text-center text-sm md:text-base">
-        {/* {item.product.discount
-          ? item.product.discount.toLocaleString()
-          : item.product.price.toLocaleString()}{" "}
-        VNĐ{" "} */}
         {item.price.toLocaleString()} VNĐ
       </div>
       <div className="flex items-center justify-center">
@@ -57,7 +72,13 @@ function CartList({ item }: { item: CartItem }) {
   );
 }
 
-export default function Cart({ listCart }: { listCart: ListCart | undefined }) {
+export default function Cart({
+  listCart,
+  coupons,
+}: {
+  listCart: ListCart | undefined;
+  coupons: Coupon[];
+}) {
   const totalPrice = getTotalPriceOfCartList(listCart!);
   return (
     <>
@@ -69,7 +90,7 @@ export default function Cart({ listCart }: { listCart: ListCart | undefined }) {
       </Link>
       <section>
         <div className="overflow-x-auto py-5 md:pb-20 md:pt-10">
-          {listCart?.carts.length == 0 ? (
+          {listCart?.carts.length === 0 ? (
             <div>Giỏ Hàng Trống</div>
           ) : (
             <>
@@ -100,53 +121,7 @@ export default function Cart({ listCart }: { listCart: ListCart | undefined }) {
         </div>
       </section>
       <section>
-        <div className="grid-cols-3 md:grid">
-          <form action="">
-            <div className="flex flex-col items-end gap-y-3">
-              <input
-                type="text"
-                placeholder="Gán Mã Giảm Giá Tại Đây"
-                className="w-full rounded-md border px-4 py-2"
-              />
-              <button
-                type="submit"
-                className="inline rounded-md bg-rose-600 px-6 py-3 text-gray-50 before:border-rose-600"
-              >
-                Sử Dụng
-              </button>
-            </div>
-          </form>
-          <div />
-          <div className="mt-5 rounded-md border border-gray-900 p-5 md:mt-0">
-            <div className="text-xl font-medium">Tổng Quan</div>
-            <div className="divide-y">
-              <div className="flex justify-between py-4">
-                <span className="font-medium">Tạm Tính:</span>
-                <span className="text-sm">
-                  {totalPrice.toLocaleString()} VNĐ
-                </span>
-              </div>
-              <div className="flex justify-between py-4">
-                <span className="font-medium">Giảm Giá:</span>
-                <span className="text-sm">- 0 VNĐ</span>
-              </div>
-              <div className="flex justify-between py-4">
-                <span className="font-medium">Tổng:</span>
-                <span className="font-medium">
-                  {totalPrice.toLocaleString()} VNĐ
-                </span>
-              </div>
-            </div>
-            <div className="mt-3 flex justify-center">
-              <Link
-                href={"/cart/payment"}
-                className="mx-6 w-full rounded-md bg-rose-600 py-2 text-center font-medium text-gray-50"
-              >
-                Thanh Toán
-              </Link>
-            </div>
-          </div>
-        </div>
+        <Coupons coupons={coupons} totalAmount={totalPrice} />
       </section>
     </>
   );

@@ -1,6 +1,12 @@
 // import { getProducts } from "@/lib/data";
 
-import { Category, getMaxVariantPriceAndCurrency, Product, UserAdmin } from "./type";
+import {
+  Category,
+  Coupon,
+  getMaxVariantPriceAndCurrency,
+  Product,
+  UserAdmin,
+} from "./type";
 
 // Product
 export async function getCategory(page = 0, limit = 3) {
@@ -163,6 +169,43 @@ export async function getAllUser(): Promise<UserAdmin[]> {
     return data;
   } catch (error: any) {
     throw new Error("Failed to get users: " + error.message);
+  }
+}
+
+export async function getCoupons(): Promise<Coupon[]> {
+  try {
+    const response = await fetch("http://localhost:8088/api/v1/coupons");
+    if (!response.ok) {
+      throw new Error("Failed to fetch coupons");
+    }
+    const data: Coupon[] = await response.json();
+    // console.log("🚀 ~ getCoupons ~ data:", data);
+    return data;
+  } catch (error: any) {
+    throw new Error("Failed to get coupons " + error.message);
+  }
+}
+
+interface DiscountResponse {
+  result: number;
+  errorMessage: string;
+}
+
+export async function calculateDiscount(
+  prevState: any,
+  payload: any,
+): Promise<DiscountResponse> {
+  try {
+    const response = await fetch(
+      `http://localhost:8088/api/v1/coupons/calculate?couponCode=${payload.couponCode}&totalAmount=${payload.totalAmount}`,
+    );
+    if (!response.ok) {
+      throw new Error("Failed to calculate discount");
+    }
+    const data: DiscountResponse = await response.json();
+    return data;
+  } catch (error: any) {
+    throw new Error("Failed to calculate discount: " + error.message);
   }
 }
 

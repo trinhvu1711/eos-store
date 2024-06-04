@@ -51,7 +51,7 @@ export async function getOrderByTrackingNumber(
 }
 
 export async function createOrder(item: NewOrder): Promise<number> {
-  // console.log("🚀 ~ createOrder ~ item:", item);
+  console.log("🚀 ~ createOrder ~ item:", item);
   const res = await fetch(`http://localhost:8088/api/v1/orders`, {
     method: "POST",
     headers: {
@@ -166,7 +166,7 @@ export async function cancelOrder(token: string, trackingNumber: string) {
   }
 
   const data: Order = await res.json();
-  console.log("🚀 ~ getUserDetails ~ data:", data);
+  // console.log("🚀 ~ getUserDetails ~ data:", data);
   // revalidatePath("/", "layout");
   // return data;
 }

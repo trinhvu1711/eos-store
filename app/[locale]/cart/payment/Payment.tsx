@@ -23,9 +23,8 @@ import {
   NewOrder,
   NewOrderDetail,
 } from "@/lib/services/order";
-import { clear } from "console";
 import { deleteCartsInList } from "@/lib/services/cart";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { useSession } from "next-auth/react";
 function SubmitButton({
@@ -87,9 +86,10 @@ export default function Payment({
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(
     paymentMethods[0].title,
   );
-
+  const searchParams = useSearchParams();
+  const totalAmount = searchParams?.get("totalAmount");
   const cities = State.getStatesOfCountry("VN");
-  const totalPrice = getTotalPriceOfCartList(listCart!);
+  const totalPrice = Number(totalAmount) || getTotalPriceOfCartList(listCart!);
   const total = selectedDeliveryMethod.price + totalPrice;
 
   const [form, setForm] = useState({
@@ -104,11 +104,14 @@ export default function Payment({
     if (listCart) {
       setForm((prevForm) => ({
         ...prevForm,
-        name: listCart.user?.fullName || "",
-        city: listCart.user?.address || "",
+        name: session?.user.fullName || "",
+        address: session?.user.address || "",
+        email: session?.user.email || "",
+        city: "Hồ Chí Minh",
+        phone: session?.user.phoneNumber || "",
       }));
     }
-  }, [listCart]);
+  }, [listCart, session]);
   const handleAddToOrder = async () => {
     setPending(true);
     const newTrackingNumber = uuidv4().replace(/-/g, "").slice(0, 24);
@@ -177,7 +180,7 @@ export default function Payment({
                     id="name"
                     name="name"
                     autoComplete="family-name"
-                    value={form.name}
+                    value={session?.user.fullName || form.name}
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
                   />
                 </div>
@@ -199,7 +202,7 @@ export default function Payment({
                     id="email"
                     name="email"
                     autoComplete="email"
-                    value={form.email}
+                    value={session?.user.email || form.email}
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
                   />
                 </div>
@@ -244,6 +247,7 @@ export default function Payment({
                     type="text"
                     name="address"
                     id="address"
+                    value={session?.user.address || form.city}
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
                   />
                 </div>
@@ -267,6 +271,7 @@ export default function Payment({
                     id="phone"
                     autoComplete="tel"
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
+                    value={session?.user.phoneNumber || form.phone}
                   />
                 </div>
               </div>
@@ -464,7 +469,17 @@ export default function Payment({
               <div className="flex items-center justify-between">
                 <dt className="text-sm">Tạm Tính</dt>
                 <dd className="text-sm font-medium text-gray-900">
-                  {totalPrice.toLocaleString()} VNĐ
+                  {getTotalPriceOfCartList(listCart!).toLocaleString()} VNĐ
+                </dd>
+              </div>
+              <div className="flex items-center justify-between">
+                <dt className="text-sm">Giảm giá</dt>
+                <dd className="text-sm font-medium text-gray-900">
+                  -{" "}
+                  {(
+                    getTotalPriceOfCartList(listCart!) - totalPrice
+                  ).toLocaleString()}{" "}
+                  VNĐ
                 </dd>
               </div>
               <div className="flex items-center justify-between">

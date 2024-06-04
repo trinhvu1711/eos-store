@@ -31,7 +31,7 @@ export interface Role {
   id: number;
   name: string;
 }
-export interface UserAdmin{
+export interface UserAdmin {
   id: number;
   fullName: string;
   phoneNumber: string;
@@ -230,4 +230,10 @@ export interface UpdateUserDTO {
   facebook_account_id?: number;
   google_account_id?: number;
   role_id?: number;
+}
+
+export interface Coupon {
+  id: number;
+  code: string;
+  active: boolean;
 }

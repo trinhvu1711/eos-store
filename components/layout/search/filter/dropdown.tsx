@@ -31,7 +31,7 @@ export default function FilterItemDropdown({ list }: { list: ListItem[] }) {
     list.forEach((listItem: ListItem) => {
       if (
         ("path" in listItem && pathname === listItem.path) ||
-        ("slug" in listItem && searchParams.get("sort") === listItem.slug)
+        ("slug" in listItem && searchParams!.get("sort") === listItem.slug)
       ) {
         setActive(listItem.title);
       }
@@ -44,7 +44,7 @@ export default function FilterItemDropdown({ list }: { list: ListItem[] }) {
         onClick={() => {
           setOpenSelect(!openSelect);
         }}
-        className="flex w-full items-center justify-between rounded border border-black/30 px-4 py-2 text-sm dark:border-white/30"
+        className="flex items-center justify-between w-full px-4 py-2 text-sm border rounded border-black/30 dark:border-white/30"
       >
         <div>{active}</div>
         <ChevronDownIcon className="h-4" />
@@ -55,7 +55,7 @@ export default function FilterItemDropdown({ list }: { list: ListItem[] }) {
           onClick={() => {
             setOpenSelect(false);
           }}
-          className="absolute z-40 w-full rounded-b-md bg-white p-4 shadow-md dark:bg-black"
+          className="absolute z-40 w-full p-4 bg-white shadow-md rounded-b-md dark:bg-black"
         >
           {list.map((item: ListItem, i) => (
             <FilterItem key={i} item={item} />
