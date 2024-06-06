@@ -4,7 +4,7 @@ import { ProductTable } from "@/components/tables/product-tables/product-table";
 import { buttonVariants } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
-import {  Product } from "@/constants/data";
+import { Product } from "@/constants/data";
 import { cn } from "@/lib/utils-admin";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -25,30 +25,30 @@ export default async function page({ searchParams }: paramsProps) {
   const res = await fetch(
     `http://localhost:8088/api/v1/products/search?` +
       (productName ? `&search=${productName}` : ""),
-    );
-    
-    let productRes;
-try {
-  if (res.ok) {
+  );
+
+  let productRes;
+  try {
+    if (res.ok) {
       productRes = await res.json();
-      console.log(res.status);
-      console.log(productRes);
-  } else {
-      console.log(res.status);
-    console.error('Server responded with status', res.status);
-  }
-} catch (error) {
-    console.log(res.status);
-  console.error('Failed to parse JSON response', error);
+      // console.log(res.status);
+      // console.log(productRes);
+    } else {
+      // console.log(res.status);
+      console.error("Server responded with status", res.status);
     }
-    const start = (page - 1) * pageLimit;
-    const end = start + pageLimit;
-    const productsToShow = productRes.slice(start, end);
-    const pageCount = Math.ceil(productRes.length / pageLimit);
-    const totalProduct = productRes.length;
+  } catch (error) {
+    console.log(res.status);
+    console.error("Failed to parse JSON response", error);
+  }
+  const start = (page - 1) * pageLimit;
+  const end = start + pageLimit;
+  const productsToShow = productRes.slice(start, end);
+  const pageCount = Math.ceil(productRes.length / pageLimit);
+  const totalProduct = productRes.length;
   return (
     <>
-      <div className="flex-1 space-y-4  p-4 md:p-8 pt-6">
+      <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
         <BreadCrumb items={breadcrumbItems} />
 
         <div className="flex items-start justify-between">

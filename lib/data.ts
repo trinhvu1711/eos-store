@@ -2,6 +2,7 @@
 
 import {
   Category,
+  Comment,
   Coupon,
   getMaxVariantPriceAndCurrency,
   Product,
@@ -317,4 +318,53 @@ export const collections = [
 export function getIdFromHandle(handle: string) {
   const collection = collections.find((col) => col.handle === handle);
   return collection ? collection.id : null;
+}
+
+export async function getComments(
+  userId: string,
+  productId: string,
+): Promise<Comment[]> {
+  const url = new URL("http://localhost:8088/api/v1/comments");
+  // console.log("🚀 ~ url:", url);
+  url.searchParams.append("user_id", userId);
+  url.searchParams.append("product_id", productId);
+  const res = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to cancel comment");
+  }
+
+  const data: Comment[] = await res.json();
+  // console.log("🚀 ~ data:", data);
+  return data;
+}
+
+export async function insertComment(
+  token: string,
+  product_id: number,
+  user_id: number,
+  content: string,
+) {
+  const res = await fetch(`http://localhost:8088/api/v1/comments`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      product_id: product_id,
+      user_id: user_id,
+      content: content,
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch order details");
+  }
+  return res.json();
 }

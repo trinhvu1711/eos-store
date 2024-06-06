@@ -93,11 +93,11 @@ export default function Payment({
   const total = selectedDeliveryMethod.price + totalPrice;
 
   const [form, setForm] = useState({
-    name: "",
-    address: "",
-    email: "",
+    name: session?.user.fullName || "",
+    address: session?.user.address || "",
+    email: session?.user.email || "",
     city: "Hồ Chí Minh",
-    phone: "",
+    phone: session?.user.phoneNumber || "",
   });
 
   useEffect(() => {
@@ -180,7 +180,7 @@ export default function Payment({
                     id="name"
                     name="name"
                     autoComplete="family-name"
-                    value={session?.user.fullName || form.name}
+                    value={form.name}
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
                   />
                 </div>
@@ -202,7 +202,7 @@ export default function Payment({
                     id="email"
                     name="email"
                     autoComplete="email"
-                    value={session?.user.email || form.email}
+                    value={form.email}
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
                   />
                 </div>
@@ -247,7 +247,7 @@ export default function Payment({
                     type="text"
                     name="address"
                     id="address"
-                    value={session?.user.address || form.city}
+                    value={form.city}
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
                   />
                 </div>
@@ -271,7 +271,7 @@ export default function Payment({
                     id="phone"
                     autoComplete="tel"
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-rose-500 focus:ring-rose-500 sm:text-sm"
-                    value={session?.user.phoneNumber || form.phone}
+                    value={form.phone}
                   />
                 </div>
               </div>

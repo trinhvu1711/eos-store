@@ -237,3 +237,10 @@ export interface Coupon {
   code: string;
   active: boolean;
 }
+
+export interface Comment {
+  content: string;
+  user: User;
+  updated_at: string;
+  created_at: string;
+}

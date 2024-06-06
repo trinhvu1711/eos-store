@@ -18,6 +18,7 @@ import { OrderStatus } from "@/lib/constants";
 export default function OrderPage() {
   const { data: session } = useSession();
   const [orders, setOrders] = useState<Order[] | null>(null);
+  console.log("🚀 ~ OrderPage ~ orders:", orders);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

@@ -6,6 +6,7 @@ import { getProduct, getProducts } from "@/lib/data";
 import { ProductImage } from "@/lib/type";
 import Link from "next/link";
 import React, { Suspense } from "react";
+import Comment from "@/components/product/comment";
 
 export default async function ProductPage({
   params,
@@ -39,6 +40,7 @@ export default async function ProductPage({
             <ProductDescription product={product} />
           </div>
         </div>
+        <Comment productId={product.id} />
         <Suspense>
           <RelatedProducts id={product.id} />
         </Suspense>
