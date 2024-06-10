@@ -170,3 +170,39 @@ export async function cancelOrder(token: string, trackingNumber: string) {
   // revalidatePath("/", "layout");
   // return data;
 }
+
+export async function processPayment(
+  amount: number,
+  bankCode: string,
+  trackingNumber: string,
+) {
+  const paymentUrl = `http://localhost:8088/api/v1/payment/vn-pay?amount=${amount}&bankCode=${bankCode}&trackingNumber=${trackingNumber}`;
+
+  const res = await fetch(paymentUrl);
+  if (!res.ok) {
+    throw new Error("Payment failed");
+  }
+
+  return res.json();
+}
+
+export async function setOrderPay(token: string, trackingNumber: string) {
+  const url = new URL(`${API_BASE_URL}/pay`);
+  url.searchParams.append("trackingNumber", trackingNumber);
+  const res = await fetch(url.toString(), {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to cancel order");
+  }
+  // revalidatePath("/", "layout");
+  const data: Order = await res.json();
+  // console.log("🚀 ~ getUserDetails ~ data:", data);
+  // revalidatePath("/", "layout");
+  // return data;
+}

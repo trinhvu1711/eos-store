@@ -1,5 +1,5 @@
 "use client";
-import { cancelOrder } from "@/lib/services/order";
+import { cancelOrder, processPayment } from "@/lib/services/order";
 import { getSelectedVariant, Order } from "@/lib/type";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { OrderStatus } from "@/lib/constants";
+import { BanknotesIcon } from "@heroicons/react/24/outline";
 
 export default function TrackingOrder({
   initialOrder,
@@ -18,14 +19,12 @@ export default function TrackingOrder({
   const router = useRouter();
   const [order, setOrder] = useState<Order>(initialOrder);
   // console.log("🚀 ~ order:", order);
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/auth");
-    }
-  }, [status, router]);
 
   const handleCancelOrder = async () => {
     try {
+      if (status === "unauthenticated") {
+        router.push("/auth");
+      }
       const token = session?.accessToken;
       await cancelOrder(token!, order.trackingNumber);
       setOrder({ ...order, status: "cancelled" });
@@ -36,6 +35,32 @@ export default function TrackingOrder({
           onClick: () => setOrder({ ...order, status: OrderStatus.PENDING }),
         },
       });
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const handlePay = async () => {
+    try {
+      if (status === "unauthenticated") {
+        router.push("/auth");
+      }
+      const token = session?.accessToken;
+
+      const amount = order.totalMoney;
+      const bankCode = "NCB";
+      const trackingNumber = order.trackingNumber;
+      const data = await processPayment(amount, bankCode, trackingNumber);
+      if (data.code !== 200 || data.data.code !== "ok") {
+        throw new Error("Payment processing error: " + data.message);
+      }
+
+      const paymentUrl = data.data.paymentUrl;
+      if (!paymentUrl) {
+        throw new Error("Payment URL not found");
+      }
+
+      router.push(paymentUrl);
     } catch (error) {
       alert(error);
     }
@@ -181,9 +206,16 @@ export default function TrackingOrder({
                 </svg>
                 Cancel Order
               </button>
+              <button
+                onClick={handlePay}
+                className={`group flex items-center justify-center gap-2 whitespace-nowrap border-gray-200 bg-white p-6 text-lg font-semibold text-black outline-0 transition-all duration-500 hover:text-indigo-600 sm:border-r sm:pr-6 ${order.paid ? "cursor-not-allowed opacity-50" : ""}`}
+                disabled={order.paid}
+              >
+                <BanknotesIcon className="h-6 w-6 stroke-black transition-all duration-500 group-hover:stroke-indigo-600" />
+                Pay
+              </button>
               <p className="py-3 pl-6 text-lg font-medium text-gray-900 max-lg:text-center">
-                Paid using {order.paymentMethod}{" "}
-                {/* <span className="text-gray-500">ending with 8822</span> */}
+                {order.paid ? `Paid using ${order.paymentMethod}` : "Not Paid"}
               </p>
             </div>
             <p className="py-6 text-lg font-semibold text-black">

@@ -109,6 +109,7 @@ export interface Order {
   paymentMethod: string;
   orderDetails: OrderDetail[];
   active: boolean;
+  paid: boolean;
 }
 
 export interface OrderDetail {
