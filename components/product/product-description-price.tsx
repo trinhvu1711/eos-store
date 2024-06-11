@@ -21,10 +21,21 @@ function ProductDescriptionPrice({ product }: { product: Product }) {
   // const selectVariantId = variant?.id || defaultVariantId;
   const price = variant?.price || defautVariant?.price;
   const currency = variant?.currency || defautVariant?.currency;
-  return Price({
-    amount: price?.toLocaleString()!,
-    currencyCode: currency,
-  });
+  const discountPrice = price! + variant?.discount! * price!;
+  return (
+    <div className="text-2xl">
+      {product.variants ? (
+        <div className="flex items-center gap-x-2">
+          {price!.toLocaleString() + currency}
+          <span className="text-sm text-gray-600 line-through">
+            {discountPrice!.toLocaleString()} VNĐ
+          </span>
+        </div>
+      ) : (
+        price!.toLocaleString() + " VNĐ"
+      )}
+    </div>
+  );
 }
 
 export default ProductDescriptionPrice;

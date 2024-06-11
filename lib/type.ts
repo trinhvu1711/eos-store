@@ -59,6 +59,7 @@ export interface Variant {
   availableForSale: boolean;
   price: number;
   currency: string;
+  discount: number;
   options: SelectedOption[];
 }
 
