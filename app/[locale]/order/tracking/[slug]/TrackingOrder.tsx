@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { OrderStatus } from "@/lib/constants";
 import { BanknotesIcon } from "@heroicons/react/24/outline";
+import { useTranslations } from "next-intl";
 
 export default function TrackingOrder({
   initialOrder,
@@ -18,7 +19,7 @@ export default function TrackingOrder({
   const { data: session, status } = useSession();
   const router = useRouter();
   const [order, setOrder] = useState<Order>(initialOrder);
-  // console.log("🚀 ~ order:", order);
+  const t = useTranslations("trackingOrder");
 
   const handleCancelOrder = async () => {
     try {
@@ -74,32 +75,22 @@ export default function TrackingOrder({
   return (
     <section className="relative py-24">
       <div className="lg-6 mx-auto w-full max-w-7xl px-4 md:px-5">
-        {/* <h2 className="text-4xl font-bold leading-10 text-center text-black font-manrope">
-          Payment Successful
-        </h2>
-        <p className="mt-4 text-lg font-normal leading-8 text-center text-gray-500 mb-11">
-          Thanks for making a purchase, you can check our order summary from
-          below
-        </p> */}
         <div className="main-box max-w-xl rounded-xl border border-gray-200 pt-6 max-lg:mx-auto lg:max-w-full">
           <div className="flex flex-col justify-between border-b border-gray-200 px-6 pb-6 lg:flex-row lg:items-center">
             <div className="data">
               <p className="text-base font-semibold leading-7 text-black">
-                Tracking Number:{" "}
+                {t("trackingNumber")}:{" "}
                 <span className="font-medium text-indigo-600">
                   {order.trackingNumber}
                 </span>
               </p>
               <p className="mt-4 text-base font-semibold leading-7 text-black">
-                Order Payment:{" "}
+                {t("orderPayment")}:{" "}
                 <span className="font-medium text-gray-400">
                   {formattedOrderDate}
                 </span>
               </p>
             </div>
-            {/* <button className="py-3 text-sm font-semibold leading-7 text-white transition-all duration-500 bg-indigo-600 rounded-full shadow-sm px-7 shadow-transparent hover:bg-indigo-700 hover:shadow-indigo-400 max-lg:mt-5">
-              Track Your Order
-            </button> */}
           </div>
           {order.orderDetails.map((detail) => {
             const selectedVariant = getSelectedVariant(detail);
@@ -124,17 +115,17 @@ export default function TrackingOrder({
                             {detail.product.name}
                           </h2>
                           <p className="mb-3 text-lg font-normal leading-8 text-gray-500">
-                            By: {detail.product.category.name}
+                            {t("by")}: {detail.product.category.name}
                           </p>
                           <div className="flex items-center">
                             <p className="mr-4 border-r border-gray-200 pr-4 text-base font-medium leading-7 text-black">
-                              Size:{" "}
+                              {t("size")}:{" "}
                               <span className="text-gray-500">
                                 {selectedVariant ? selectedVariant.name : "N/A"}
                               </span>
                             </p>
                             <p className="text-base font-medium leading-7 text-black">
-                              Qty:{" "}
+                              {t("qty")}:{" "}
                               <span className="text-gray-500">
                                 {detail.numberOfProducts}
                               </span>
@@ -146,7 +137,7 @@ export default function TrackingOrder({
                         <div className="col-span-5 flex items-center max-lg:mt-3 lg:col-span-1">
                           <div className="flex gap-3 lg:block">
                             <p className="text-sm font-medium leading-7 text-black">
-                              Price
+                              {t("price")}
                             </p>
                             <p className="text-sm font-medium leading-7 text-indigo-600 lg:mt-4">
                               ${total}
@@ -156,7 +147,7 @@ export default function TrackingOrder({
                         <div className="col-span-5 flex items-center max-lg:mt-3 lg:col-span-2">
                           <div className="flex gap-3 lg:block">
                             <p className="text-sm font-medium leading-7 text-black">
-                              Status
+                              {t("status")}
                             </p>
                             <p
                               className={`whitespace-nowrap rounded-full px-3 py-0.5 text-sm font-medium leading-6 lg:mt-3 ${isCanceled ? "bg-red-50 text-red-600" : "bg-emerald-50 text-emerald-600"}`}
@@ -168,7 +159,7 @@ export default function TrackingOrder({
                         <div className="col-span-5 flex items-center max-lg:mt-3 lg:col-span-2">
                           <div className="flex gap-3 lg:block">
                             <p className="whitespace-nowrap text-sm font-medium leading-6 text-black">
-                              Expected Delivery Time
+                              {t("expectedDeliveryTime")}
                             </p>
                             <p className="whitespace-nowrap text-base font-medium leading-7 text-emerald-500 lg:mt-3">
                               {formattedShippingDate}
@@ -204,7 +195,7 @@ export default function TrackingOrder({
                     strokeLinecap="round"
                   />
                 </svg>
-                Cancel Order
+                {t("cancelOrder")}
               </button>
               <button
                 onClick={handlePay}
@@ -212,14 +203,16 @@ export default function TrackingOrder({
                 disabled={order.paid}
               >
                 <BanknotesIcon className="h-6 w-6 stroke-black transition-all duration-500 group-hover:stroke-indigo-600" />
-                Pay
+                {t("pay")}
               </button>
               <p className="py-3 pl-6 text-lg font-medium text-gray-900 max-lg:text-center">
-                {order.paid ? `Paid using ${order.paymentMethod}` : "Not Paid"}
+                {order.paid
+                  ? `${t("paidUsing")} ${order.paymentMethod}`
+                  : t("notPaid")}
               </p>
             </div>
             <p className="py-6 text-lg font-semibold text-black">
-              Total Price:{" "}
+              {t("totalPrice")}:{" "}
               <span className="text-indigo-600">${order.totalMoney}</span>
             </p>
           </div>

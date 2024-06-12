@@ -71,12 +71,11 @@ const ProductItem = ({ product }: { product: Product }) => {
     setIsShowing(false);
   }
 
-  const { maxPrice, currencyCode } = getMaxVariantPriceAndCurrency(product);
   const variant = getDefaultVariant(product);
   return (
     <div className="transition-3 relative mb-12 flex flex-col justify-between ease-in-out">
       <div
-        className="w-img relative overflow-hidden"
+        className="w-img relative flex h-full justify-between overflow-hidden"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -128,7 +127,13 @@ const ProductItem = ({ product }: { product: Product }) => {
             {product.name}
           </Link>
         </h3>
-        <span className="text-base font-medium">{maxPrice}</span>
+        {variant ? (
+          <span className="text-base font-medium">
+            {variant.price.toLocaleString("vi-VN") + " " + variant.currency}
+          </span>
+        ) : (
+          <span className="text-base font-medium">Liên hệ</span>
+        )}
       </div>
     </div>
   );
