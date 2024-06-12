@@ -14,16 +14,17 @@ import { useEffect, useState } from "react";
 import { Order, OrderDetail } from "@/lib/type";
 import { getOrderDetailsFromToken } from "@/lib/services/order";
 import { OrderStatus } from "@/lib/constants";
+import { useTranslations } from "next-intl";
 
 export default function OrderPage() {
   const { data: session } = useSession();
   const [orders, setOrders] = useState<Order[] | null>(null);
-  console.log("🚀 ~ OrderPage ~ orders:", orders);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const searchParams = useSearchParams();
   const filter = searchParams?.get("filter") || OrderStatus.PENDING;
+  const t = useTranslations("order");
 
   useEffect(() => {
     const fetchorderDetails = async () => {
@@ -37,7 +38,7 @@ export default function OrderPage() {
           );
           setOrders(orderDetails);
         } catch (err) {
-          setError("Failed to fetch order details");
+          setError(t("error"));
         } finally {
           setIsLoading(false);
         }
@@ -45,16 +46,16 @@ export default function OrderPage() {
     };
 
     fetchorderDetails();
-  }, [filter, session]);
+  }, [filter, session, t]);
 
   if (isLoading) {
     return <Loading />;
   }
   if (error) {
-    return <div>Không có đơn hàng nào</div>;
+    return <div>{t("noOrders")}</div>;
   }
   if (!orders || orders.length === 0) {
-    return <div>Không có đơn hàng nào</div>;
+    return <div>{t("noOrders")}</div>;
   }
 
   return (
@@ -76,7 +77,7 @@ export default function OrderPage() {
                           aria-hidden="true"
                         />
                       </span>
-                      <p className="text-gray-600">Đang xử lý</p>
+                      <p className="text-gray-600">{t("pending")}</p>
                     </div>
                   )}
                   {order.status === OrderStatus.SHIPPING && (
@@ -87,7 +88,7 @@ export default function OrderPage() {
                           aria-hidden="true"
                         />
                       </span>
-                      <p className="text-gray-600">Đang Vận Chuyển</p>
+                      <p className="text-gray-600">{t("shipping")}</p>
                     </div>
                   )}
                   {order.status === OrderStatus.DELIVERED && (
@@ -98,7 +99,7 @@ export default function OrderPage() {
                           aria-hidden="true"
                         />
                       </span>
-                      <p className="text-gray-600">Vận chuyển thành công</p>
+                      <p className="text-gray-600">{t("delivered")}</p>
                     </div>
                   )}
                   {order.status === OrderStatus.CANCELED && (
@@ -109,7 +110,7 @@ export default function OrderPage() {
                           aria-hidden="true"
                         />
                       </span>
-                      <p className="text-gray-600">Đơn hàng hủy</p>
+                      <p className="text-gray-600">{t("canceled")}</p>
                     </div>
                   )}
                   <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
@@ -124,6 +125,7 @@ export default function OrderPage() {
                         </Link>
                       </p>
                     </div>
+                    <div>{order.paid ? t("paid") : t("unpaid")}</div>
                     <div className="whitespace-nowrap text-right text-sm text-gray-500">
                       {new Date(order.orderDate).toLocaleDateString()}
                     </div>

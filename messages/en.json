@@ -14,5 +14,31 @@
     "total": "Total",
     "proceedToCart": "Proceed to Cart",
     "proceedToCheckout": "Proceed to Checkout"
+  },
+  "order": {
+    "pending": "Pending",
+    "shipping": "Shipping",
+    "delivered": "Delivered",
+    "canceled": "Canceled",
+    "paid": "Paid",
+    "unpaid": "Unpaid",
+    "noOrders": "No orders available",
+    "error": "Failed to fetch order details"
+  },
+
+  "trackingOrder": {
+    "trackingNumber": "Tracking Number",
+    "orderPayment": "Order Payment",
+    "by": "By",
+    "size": "Size",
+    "qty": "Qty",
+    "price": "Price",
+    "status": "Status",
+    "expectedDeliveryTime": "Expected Delivery Time",
+    "cancelOrder": "Cancel Order",
+    "pay": "Pay",
+    "paidUsing": "Paid using",
+    "notPaid": "Not Paid",
+    "totalPrice": "Total Price"
   }
 }

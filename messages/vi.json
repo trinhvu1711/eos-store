@@ -14,5 +14,30 @@
     "total": "Tổng cộng",
     "proceedToCart": "Tiến hành đến giỏ hàng",
     "proceedToCheckout": "Tiến hành thanh toán"
+  },
+  "order": {
+    "pending": "Đang xử lý",
+    "shipping": "Đang Vận Chuyển",
+    "delivered": "Vận chuyển thành công",
+    "canceled": "Đơn hàng hủy",
+    "paid": "Đã thanh toán",
+    "unpaid": "Chưa thanh toán",
+    "noOrders": "Không có đơn hàng nào",
+    "error": "Không thể lấy thông tin đơn hàng"
+  },
+  "trackingOrder": {
+    "trackingNumber": "Số Theo Dõi",
+    "orderPayment": "Ngày Thanh Toán",
+    "by": "Bởi",
+    "size": "Kích thước",
+    "qty": "Số lượng",
+    "price": "Giá",
+    "status": "Trạng thái",
+    "expectedDeliveryTime": "Thời Gian Giao Hàng Dự Kiến",
+    "cancelOrder": "Hủy Đơn Hàng",
+    "pay": "Thanh Toán",
+    "paidUsing": "Thanh toán bằng",
+    "notPaid": "Chưa Thanh Toán",
+    "totalPrice": "Tổng Giá"
   }
 }
