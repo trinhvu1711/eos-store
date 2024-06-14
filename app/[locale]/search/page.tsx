@@ -29,8 +29,6 @@ export default async function SearchPage({
     limit: per_page,
     page: page,
   });
-  // console.log("🚀 ~ sortKey:", sortKey);
-  // console.log("🚀 ~ sortKey, reverse:", sortKey, reverse);
   const resultsText = data.products.length > 1 ? "results" : "result";
 
   return (
@@ -48,13 +46,16 @@ export default async function SearchPage({
           <ProductGridItems products={data.products} />
         </Grid>
       ) : null}
-      <div className="mt-4 flex justify-center">
-        <PaginationControls
-          hasNextPage={page < data.totalPage}
-          hasPrevPage={page > 0}
-          totalPage={data.totalPage}
-        />
-      </div>
+
+      {data.totalPage > 0 ? (
+        <div className="mt-4 flex justify-center">
+          <PaginationControls
+            hasNextPage={page < data.totalPage}
+            hasPrevPage={page > 0}
+            totalPage={data.totalPage}
+          />
+        </div>
+      ) : null}
     </>
   );
 }

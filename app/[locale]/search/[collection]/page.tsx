@@ -36,13 +36,15 @@ export default async function CategoryPage({
           <ProductGridItems products={data.products} />
         </Grid>
       )}
-      <div className="mt-4 flex justify-center">
-        <PaginationControls
-          hasNextPage={page < data.totalPage}
-          hasPrevPage={page > 1}
-          totalPage={data.totalPage}
-        />
-      </div>
+      {data.totalPage > 0 ? (
+        <div className="mt-4 flex justify-center">
+          <PaginationControls
+            hasNextPage={page < data.totalPage}
+            hasPrevPage={page > 0}
+            totalPage={data.totalPage}
+          />
+        </div>
+      ) : null}
     </section>
   );
 }
