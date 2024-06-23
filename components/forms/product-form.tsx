@@ -308,7 +308,7 @@ const FileSvgDraw = () => {
         await axios.delete(`${API_BASE_URL}/delete/${initialData.id}`,config);
         
         router.refresh();
-         router.push(`/admin/product`);
+        router.push(`/admin/product`);
       } catch (error: any) {
       } finally {
         setLoading(false);

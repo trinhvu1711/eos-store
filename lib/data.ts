@@ -7,6 +7,7 @@ import {
   getMaxVariantPriceAndCurrency,
   Product,
   ProductAdmin,
+  User,
   UserAdmin,
 } from "./type";
 
@@ -129,6 +130,29 @@ export async function getAdminProduct(id: number): Promise<ProductAdmin> {
     throw new Error("Failed to get product: " + error.message);
   }
 }
+export async function getAdminUser(id: number, token: string): Promise<User> {
+  try {
+    const response = await fetch(`http://localhost:8088/api/v1/users/get-user/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json", // This is fine, but not required for GET
+      },
+    });
+
+    if (!response.ok) {
+      const errorMessage = `Failed to fetch user: ${response.statusText} (Status: ${response.status})`;
+      console.error(errorMessage);
+      throw new Error(errorMessage);
+    }
+
+    const data: User = await response.json();
+    return data;
+  } catch (error: any) {
+    console.error("Error occurred while fetching the user:", error);
+    throw new Error("Failed to get product: " + error.message);
+  }
+}
+
 // Order
 export async function getOrder(cartId: string) {
   try {

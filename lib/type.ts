@@ -26,7 +26,6 @@ export interface Category {
   imageUrl: string;
   slug: string;
 }
-
 export interface AdminCategory {
   id: number;
   name: string;
