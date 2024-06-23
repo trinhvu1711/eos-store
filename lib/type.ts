@@ -27,6 +27,15 @@ export interface Category {
   slug: string;
 }
 
+export interface AdminCategory {
+  id: number;
+  name: string;
+}
+export interface AdminVariant {
+  id: number;
+  name: string;
+}
+
 export interface Role {
   id: number;
   name: string;
