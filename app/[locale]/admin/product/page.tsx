@@ -25,6 +25,11 @@ export default async function page({ searchParams }: paramsProps) {
   const res = await fetch(
     `http://localhost:8088/api/v1/products/search?` +
       (productName ? `&search=${productName}` : ""),
+    {
+      headers: {
+        'Cache-Control': 'no-store'
+      }
+    }
   );
 
   let productRes;

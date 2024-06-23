@@ -40,6 +40,8 @@ import { AdminCategory, AdminVariant } from "@/lib/type";
 import { getAllCategories } from "@/lib/services/admin/category";
 import { getAllVariants } from "@/lib/services/admin/variant";
 import { MultiSelect } from "@/components/multi-select";
+import { set } from "date-fns";
+import { AlertModal } from "@/components/modal/alert-modal";
 export const IMG_MAX_LIMIT = 5;
 const formSchema = z.object({
   name: z
@@ -151,6 +153,7 @@ const FileSvgDraw = () => {
     </>
   );
 };
+
   export const ProductForm: React.FC<ProductFormProps> = ({
     initialData,
   }) => {
@@ -164,10 +167,13 @@ const FileSvgDraw = () => {
     const toastMessage = initialData ? "Product updated." : "Product created.";
     const action = initialData ? "Save changes" : "Create";
     const { categories, isLoading: categoriesLoading, error: categoriesError } = useCategories();
+    const [category, setCategory] = useState<string | null>(null);
     const { variants, isLoading: variantsLoading, error: variantsError } = useVariants();
     const [selectedVariants, setSelectedVariants] = useState<string[]>([]);
     const [thumbnail, setThumbnail] = useState<File[] | null>(null);
     const [images, setImages] = useState<File[] | null>(null);
+    const [isThumbnailUploaded, setIsThumbnailUploaded] = useState(false);
+    const [areImagesUploaded, setAreImagesUploaded] = useState(false);
     const dropZoneThumbnailConfig = {
       maxFiles: 1,
       maxSize: 1024 * 1024 * 4,
@@ -183,14 +189,15 @@ const FileSvgDraw = () => {
     const defaultValues = initialData
       ? initialData
       : {
+        id: "",
         name: "",
         description: "",
-        price: 0,
-        thumbnail:"",
-        images: [],
-        category: "",
+        categories: "",
         variants: [],
+        thumbnail: "",
+        images: [],
       };
+    
     const variantsList = variants.map(variant => ({
       label: variant.name,
       value: variant.id.toString()
@@ -202,82 +209,121 @@ const FileSvgDraw = () => {
     
     const { data: session } = useSession();
     const token = session?.accessToken;
-    console.log("token", token)
-    const onSubmit = async (data: ProductFormValues) => {
-  try {
-    setLoading(true);
-    let formData = new FormData();
+    async function urlToFile(url:string, filename:string) {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            return new File([blob], filename, { type: blob.type });
+        }
 
-    const product = {
-      name: data.name, 
-      description: data.description, 
-      category_id: data.category,
-      variants: data.variants,
-    };
-      const productBlob = new Blob([JSON.stringify(product)], { type: "application/json" });
-
-
-    formData.append('product', productBlob);
-
-    if (thumbnail && thumbnail.length > 0) {
-      formData.append('thumbnail', thumbnail[0]);
-    }
-    images?.forEach((image) => {
-      formData.append('files', image);
-    });
+    async function processInitialData(initialData: ProductFormValues) {
+        const baseUrl = "http://localhost:8088/api/v1/products/images/";
     
-    if (!token) {
-      console.error("Token is not available");
-      return;
+        // Xử lý thumbnail
+        if (initialData.thumbnail) {
+            const thumbnailFile = await urlToFile(baseUrl + initialData.thumbnail, initialData.thumbnail);
+            setThumbnail([thumbnailFile]);
+        }
+    
+        // Xử lý images
+        if (initialData.images && initialData.images.length > 0) {
+            const imageFiles = await Promise.all(initialData.images.map(async (image: string) => {
+                return await urlToFile(baseUrl + image, image);
+            }));
+            setImages(imageFiles);
+        }
     }
+    useEffect(() => {
+      if (initialData) {
+        processInitialData(initialData);
+      }
+    }, [initialData]);
+    const onSubmit = async (data: ProductFormValues) => {
+      try {
+        setLoading(true);
+        let formData = new FormData();
 
-    const config = {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data',
-      },
+        const product = {
+          name: data.name, 
+          description: data.description, 
+          category_id: data.category,
+          variants: data.variants,
+        };
+          const productBlob = new Blob([JSON.stringify(product)], { type: "application/json" });
+
+
+        formData.append('product', productBlob);
+
+        if (thumbnail && thumbnail.length > 0 && isThumbnailUploaded) {
+          formData.append('thumbnail', thumbnail[0]);
+        }
+        if (images && images.length > 0 && areImagesUploaded) {
+          images?.forEach((image) => {
+          formData.append('files', image);
+        });
+        }
+        
+        
+        if (!token) {
+          console.error("Token is not available");
+          return;
+        }
+
+        const config = {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        };
+        if (initialData) {
+          const res = await axios.post(`${API_BASE_URL}/${initialData.id}`, formData, config);
+        } else {
+          const res = await axios.post(`${API_BASE_URL}`, formData, config);
+        }
+        
+      } catch (error: any) {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        });
+      } finally {
+        setLoading(false);
+      }
+      router.refresh();
+      router.push(`/admin/product`);
+      toast({
+        title: "Congratulations!",
+        description: "New product has been successfully created.",
+      });
     };
 
-    const res = await axios.post(`${API_BASE_URL}`, formData, config);
-    console.log("product", res);
-  } catch (error: any) {
-    toast({
-      variant: "destructive",
-      title: "Uh oh! Something went wrong.",
-      description: "There was a problem with your request.",
-    });
-  } finally {
-    setLoading(false);
-  }
-  router.refresh();
-  router.push(`/admin/product`);
-  toast({
-    title: "Congratulations!",
-    description: "New product has been successfully created.",
-  });
-};
-
-    // const onDelete = async () => {
-    //   try {
-    //     setLoading(true);
-    //       await axios.delete(`/api/${params.storeId}/products/${params.productId}`);
-    //     router.refresh();
-    //     router.push(`/${params.storeId}/products`);
-    //   } catch (error: any) {
-    //   } finally {
-    //     setLoading(false);
-    //     setOpen(false);
-    //   }
-    // };
+    const onDelete = async () => {
+      try {
+        setLoading(true);
+        const config = {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        };
+        await axios.delete(`${API_BASE_URL}/delete/${initialData.id}`,config);
+        
+        router.refresh();
+         router.push(`/admin/product`);
+      } catch (error: any) {
+      } finally {
+        setLoading(false);
+        setOpen(false);
+      }
+    };
 
     return (
       <>
-        {/* <AlertModal
+        <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
         onConfirm={onDelete}
         loading={loading}
-      /> */}
+      />
         <div className="flex items-center justify-between">
           <Heading title={title} description={description} />
           {initialData && (
@@ -341,14 +387,17 @@ const FileSvgDraw = () => {
                     <FormLabel>Category</FormLabel>
                     <Select
                       disabled={loading}
-                      onValueChange={field.onChange}
+                      onValueChange={(value) => {
+                        setCategory(value);
+                        field.onChange(value);
+                      }}
                       value={field.value}
                       defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue
-                            defaultValue={field.value}
+                            defaultValue={field.value }
                             placeholder="Select a category"
                           />
                         </SelectTrigger>
@@ -400,11 +449,16 @@ const FileSvgDraw = () => {
                   <FileUploader
                     value={thumbnail}
                     onValueChange={(files) => {
-                      if (files) {
-                        setThumbnail([files[0]]);
-                        field.onChange(files[0].name);
-                        console.log([files[0]]);
-                      }
+                        if (files && files.length > 0) {
+                          setThumbnail([files[0]]);
+                          setIsThumbnailUploaded(true);
+                          field.onChange(files[0].name);
+                          console.log([files[0]]);
+                        } else {
+                          setThumbnail([]); 
+                          setIsThumbnailUploaded(false);
+                          field.onChange(''); 
+                        }
                       }}
                     dropzoneOptions={dropZoneThumbnailConfig}
                     className="relative bg-background rounded-lg p-2"
@@ -441,6 +495,9 @@ const FileSvgDraw = () => {
                       if (files) {
                         setImages(files);
                         field.onChange(files.map((file) => file.name));
+                        setAreImagesUploaded(true);
+                      } else {
+                        setAreImagesUploaded(false);
                       }
                     }}
                     dropzoneOptions={dropZoneImagesConfig}

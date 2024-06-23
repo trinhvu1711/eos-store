@@ -84,7 +84,18 @@ export interface Product {
   productImages: ProductImage[];
   variants: Variant[];
 }
-
+export interface ProductAdmin {
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  name: string;
+  thumbnail: string;
+  description: string | null;
+  categoryId: number;
+  descriptionHtml: string;
+  productImages: ProductImage[];
+  variants: Variant[];
+}
 export interface CartItem {
   id: number;
   product: Product;

@@ -6,6 +6,7 @@ import {
   Coupon,
   getMaxVariantPriceAndCurrency,
   Product,
+  ProductAdmin,
   UserAdmin,
 } from "./type";
 
@@ -110,6 +111,24 @@ export async function getProduct(id: number): Promise<Product> {
     throw new Error("Failed to get product: " + error.message);
   }
 }
+export async function getAdminProduct(id: number): Promise<ProductAdmin> {
+  try {
+    const response = await fetch(`http://localhost:8088/api/v1/products/${id}`, {
+      headers: {
+        'Cache-Control': 'no-store'
+      }
+    });
+    if (!response.ok) {
+      throw new Error("Failed to fetch product");
+    }
+    const data: ProductAdmin = await response.json();
+    // console.log("🚀 ~ getProduct ~ data:", data);
+    return data;
+  } catch (error: any) {
+    // Properly type the error
+    throw new Error("Failed to get product: " + error.message);
+  }
+}
 // Order
 export async function getOrder(cartId: string) {
   try {
@@ -161,7 +180,11 @@ export async function getCategories(): Promise<Category[]> {
 //get all user
 export async function getAllUser(): Promise<UserAdmin[]> {
   try {
-    const response = await fetch("http://localhost:8088/api/v1/users/getAll");
+    const response = await fetch("http://localhost:8088/api/v1/users/getAll", {
+      headers: {
+        'Cache-Control': 'no-store'
+      }
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch getAllUser here");
     }
@@ -172,6 +195,7 @@ export async function getAllUser(): Promise<UserAdmin[]> {
     throw new Error("Failed to get users: " + error.message);
   }
 }
+
 
 export async function getCoupons(): Promise<Coupon[]> {
   try {
