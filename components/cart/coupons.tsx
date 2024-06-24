@@ -119,18 +119,21 @@ export default function Coupons({
         <div className="divide-y">
           <div className="flex justify-between py-4">
             <span className="font-medium">Tạm Tính:</span>
-            <span className="text-sm">{totalAmount.toLocaleString()} VNĐ</span>
+            <span className="text-sm">
+              {totalAmount.toLocaleString("vi-VN")} VNĐ
+            </span>
           </div>
           <div className="flex justify-between py-4">
             <span className="font-medium">Giảm Giá:</span>
             <span className="text-sm">
-              - {discount?.toLocaleString() || 0} VNĐ
+              - {discount?.toLocaleString("vi-VN") || 0} VNĐ
             </span>
           </div>
           <div className="flex justify-between py-4">
             <span className="font-medium">Tổng:</span>
             <span className="font-medium">
-              {discountResult?.toLocaleString() || totalAmount.toLocaleString()}{" "}
+              {discountResult?.toLocaleString("vi-VN") ||
+                totalAmount.toLocaleString("vi-VN")}{" "}
               VNĐ
             </span>
           </div>

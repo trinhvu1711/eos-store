@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 function CartList({ item }: { item: CartItem }) {
-  const total = item.totalMoney;
+  const total = Number(item.totalMoney);
   const imageLink = `http://localhost:8088/api/v1/products/images/${item.product.thumbnail}`;
   const selectedVariant = getSelectedVariant(item);
 
@@ -54,7 +54,7 @@ function CartList({ item }: { item: CartItem }) {
         </div>
       </div>
       <div className="min-w-[140px] text-center text-sm md:text-base">
-        {item.price.toLocaleString()} VNĐ
+        {item.price!.toLocaleString("vi-VN") + " VNĐ"}
       </div>
       <div className="flex items-center justify-center">
         <div className="flex h-9 flex-row items-center rounded-sm border border-neutral-200 dark:border-neutral-700">
@@ -66,7 +66,7 @@ function CartList({ item }: { item: CartItem }) {
         </div>
       </div>
       <div className="min-w-[140px] text-right">
-        {total.toLocaleString()} VNĐ
+        {total.toLocaleString("vi-VN") + " VNĐ"}
       </div>
     </div>
   );
