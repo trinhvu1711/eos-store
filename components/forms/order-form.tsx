@@ -40,75 +40,34 @@ import { AlertModal } from "@/components/modal/alert-modal";
 import { getAllRoles } from "@/lib/services/admin/data";
 import { getAdminUser } from "@/lib/data";
 import { Role } from "@/lib/type";
+import { de } from "date-fns/locale";
 export const IMG_MAX_LIMIT = 5;
-const addformSchema = z.object({
-  id: z.string(),
-  name: z
-    .string()
-    .min(3, { message: "Your name must be at least 3 characters" }),
-  address: z
-    .string()
-    .min(3, { message: "Address must be at least 3 characters" }),
-  role: z.string().min(1, { message: "Please select a role" }),
-  phone: z.string()
-      .min(10, { message: "Please enter a valid phone number" })
-    .regex(/^[0-9]+$/, { message: "Please enter a valid phone number" }),
-  email: z.string().email({ message: "Please enter a valid email" }),
-  password: z.string().min(8, { message: "Password must be at least 8 characters" }),
-  confirmPassword: z.string().min(8, { message: "Password must be at least 8 characters" }),
-  }).refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
+const formSchema = z.object({
+  status: z.string(),
+  paid: z.string(),
+  fullName: z.string(),
+  phoneNumber: z.string(),
+  trackingNumber: z.string().optional(),
+  orderDate: z.string(),
 });
-const updateformSchema = z.object({
-  id: z.string(),
-  name: z
-    .string()
-    .min(3, { message: "Your name must be at least 3 characters" }),
-  address: z
-    .string()
-    .min(3, { message: "Address must be at least 3 characters" }),
-  role: z.string().min(1, { message: "Please select a role" }),
-  phone: z.string()
-      .min(10, { message: "Please enter a valid phone number" })
-    .regex(/^[0-9]+$/, { message: "Please enter a valid phone number" }),
-  email: z.string().email({ message: "Please enter a valid email" }),
-});
-type UserFormValues = z.infer<typeof addformSchema>;
+type OrderFormValues = z.infer<typeof formSchema>;
 
-interface UserFormProps {
+interface OrderFormProps {
   initialData: any | null;
 }
 const API_BASE_URL = "http://localhost:8088/api/v1/users";
-const useRoles = () => {
-  const { data: session } = useSession();
-  const [roles, setRoles] = useState<Role[]>([]); 
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchRoles = async () => {
-       if (session && session.accessToken) {
-        try {
-          const roles = await getAllRoles(session.accessToken);
-          setRoles(roles!);
-        } catch (err) {
-          console.error(err);
-          setError("Failed to fetch Roles");
-        } finally {
-          setIsLoading(false);
-        }
-       } else {
-         setError("Sessions not found");
-      }
-    };
-
-    fetchRoles();
-  }, [session]);
-  return { roles, isLoading, error };
-};
-
-  export const UserForm: React.FC<UserFormProps> = ({
+const statusDelivery = [
+  { id: "pending", name: "Pending" },
+  { id: "shipping", name: "Shipping" },
+  { id: "delivered", name: "Delivered" },
+  { id: "cancelled", name: "Cancelled" },
+  ];
+const statusPayment = [
+  { id: "true", name: "Paid" },
+  { id: "false", name: "Unpaid"}
+]
+  export const OrderForm: React.FC<OrderFormProps> = ({
     initialData,
   }) => {
     const params = useParams();
@@ -116,43 +75,25 @@ const useRoles = () => {
     const { toast } = useToast();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-    const title = initialData ? "Edit user" : "Create user";
-    const description = initialData ? "Edit a user." : "Add a new user";
-    const toastMessage = initialData ? "user updated." : "user created.";
-    const action = initialData ? "Save changes" : "Create";
-    const { roles, isLoading: rolesLoading, error: rolesError } = useRoles();
-    const [role, setRole] = useState<string | null>(null);
+    const title = initialData ? "Edit order" : "Create order";
+    const description = initialData ? "Edit a order." : "Add a new order";
+    const toastMessage = initialData ? "order updated." : "order created.";
+    const action = initialData ? "Update" : "Create";
+    const [status, setStatus] = useState<string | null>(null);
+    const [paid, setPaid] = useState<string>('');
     const defaultValues = initialData
       ? initialData
       : {
         id: "",
       };
-    const form = useForm<UserFormValues>({
-      resolver: zodResolver(initialData ? updateformSchema : addformSchema),
+    const form = useForm<OrderFormValues>({
+      resolver: zodResolver(formSchema),
       defaultValues,
     });
+    console.log(defaultValues)
     const { data: session } = useSession();
     const token = session?.accessToken ?? '';
-    async function processInitialData(initialData: UserFormValues, token: string) {
-    try {
-      console.log('Initial data:', initialData);
-      const data = await getAdminUser(Number(initialData.id), token);
-      console.log(token)
-      console.log('Fetched data:', data);
-      if (data) {
-        form.setValue("name", data.fullName);
-        form.setValue("address", data.address);
-        form.setValue("role", data.role.id.toString());
-        form.setValue("phone", data.phoneNumber);
-        form.setValue("email", data.email);
-      }
-    } catch (error) {
-      console.error('Failed to process initial data:', error);
-    }
-  }
-        processInitialData(initialData,token);
-    
-    const onSubmit = async (data: UserFormValues) => {
+    const onSubmit = async (data: OrderFormValues) => {
       try {
         setLoading(true);
 
@@ -167,30 +108,16 @@ const useRoles = () => {
             'Content-Type': 'application/json',
           },
         };
-        if (initialData) {
-          const user = {
-          name: data.name, 
-          address: data.address, 
-          role: data.role,
-          phone: data.phone,
-          email: data.email,
-        };
-          const userData = JSON.stringify(user);
+        const order = {
+          orderId: initialData.id,
+          status: data.status,
+          paid: data.paid==='true'?true:false,
+        }
+          const userData = JSON.stringify(order);
           
           const res = await axios.put(`${API_BASE_URL}/${initialData.id}`, userData, config);
-        } else {
-          const user = {
-          name: data.name, 
-          address: data.address, 
-          role: data.role,
-          phone: data.phone,
-          email: data.email,
-          password: data.password,
-          confirmPassword: data.confirmPassword,
-        };
-         const userData= JSON.stringify(user);
-          const res = await axios.post(`${API_BASE_URL}`, userData, config);
-        }
+        
+        
         
       } catch (error: any) {
         toast({
@@ -202,7 +129,7 @@ const useRoles = () => {
         setLoading(false);
       }
       router.refresh();
-      router.push(`/admin/user`);
+      router.push(`/admin/order`);
       toast({
         title: "Congratulations!",
         description: "New user has been successfully created.",
@@ -259,13 +186,13 @@ const useRoles = () => {
             <div className="md:grid md:grid-cols-2 gap-8">
               <FormField
                 control={form.control}
-                name="name"
+                name="fullName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
                       <Input
-                        disabled={loading}
+                         disabled={loading || !!initialData}
                         placeholder="Full Name"
                         {...field}
                       />
@@ -276,15 +203,14 @@ const useRoles = () => {
               />
               <FormField
                 control={form.control}
-                name="email"
+                name="phoneNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Phone</FormLabel>
                     <FormControl>
                       <Input
-                        disabled={loading}
-                        type="email"
-                        placeholder="Email Address"
+                         disabled={loading || !!initialData}
+                        placeholder="Phone Number"
                         {...field}
                       />
                     </FormControl>
@@ -294,15 +220,14 @@ const useRoles = () => {
               />
               <FormField
                 control={form.control}
-                name="password"
+                name="orderDate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Order Date</FormLabel>
                     <FormControl>
                       <Input
-                        disabled={loading || !!initialData}
-                        placeholder="Password"
-                        type="password"
+                         disabled={loading || !!initialData}
+                        placeholder="Order Date"
                         {...field}
                       />
                     </FormControl>
@@ -312,15 +237,14 @@ const useRoles = () => {
               />
               <FormField
                 control={form.control}
-                name="confirmPassword"
+                name="trackingNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
+                    <FormLabel>Tracking Number</FormLabel>
                     <FormControl>
                       <Input
-                        disabled={loading || !!initialData}
-                        placeholder="Confirm Password"
-                        type="password"
+                         disabled={loading || !!initialData}
+                        placeholder="Tracking Number"
                         {...field}
                       />
                     </FormControl>
@@ -329,47 +253,17 @@ const useRoles = () => {
                 )}
               />
             </div>
-            <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Address</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={loading}
-                        placeholder="Address"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             <div className="md:grid md:grid-cols-2 gap-8">
               <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone</FormLabel>
-                  <FormControl>
-                    <Input type="text" disabled={loading} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-              <FormField
                 control={form.control}
-                name="role"
+                name="status"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Role</FormLabel>
+                    <FormLabel>Status</FormLabel>
                     <Select
                       disabled={loading}
                       onValueChange={(value) => {
-                        setRole(value);
+                        setStatus(value);
                         field.onChange(value);
                       }}
                       value={field.value}
@@ -385,9 +279,44 @@ const useRoles = () => {
                       </FormControl>
                       <SelectContent>
                         {/* @ts-ignore  */}
-                        {roles?.map((role) => (
-                          <SelectItem key={role.id} value={role.id.toString()}>
-                            {role.name}
+                        {statusDelivery?.map((status) => (
+                          <SelectItem key={status.id} value={status.id.toString()}>
+                            {status.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="paid"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Paid</FormLabel>
+                    <Select
+                      disabled={loading}
+                      onValueChange={(value) => {
+                        setPaid(value);
+                        field.onChange(value);
+                      }}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue
+                            defaultValue={field.value }
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {/* @ts-ignore  */}
+                        {statusPayment?.map((status) => (
+                          <SelectItem key={status.id} value={status.id.toString()}>
+                            {status.name}
                           </SelectItem>
                         ))}
                       </SelectContent>

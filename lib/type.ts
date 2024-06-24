@@ -95,6 +95,19 @@ export interface ProductAdmin {
   productImages: ProductImage[];
   variants: Variant[];
 }
+
+export interface OrderUpdate {
+
+fullName: string;
+phoneNumber: string;
+status: string;
+isPaid: boolean;
+trackingNumber: string;
+orderDate: string;
+orderDetails: OrderDetailUpdate[];
+
+}
+
 export interface CartItem {
   id: number;
   product: Product;
@@ -131,7 +144,12 @@ export interface Order {
   active: boolean;
   paid: boolean;
 }
-
+export interface OrderDetailUpdate {
+  productName: string;
+  price: number;
+  numberOfProducts: number;
+  totalMoney: number;
+}
 export interface OrderDetail {
   id: number;
   product: Product;
