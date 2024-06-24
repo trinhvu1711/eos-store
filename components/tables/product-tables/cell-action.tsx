@@ -9,7 +9,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Employee, Product } from "@/constants/data";
+import axios from "axios";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -21,15 +23,34 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
-
+  const { data: session } = useSession();
+  const token = session?.accessToken;
+  const API_BASE_URL = "http://localhost:8088/api/v1/admin/products";
   const onConfirm = async () => {};
-
+  const onDelete = async () => {
+    
+        try {
+          setLoading(true);
+          const config = {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          };
+          await axios.delete(`${API_BASE_URL}/delete/${data.id}`,config);
+          
+          router.refresh();
+        } catch (error: any) {
+        } finally {
+          setLoading(false);
+          setOpen(false);
+        }
+      };
   return (
     <>
       <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
-        onConfirm={onConfirm}
+        onConfirm={onDelete}
         loading={loading}
       />
       <DropdownMenu modal={false}>
@@ -43,11 +64,13 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
           <DropdownMenuItem
-            onClick={() => router.push(`/admin/user/${data.id}`)}
+            onClick={() => router.push(`/admin/product/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setOpen(true)}>
+          <DropdownMenuItem onClick={() => {
+            setOpen(true);
+          }}>
             <Trash className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>

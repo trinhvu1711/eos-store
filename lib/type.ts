@@ -26,6 +26,14 @@ export interface Category {
   imageUrl: string;
   slug: string;
 }
+export interface AdminCategory {
+  id: number;
+  name: string;
+}
+export interface AdminVariant {
+  id: number;
+  name: string;
+}
 
 export interface Role {
   id: number;
@@ -75,6 +83,30 @@ export interface Product {
   productImages: ProductImage[];
   variants: Variant[];
 }
+export interface ProductAdmin {
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  name: string;
+  thumbnail: string;
+  description: string | null;
+  categoryId: number;
+  descriptionHtml: string;
+  productImages: ProductImage[];
+  variants: Variant[];
+}
+
+export interface OrderUpdate {
+
+fullName: string;
+phoneNumber: string;
+status: string;
+isPaid: boolean;
+trackingNumber: string;
+orderDate: string;
+orderDetails: OrderDetailUpdate[];
+
+}
 
 export interface CartItem {
   id: number;
@@ -112,7 +144,12 @@ export interface Order {
   active: boolean;
   paid: boolean;
 }
-
+export interface OrderDetailUpdate {
+  productName: string;
+  price: number;
+  numberOfProducts: number;
+  totalMoney: number;
+}
 export interface OrderDetail {
   id: number;
   product: Product;

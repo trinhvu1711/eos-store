@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User } from "@/constants/data";
-import { UserAdmin } from "@/lib/type";
+import { Order } from "@/lib/type";
 import axios from "axios";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -17,16 +17,16 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface CellActionProps {
-  data: UserAdmin;
+  data: Order;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const { data: session } = useSession();
+const { data: session } = useSession();
   const token = session?.accessToken;
-  const API_BASE_URL = "http://localhost:8088/api/v1/admin/users";
+  const API_BASE_URL = "http://localhost:8088/api/v1/admin/orders";
   const onConfirm = async () => {};
 const onDelete = async () => {
       try {
@@ -37,7 +37,9 @@ const onDelete = async () => {
           },
         };
         await axios.delete(`${API_BASE_URL}/delete-user/${data.id}`,config);
+        
         router.refresh();
+        router.push(`/admin/user`);
       } catch (error: any) {
       } finally {
         setLoading(false);
@@ -63,7 +65,7 @@ const onDelete = async () => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
           <DropdownMenuItem
-            onClick={() => router.push(`/admin/user/${data.id}`)}
+            onClick={() => router.push(`/admin/order/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>

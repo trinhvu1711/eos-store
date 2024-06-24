@@ -3,26 +3,23 @@ import { UserForm } from "@/components/forms/user-form";
 import { ScrollArea } from "@/components/ui/scroll-area"; // Import the getServerSession function
 import React from "react";
 
-export default async function Page({ params }: { params: { userId: string } }) {
+export default async function Page({ params }: { params: { variantId: string } }) {
   const breadcrumbItems = [
-    { title: "User", link: "/admin/user" },
-    { title: "Create", link: "/admin/user/create" },
+    { title: "User", link: "/admin/variant" },
+    { title: "Create", link: "/admin/variant/create" },
   ];
   let initialData = null; 
-    console.log("userId", params.userId)
-    if (Number(params.userId)) {
-      const { userId } = params;
-      initialData={id: userId}
+    console.log("variantId", params.variantId)
+    if (Number(params.variantId)) {
+      const { variantId } = params;
+      initialData={id: variantId}
     }
   return (
     <ScrollArea className="h-full">
       <div className="flex-1 space-y-4 p-5">
         <BreadCrumb items={breadcrumbItems} />
         <UserForm
-          initialData={initialData ? {
-            id: initialData.id.toString(),
-            isInitialData: true,
-          }:null}
+          initialData={null}
           key={null}
         />
       </div>
