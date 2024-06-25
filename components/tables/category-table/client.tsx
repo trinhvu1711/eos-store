@@ -13,7 +13,7 @@ interface ProductsClientProps {
   data: Category[];
 }
 
-export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
+export const CategoryClient: React.FC<ProductsClientProps> = ({ data }) => {
   const router = useRouter();
 
   return (
@@ -31,7 +31,7 @@ export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
         </Button>
       </div>
       <Separator />
-       <DataTable searchKey="fullName" columns={columns} data={data} />
+       <DataTable searchKey="name" columns={columns} data={data} />
     </>
   );
 };

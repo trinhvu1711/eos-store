@@ -46,6 +46,7 @@ interface DataTableProps<TData, TValue> {
   searchParams?: {
     [key: string]: string | string[] | undefined;
   };
+  
 }
 
 export function ProductTable<TData, TValue>({
@@ -128,33 +129,7 @@ export function ProductTable<TData, TValue>({
 
   const searchValue = table.getColumn(searchKey)?.getFilterValue() as string;
 
-  // React.useEffect(() => {
-  //   if (debounceValue.length > 0) {
-  //     router.push(
-  //       `${pathname}?${createQueryString({
-  //         [selectedOption.value]: `${debounceValue}${
-  //           debounceValue.length > 0 ? `.${filterVariety}` : ""
-  //         }`,
-  //       })}`,
-  //       {
-  //         scroll: false,
-  //       }
-  //     )
-  //   }
-
-  //   if (debounceValue.length === 0) {
-  //     router.push(
-  //       `${pathname}?${createQueryString({
-  //         [selectedOption.value]: null,
-  //       })}`,
-  //       {
-  //         scroll: false,
-  //       }
-  //     )
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [debounceValue, filterVariety, selectedOption.value])
-
+  // Handle search
   React.useEffect(() => {
     if (searchValue?.length > 0) {
       router.push(

@@ -7,13 +7,13 @@ import { User } from "@/constants/data";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { columns } from "./columns";
-import { UserAdmin } from "@/lib/type";
+import { UserAdmin, Variant } from "@/lib/type";
 
 interface ProductsClientProps {
-  data: UserAdmin[];
+  data: Variant[];
 }
 
-export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
+export const VariantClient: React.FC<ProductsClientProps> = ({ data }) => {
   const router = useRouter();
 
   return (
@@ -25,13 +25,13 @@ export const UserClient: React.FC<ProductsClientProps> = ({ data }) => {
         />
         <Button
           className="text-xs md:text-sm"
-          onClick={() => router.push(`/admin/user/new`)}
+          onClick={() => router.push(`/admin/variant/new`)}
         >
           <Plus className="mr-2 h-4 w-4" /> Add New
         </Button>
       </div>
       <Separator />
-       <DataTable searchKey="fullName" columns={columns} data={data} />
+       <DataTable searchKey="name" columns={columns} data={data} />
     </>
   );
 };

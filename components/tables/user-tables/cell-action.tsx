@@ -26,9 +26,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter();
   const { data: session } = useSession();
   const token = session?.accessToken;
-  const API_BASE_URL = "http://localhost:8088/api/v1/admin/users";
+  const API_BASE_URL = "http://localhost:8088/api/v1/users";
   const onConfirm = async () => {};
-const onDelete = async () => {
+  const onDelete = async () => {
       try {
         setLoading(true);
         const config = {
@@ -37,6 +37,7 @@ const onDelete = async () => {
           },
         };
         await axios.delete(`${API_BASE_URL}/delete-user/${data.id}`,config);
+        
         router.refresh();
       } catch (error: any) {
       } finally {

@@ -1,6 +1,7 @@
 import BreadCrumb from "@/components/breadcrumb";
-import { UserForm } from "@/components/forms/user-form";
+import { CategoryForm } from "@/components/forms/category-form";
 import { ScrollArea } from "@/components/ui/scroll-area"; // Import the getServerSession function
+import { getCategoryById } from "@/lib/data";
 import React from "react";
 
 export default async function Page({ params }: { params: { categoryId: string } }) {
@@ -11,15 +12,22 @@ export default async function Page({ params }: { params: { categoryId: string } 
   let initialData = null; 
     console.log("categoryId", params.categoryId)
     if (Number(params.categoryId)) {
-      const { categoryId } = params;
-      initialData={id: categoryId}
+        const { categoryId } = params;
+        initialData = await getCategoryById(Number(categoryId));
+        
+        console.log("initialData", initialData)
     }
   return (
     <ScrollArea className="h-full">
       <div className="flex-1 space-y-4 p-5">
         <BreadCrumb items={breadcrumbItems} />
-        <UserForm
-          initialData={null}
+        <CategoryForm
+          initialData={initialData ? {
+                  id: initialData.id.toString(),
+                  name: initialData.name,
+                  slug: initialData.slug,
+                  thumbnail: initialData.imageUrl,
+              }: null}
           key={null}
         />
       </div>
