@@ -26,7 +26,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter();
 const { data: session } = useSession();
   const token = session?.accessToken;
-  const API_BASE_URL = "http://localhost:8088/api/v1/admin/users";
+  const API_BASE_URL = "http://localhost:8088/api/v1/categories";
   const onConfirm = async () => {};
 const onDelete = async () => {
       try {
@@ -36,10 +36,9 @@ const onDelete = async () => {
             'Authorization': `Bearer ${token}`,
           },
         };
-        await axios.delete(`${API_BASE_URL}/delete-option/${data.id}`,config);
+        await axios.delete(`${API_BASE_URL}/delete/${data.id}`,config);
         
         router.refresh();
-        router.push(`/admin/category`);
       } catch (error: any) {
       } finally {
         setLoading(false);
@@ -65,7 +64,7 @@ const onDelete = async () => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
           <DropdownMenuItem
-            onClick={() => router.push(`/admin/option/${data.id}`)}
+            onClick={() => router.push(`/admin/category/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>

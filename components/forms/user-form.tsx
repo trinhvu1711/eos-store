@@ -40,40 +40,29 @@ import { AlertModal } from "@/components/modal/alert-modal";
 import { getAllRoles } from "@/lib/services/admin/data";
 import { getAdminUser } from "@/lib/data";
 import { Role } from "@/lib/type";
+
 export const IMG_MAX_LIMIT = 5;
-const addformSchema = z.object({
+
+const baseSchema = z.object({
   id: z.string(),
-  name: z
-    .string()
-    .min(3, { message: "Your name must be at least 3 characters" }),
-  address: z
-    .string()
-    .min(3, { message: "Address must be at least 3 characters" }),
+  name: z.string().min(3, { message: "Your name must be at least 3 characters" }),
+  address: z.string().min(3, { message: "Address must be at least 3 characters" }),
   role: z.string().min(1, { message: "Please select a role" }),
   phone: z.string()
-      .min(10, { message: "Please enter a valid phone number" })
+    .min(10, { message: "Please enter a valid phone number" })
     .regex(/^[0-9]+$/, { message: "Please enter a valid phone number" }),
   email: z.string().email({ message: "Please enter a valid email" }),
+});
+
+
+const addformSchema = baseSchema.extend({
   password: z.string().min(8, { message: "Password must be at least 8 characters" }),
   confirmPassword: z.string().min(8, { message: "Password must be at least 8 characters" }),
-  }).refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
 });
-const updateformSchema = z.object({
-  id: z.string(),
-  name: z
-    .string()
-    .min(3, { message: "Your name must be at least 3 characters" }),
-  address: z
-    .string()
-    .min(3, { message: "Address must be at least 3 characters" }),
-  role: z.string().min(1, { message: "Please select a role" }),
-  phone: z.string()
-      .min(10, { message: "Please enter a valid phone number" })
-    .regex(/^[0-9]+$/, { message: "Please enter a valid phone number" }),
-  email: z.string().email({ message: "Please enter a valid email" }),
-});
+const updateformSchema = baseSchema;
 type UserFormValues = z.infer<typeof addformSchema>;
 
 interface UserFormProps {
@@ -150,7 +139,11 @@ const useRoles = () => {
       console.error('Failed to process initial data:', error);
     }
   }
-        processInitialData(initialData,token);
+        useEffect(() => {
+          if (initialData && token) {
+            processInitialData(initialData, token);
+          }
+        }, [initialData, token]);
     
     const onSubmit = async (data: UserFormValues) => {
       try {
@@ -167,29 +160,31 @@ const useRoles = () => {
             'Content-Type': 'application/json',
           },
         };
+        console.log("Updating user with role_id:", data.role);
+
         if (initialData) {
           const user = {
-          name: data.name, 
+          fullname: data.name, 
           address: data.address, 
-          role: data.role,
-          phone: data.phone,
+          role_id: data.role,
+          phone_number: data.phone,
           email: data.email,
         };
           const userData = JSON.stringify(user);
           
-          const res = await axios.put(`${API_BASE_URL}/${initialData.id}`, userData, config);
+          const res = await axios.put(`${API_BASE_URL}/update-user/${initialData.id}`, userData, config);
         } else {
           const user = {
-          name: data.name, 
+          fullname: data.name, 
           address: data.address, 
-          role: data.role,
-          phone: data.phone,
+          role_id: data.role,
+          phone_number: data.phone,
           email: data.email,
           password: data.password,
-          confirmPassword: data.confirmPassword,
+          retype_password: data.confirmPassword,
         };
          const userData= JSON.stringify(user);
-          const res = await axios.post(`${API_BASE_URL}`, userData, config);
+        const res = await axios.post(`${API_BASE_URL}/create-user`, userData, config);
         }
         
       } catch (error: any) {

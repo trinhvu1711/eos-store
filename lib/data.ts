@@ -1,6 +1,7 @@
 // import { getProducts } from "@/lib/data";
 
 import {
+  AdminEditVariant,
   Category,
   Comment,
   Coupon,
@@ -11,6 +12,7 @@ import {
   ProductAdmin,
   User,
   UserAdmin,
+  Variant,
 } from "./type";
 
 // Product
@@ -30,11 +32,28 @@ export async function getCategory(page = 0, limit = 3) {
     throw new Error("Failed to get categories: " + error.message);
   }
 }
-export async function getAllCategory(page=0,limit=10): Promise<Category[]> {
+export async function getAllVariants(): Promise<Variant[]> {
   try {
-    const response = await fetch(`http://localhost:8088/api/v1/categories?page=${page}&limit=${limit}`);
+    const response = await fetch("http://localhost:8088/api/v1/variants/all", {
+      headers: {
+        'Cache-Control': 'no-store'
+      }
+    });
     if (!response.ok) {
-      throw new Error("Failed to fetch getAllOrder");
+      throw new Error("Failed to fetch getAllUser here");
+    }
+    const data: Variant[] = await response.json();
+    console.log(data);
+    return data;
+  } catch (error: any) {
+    throw new Error("Failed to get users: " + error.message);
+  }
+}
+export async function getAllCategory(): Promise<Category[]> {
+  try {
+    const response = await fetch(`http://localhost:8088/api/v1/categories/get-all-categories`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch getAllCategory");
     }
     const data: Category[] = await response.json();
     return data;
@@ -42,6 +61,10 @@ export async function getAllCategory(page=0,limit=10): Promise<Category[]> {
     throw new Error("Failed to get order: " + error.message);
   }
 }
+export type GetProductsType = {
+  products: Product[];
+  totalPage: number;
+};
 // Product
 export async function getProducts({
   page = 0,
@@ -153,7 +176,7 @@ export async function getOrderUpdate(id: number): Promise<OrderUpdate> {
     return data;
   } catch (error: any) {
     // Properly type the error
-    throw new Error("Failed to get product: " + error.message);
+    throw new Error("Failed to get order: " + error.message);
   }
 }
 export async function getAdminUser(id: number, token: string): Promise<User> {
@@ -226,6 +249,37 @@ export async function getCategories(): Promise<Category[]> {
     throw new Error("Failed to get categories + error.message");
   }
 }
+
+export async function getCategoryById(id: number): Promise<Category> {
+  try {
+    const response = await fetch(
+      "http://localhost:8088/api/v1/categories/get/"+id,
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch categories");
+    }
+    const data: Category = await response.json();
+    return data;
+  } catch (error: any) {
+    throw new Error("Failed to get categories + error.message");
+  }
+}
+
+export async function getVariantById(id: number): Promise<AdminEditVariant> {
+  try {
+    const response = await fetch(
+      "http://localhost:8088/api/v1/variants/get/"+id,
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch categories");
+    }
+    const data: AdminEditVariant = await response.json();
+    return data;
+  } catch (error: any) {
+    throw new Error("Failed to get categories + error.message");
+  }
+}
+
 // get all order
 export async function getAllOrder(): Promise<Order[]> {
   try {

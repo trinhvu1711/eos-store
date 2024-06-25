@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: { order: string } }) {
       const date = new Date(orderDate);
 
       // Định dạng ngày theo dd/MM/yyyy
-      formattedDate = date.toLocaleDateString('en-GB'); // 'en-GB' sử dụng định dạng ngày là dd/MM/yyyy
+      formattedDate = date.toLocaleDateString('en-GB');
         console.log("formattedDate",formattedDate)
     }
   return (

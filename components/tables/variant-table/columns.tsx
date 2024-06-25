@@ -30,6 +30,11 @@ export const columns: ColumnDef<Variant>[] = [
     header: "NAME",
   },
   {
+    accessorKey: "discount",
+    header: "DISCOUNT",
+    cell: ({ row }) => `${(row.original.discount * 100)}%`,
+  },
+  {
     accessorKey: "price",
     header: "PRICE",
   },
@@ -40,6 +45,7 @@ export const columns: ColumnDef<Variant>[] = [
   {
     accessorKey: "availableForSale",
     header: "AVAILABLE",
+    cell: ({ row }) => row.original.availableForSale ? "Available" : "Not Available",
   },
   {
     id: "actions",

@@ -20,9 +20,8 @@ export default async function Page({ params }: { params: { userId: string } }) {
         <BreadCrumb items={breadcrumbItems} />
         <UserForm
           initialData={initialData ? {
-            id: initialData.id.toString(),
-            isInitialData: true,
-          }:null}
+            id: initialData.id.toString()
+          } : {}}
           key={null}
         />
       </div>

@@ -85,6 +85,12 @@ const statusPayment = [
       ? initialData
       : {
         id: "",
+        fullName: "",
+        phoneNumber: "",
+        trackingNumber: "",
+        status: "",
+        orderDate:"",
+        paid:  "false",
       };
     const form = useForm<OrderFormValues>({
       resolver: zodResolver(formSchema),
@@ -104,7 +110,6 @@ const statusPayment = [
 
         const config = {
           headers: {
-            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         };
@@ -115,7 +120,7 @@ const statusPayment = [
         }
           const userData = JSON.stringify(order);
           
-          const res = await axios.put(`${API_BASE_URL}/${initialData.id}`, userData, config);
+          const res = await axios.post(`${API_BASE_URL}/${initialData.id}`, userData, config);
         
         
         

@@ -34,6 +34,10 @@ export interface AdminVariant {
   id: number;
   name: string;
 }
+export interface AdminOption {
+  id: number;
+  value: string;
+}
 
 export interface Role {
   id: number;
@@ -70,7 +74,15 @@ export interface Variant {
   discount: number;
   options: SelectedOption[];
 }
-
+export interface AdminEditVariant {
+  id: number;
+  name: string;
+  availableForSale: boolean;
+  price: number;
+  currency: string;
+  discount: number;
+  options: AdminOption[];
+}
 export interface Product {
   createdAt: string;
   updatedAt: string;
